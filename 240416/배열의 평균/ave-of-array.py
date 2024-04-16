@@ -6,18 +6,18 @@ for i in range(2):
 
 
 for i in (space):
-    print(sum(i)/len(i),end=" ")
+    print(round(sum(i)/len(i),1),end=" ")
 print()
 for j in range(4):
     a=[]
     for i in range(2):
         a.append(space[i][j])
     b=sum(a)/len(a)
-    print(b,end=" ")
+    print(round(b,1),end=" ")
 print()
 
 total=[]
 for i in range(2):
     for j in range(4):
         total.append(space[i][j])
-print(sum(total)/len(total))
+print(round((sum(total)/len(total)),1))
