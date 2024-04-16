@@ -14,7 +14,7 @@ for j in range(4):
         a.append(space[i][j])
     b=sum(a)/len(a)
     print(b,end=" ")
-
+print()
 
 total=[]
 for i in range(2):
