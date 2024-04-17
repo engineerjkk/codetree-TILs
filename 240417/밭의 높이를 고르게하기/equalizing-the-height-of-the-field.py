@@ -4,7 +4,7 @@ n,h,t =map(int,input().split())
 lst=list(map(int,input().split()))
 
 
-total_cnt=100*100
+total_cnt=10000000
 for i in range(n-t+1):
     cnt=0
     for j in range(i,i+t):
