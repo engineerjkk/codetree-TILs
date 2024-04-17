@@ -1,20 +1,17 @@
 import sys
-from collections import deque
 from itertools import combinations
 input = sys.stdin.readline
-n,s=map(int,input().split())
+n,s = map(int,input().split())
 lst=list(map(int,input().split()))
 
-nCr=combinations(lst,2)
+nCr = combinations(lst,2)
 
-MIN=1000000
-
+total_ans=100000
 for x in nCr:
-    tmp=[]
+    ans=0
     for i in lst:
         if i not in x:
-            tmp.append(i)
-    total=sum(tmp)
-    ans=abs(total-s)
-    MIN=min(MIN,ans)
-print(MIN)
+            ans+=i
+        
+    total_ans=min(total_ans,abs(s-ans))
+print(total_ans)
