@@ -16,7 +16,7 @@ for i,name in lst:
     elif name=='H':
         space[int(i)]=2
 total=0
-for i in range(MAX-k+1):
+for i in range(MAX-k):
     cnt=0
     for j in range(i,i+k+1):
         cnt+=space[j]
