@@ -11,6 +11,8 @@ students=0
 for i in range(1,n+1):
     nCr=combinations(lst,i)
     for j in nCr:
+        # if i>4:
+        #     print(j)
         price=[]
         deliver=[]
         for p,d in j: 
@@ -22,6 +24,7 @@ for i in range(1,n+1):
         # price[a]=price[a]/2
         total=sum(price)+sum(deliver)
         if b>=total:
-            stu=len(price)
+            stu=len(j)
             students=max(students,stu)
+            continue
 print(students)
