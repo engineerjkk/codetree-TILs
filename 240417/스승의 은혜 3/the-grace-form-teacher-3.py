@@ -10,6 +10,7 @@ for _ in range(n):
 
 students=0
 for i in range(1,n+1):
+    tmp=False
     nCr=combinations(lst,i)
 
     for j in nCr:
@@ -25,4 +26,7 @@ for i in range(1,n+1):
         if b>=total:
             stu=len(price)
             students=max(students,stu)
+            tmp=True
+        if tmp==True:
+            break
 print(students)
