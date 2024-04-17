@@ -16,8 +16,10 @@ for i in range(1,n+1):
         for p,d in j: 
             price.append(p)
             deliver.append(d)
-        a=price.index(max(price))
-        price[a]=price[a]/2
+        sorted(price)
+        price[0]=price[0]/2
+        # a=price.index(max(price))
+        # price[a]=price[a]/2
         total=sum(price)+sum(deliver)
         if b>=total:
             stu=len(price)
