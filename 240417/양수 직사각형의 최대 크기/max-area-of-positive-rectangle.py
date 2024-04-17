@@ -24,8 +24,6 @@ def bfs(space,r,c):
                 queue.append((nr,nc))
     return cnt
 
-
-place=[[0]*m for _ in range(n)]
 ans=0
 for i in range(n):
     for j in range(m):
@@ -33,7 +31,7 @@ for i in range(n):
             value=bfs(space,i,j)
             ans=max(ans,value)
 
-if ans>0:
+if ans>1:
     print(ans)
 else:
     print(-1)
