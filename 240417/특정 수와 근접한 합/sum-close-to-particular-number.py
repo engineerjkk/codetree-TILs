@@ -7,7 +7,7 @@ lst=list(map(int,input().split()))
 
 nCr=combinations(lst,2)
 
-MIN=sum(lst)
+MIN=1000000
 
 for x in nCr:
     tmp=[]
