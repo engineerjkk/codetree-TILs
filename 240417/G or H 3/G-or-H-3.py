@@ -5,7 +5,7 @@ lst=[]
 for _ in range(n):
     lst.append(list(map(str,input().split())))
 tmp=[]
-for i in range(len(lst)):
+for i in range(n):
     tmp.append(int(lst[i][0]))
 MIN=min(tmp)
 MAX=max(tmp)
