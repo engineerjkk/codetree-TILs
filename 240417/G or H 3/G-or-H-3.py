@@ -9,7 +9,8 @@ for i in range(n):
     tmp.append(int(lst[i][0]))
 MIN=min(tmp)
 MAX=max(tmp)
-space=[0]*(MAX*k)
+MAX=100000
+space=[0]*(MAX+1)
 for i,name in lst:
     if name=='G':
         space[int(i)]=1
