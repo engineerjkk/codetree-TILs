@@ -9,6 +9,7 @@ for _ in range(n):
 
 students=0
 for i in range(1,n+1):
+    tmp=False
     nCr=combinations(lst,i)
     for j in nCr:
         # if i>4:
@@ -18,13 +19,15 @@ for i in range(1,n+1):
         for p,d in j: 
             price.append(p)
             deliver.append(d)
-        sorted(price)
+        sorted(price,reverse=True)
         price[0]=price[0]/2
-        # a=price.index(max(price))
-        # price[a]=price[a]/2
         total=sum(price)+sum(deliver)
         if b>=total:
             stu=len(j)
             students=max(students,stu)
-            continue
+            tmp=True
+            if tmp==True:
+                continue
+    if tmp==True:
+        continue
 print(students)
