@@ -12,21 +12,19 @@ students=0
 for i in range(1,n+1):
     tmp=False
     nCr=combinations(lst,i)
-
+    #print("___")
     for j in nCr:
         price=[]
         deliver=[]
         for p,d in j: 
             price.append(p)
             deliver.append(d)
-        #print(len(price))
-        a=price.index(max(price))
-        price[a]=price[a]/2
-        total=sum(price)+sum(deliver)
-        if b>=total:
-            stu=len(price)
-            students=max(students,stu)
-            tmp=True
-        if tmp==True:
-            break
+            #print(len(price))
+            a=price.index(max(price))
+            price[a]=price[a]/2
+            total=sum(price)+sum(deliver)
+            if b>=total:
+                stu=len(price)
+                students=max(students,stu)
+                tmp=True
 print(students)
