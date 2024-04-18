@@ -1,0 +1,10 @@
+import sys 
+x,y = map(int,input().split())
+
+cnt=0
+for i in range(x,y+1):
+    number=list(map(int,str(i).strip()))
+    for i in range(len(number)//2):
+        if number[i]==number[-i-1]:
+            cnt+=1
+print(cnt)
