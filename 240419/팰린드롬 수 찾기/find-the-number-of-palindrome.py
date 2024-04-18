@@ -1,11 +1,15 @@
 import sys 
 x,y = map(int,input().split())
 
-cnt=0
+ans=0
 for i in range(x,y+1):
     number=list(str(i).strip())
     #print(number)
+    cnt=0
     for j in range(len(number)//2):
-        if number[j]==number[len(number)-j-1]:
+        if number[j]==number[-j-1]:
             cnt+=1
-print(cnt)
+    if cnt==len(number)//2:
+        ans+=1
+        
+print(ans)
