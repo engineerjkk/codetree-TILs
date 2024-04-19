@@ -12,6 +12,7 @@ for i in range(n):
         cnt=space[i][j]+space[i][j+1]+space[i][j+2]
         if cnt>value:
             value=cnt
+            coordinates=[]
             for k in range(3):
                 coordinates.append((i,j+k))
 if coordinates:
