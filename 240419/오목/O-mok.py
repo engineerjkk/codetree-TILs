@@ -6,7 +6,7 @@ for _ in range(19):
 
 tmp=False
 for i in range(19):
-    for j in range(14):
+    for j in range(15):
             if (space[i][j] ==1 and space[i][j+1] ==1 and space[i][j+2] ==1 and space[i][j+3] ==1 and space[i][j+4]==1):
                 print(1)
                 print(i+1, end=" ")
