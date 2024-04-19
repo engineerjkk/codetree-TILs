@@ -17,11 +17,6 @@ for i in range(n):
     for j in range(i):
         x=queue2.popleft()
         queue2.append(x)
-    # while queue2:
-    #     k=0
-    #     q=queue2.popleft()
-    #     dis+=q*k
-    #     k+=1
     for j in range(n):
         dis+=queue2[j]*j
     distance=min(distance,dis)
