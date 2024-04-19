@@ -4,8 +4,8 @@ arr=list(map(int,input().strip()))
 
 ans=0
 if len(arr)>1:
-    for i in range(len(arr)):
-        ans+=arr[i]*2**(len(arr)-i-1)
+    # for i in range(len(arr)):
+    #     ans+=arr[i]*2**(len(arr)-i-1)
     for i in range(len(arr)):
         if arr[i]==0:
             arr[i]=1
