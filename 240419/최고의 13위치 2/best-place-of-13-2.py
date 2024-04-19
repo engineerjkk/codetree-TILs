@@ -10,7 +10,7 @@ coordinates=[]
 for i in range(n):
     for j in range(n-2):
         cnt=space[i][j]+space[i][j+1]+space[i][j+2]
-        if cnt>value:
+        if cnt>=value:
             value=cnt
             coordinates=[]
             for k in range(3):
@@ -24,7 +24,7 @@ if coordinates:
         for j in range(n-2):
             if not visited[i][j] and not visited[i][j+1] and not visited[i][j+2]:
                 cnt=space[i][j]+space[i][j+1]+space[i][j+2]
-                if cnt>second_value:
+                if cnt>=second_value:
                     second_value=cnt
     print(value+second_value)
 else:
