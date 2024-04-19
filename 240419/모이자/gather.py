@@ -3,7 +3,7 @@ input = sys.stdin.readline
 n=int(input())
 lst=list(map(int,input().split()))
 
-dis=100000
+dis=1000000
 for i in range(n):
     ans=0
     for j in range(n):
