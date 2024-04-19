@@ -1,5 +1,5 @@
-# [괄호 쌍 만들어주기 3 ](https://www.codetree.ai/missions/18/problems/pair-parentheses-3)
-
+# [괄호 쌍 만들어주기 3 ](https://www.codetree.ai/missions/18/problems/pair-parentheses-3)  
+생각 : ")"의 개수를 다 세어주면 된다.  
 |유형|문제 경험치|난이도|
 |---|---|---|
 |[SK / 완전탐색 / 자리 수 단위로 완전탐색](https://www.codetree.ai/missions?missionId=18)|10xp|![쉬움][easy]|
