@@ -39,5 +39,8 @@ for i in range(n-2):
                 c = int(''.join(map(str, arr_k)))
                 ans2=a+b+c
                 ans=max(ans,ans2)
-
-print(ans)
+            
+if ans==0:
+    print(-1)
+else:
+    print(ans)
