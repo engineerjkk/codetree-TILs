@@ -1,6 +1,7 @@
 # [최고의 13위치 2 ](https://www.codetree.ai/missions/18/problems/best-place-of-13-2)
-해설 코드
-'''
+
+                '''
+                해설 코드
                 # 변수 선언 및 입력
                 n = int(input())
                 arr = [
@@ -28,7 +29,7 @@
                                 max_cnt = max(max_cnt, cnt1 + cnt2)
                 
                 print(max_cnt)
-'''
+                '''
 |유형|문제 경험치|난이도|
 |---|---|---|
 |[SK / 완전탐색 / 자리 수 단위로 완전탐색](https://www.codetree.ai/missions?missionId=18)|40xp|![보통][medium]|
