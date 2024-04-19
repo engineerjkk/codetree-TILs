@@ -37,5 +37,7 @@ for i in range(n-2):
                 a = int(''.join(map(str, arr_i)))
                 b = int(''.join(map(str, arr_j)))
                 c = int(''.join(map(str, arr_k)))
-                ans=a+b+c
+                ans2=a+b+c
+                ans=max(ans,ans2)
+
 print(ans)
