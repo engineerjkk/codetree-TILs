@@ -48,7 +48,7 @@ for i in range(14):
                 tmp=True
                 break
 
-for i in range(4,19):
+for i in range(14):
     for j in range(4,19):
             if (space[i][j] ==1 and space[i+1][j-1] ==1 and space[i+2][j-2] ==1 and space[i+3][j-3] ==1 and space[i+4][j-4]==1):
                 print(1)
