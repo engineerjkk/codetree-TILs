@@ -1,4 +1,6 @@
 # [체크판위에서 2 ](https://www.codetree.ai/missions/18/problems/on-the-checkboard-2)
+생각 : 조건문 자체에서 두번만 점프를 한다는것을 만족한다는걸 전제하에 진행한다는것을 배웠다.
+"if space[0][0] != space[i][j] and space[i][j] != space[k][l] and space[k][l]!=space[n-1][m-1]:" 에서 [i][j]에서 한번 점프하고, [k][l]에서 한번 점프하고 이 두번만 한다. 난 혹시 두번을 넘거나 한번에 도달하면 어떡하지해서 다른 경우에수를 고려하느라 결국 이문제를 못풀었었다.
 
 |유형|문제 경험치|난이도|
 |---|---|---|
