@@ -19,7 +19,7 @@ for i in range(19):
                 print(j+2+1, end=" ")
                 tmp=True
                 break
-for i in range(14):
+for i in range(15):
     for j in range(19):            
             if (space[i][j] ==1 and space[i+1][j]==1 and space[i+2][j]==1 and space[i+3][j]==1 and space[i+4][j]==1):
                 print(1)
@@ -33,7 +33,7 @@ for i in range(14):
                 print(j+1, end=" ")
                 tmp=True
                 break
-for i in range(14):
+for i in range(15):
     for j in range(14):
             if (space[i][j] ==1 and space[i+1][j+1] ==1 and space[i+2][j+2] ==1 and space[i+3][j+3] ==1 and space[i+4][j+4]==1):
                 print(1)
@@ -48,7 +48,7 @@ for i in range(14):
                 tmp=True
                 break
 
-for i in range(14):
+for i in range(15):
     for j in range(4,19):
             if (space[i][j] ==1 and space[i+1][j-1] ==1 and space[i+2][j-2] ==1 and space[i+3][j-3] ==1 and space[i+4][j-4]==1):
                 print(1)
