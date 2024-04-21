@@ -18,7 +18,8 @@ tmp=[]
 for i in n_lst:
     tmp.append(str(i))
 n_str_lst=''.join(tmp)
-for x in test:
-    if x in n_str_lst:
-        cnt+=1
+for i in range(n-m+1):
+    for x in test:
+        if n_str_lst[i:i+3]==x:
+            cnt+=1
 print(cnt)
