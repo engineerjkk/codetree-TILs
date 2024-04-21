@@ -8,6 +8,7 @@ m_lst=list(map(int,input().split()))
 nCr = permutations(m_lst,m)
 cnt=0
 
+nCr=list(set(nCr))
 for x in nCr:
     tmp2=[]
     for k in x:
