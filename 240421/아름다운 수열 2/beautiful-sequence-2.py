@@ -15,7 +15,6 @@ for i in nCr:
     for j in i:
         tmp.append(j)
     test.append(tmp)
-print(test)
 for x in test:
     for i in range(n-m+1):
         tmp=[]
