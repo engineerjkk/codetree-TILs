@@ -24,6 +24,6 @@ for i in range(n):
             real_tmp_col.append(tmp_col[k])
     if len(list(set(real_tmp_row)))==1:
         cnt+=1
-    if len(list(set(real_tmp_col)))==m:
+    if len(list(set(real_tmp_col)))==1:
         cnt+=1
 print(cnt)
