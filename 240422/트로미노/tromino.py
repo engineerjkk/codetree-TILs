@@ -10,12 +10,12 @@ def shape1(space,r,c):
     dr=[[-1,0],[0,1],[1,0],[0,-1]]
     dc=[[0,1],[1,0],[0,-1],[-1,0]]
     answer=0
+    
     for k in range(4):
         drr=dr[k]
         dcc=dc[k]
-        nm=0
-        nm=space[r][c]
         cnt=0
+        nm=space[r][c]
         for l in range(2):
             nr=r+drr[l]
             nc=c+dcc[l]
@@ -27,18 +27,17 @@ def shape1(space,r,c):
     return answer
 
 def shape2(space,r,c):
-    d=[[0,1],[1,0],[0,-1],[-1,0]]
-    d2=[[0,2],[2,0],[0,-2],[-2,0]]
+    dr=[[0,0],[1,2],[0,0],[-1,-2]]
+    dc=[[1,2],[0,0],[-1,-2],[0,0]]
     answer=0
     for k in range(4):
-        dr=d[k]
-        dr2=d2[k]
-        nm=0
+        drr=dr[k]
+        dcc=dc[k]
         nm=space[r][c]
         cnt=0
         for l in range(2):
-            nr=r+dr[l]
-            nc=c+dr2[l]
+            nr=r+drr[l]
+            nc=c+dcc[l]
             if -1<nr<n and -1<nc<m:
                 nm+=space[nr][nc]
                 cnt+=1
