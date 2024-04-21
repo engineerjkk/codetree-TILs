@@ -9,7 +9,16 @@ nCr = permutations(m_lst,m)
 cnt=0
 
 nCr=list(set(nCr))
-for x in nCr:
+test=[]
+for i in nCr:
+    tmp=[]
+    for j in i:
+        tmp.append(j)
+    test.append(tmp)
+for x in test:
+    # tmp2=[]
+    # for k in x:
+    #     tmp2.append(k)
     for i in range(n-m+1):
         tmp=[]
         for j in range(i,i+m):
