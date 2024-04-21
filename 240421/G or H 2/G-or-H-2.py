@@ -8,8 +8,8 @@ for _ in range(n):
 
 lst.sort(key=lambda x: int(x[0]))
 ans=0
-for i in range(n):
-    for j in range(i,n):
+for i in range(n+1):
+    for j in range(i,n+1):
         space=[]
         for k in range(i,j):
             space.append(lst[k])
