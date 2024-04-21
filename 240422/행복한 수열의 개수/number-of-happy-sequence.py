@@ -16,18 +16,21 @@ for i in range(n):
     for j in range(n):
         tmp_row.append(space[i][j])   
         tmp_col.append(space[j][i]) 
-    real_tmp_row=[]
-    real_tmp_col=[]
-    tmpp_row=0
-    tmpp_col=0
-    for row in range(n-m):
+
+    check_row=[]
+    check_col=[]
+    for row in range(n-m+1):
+        real_tmp_row=[]
+        real_tmp_col=[]
         for k in range(row,row+m):
             real_tmp_row.append(tmp_row[k])
             real_tmp_col.append(tmp_col[k])
-        if len(list(set(real_tmp_row)))==1 and tmpp_row==0:
-            cnt+=1
-            tmpp_row=1
-        if len(list(set(real_tmp_col)))==1 and tmpp_col==0:
-            cnt+=1
-            tmpp_col=1
+        if len(list(set(real_tmp_row)))==1:
+            check_row.append(real_tmp_row[0])
+        if len(list(set(real_tmp_col)))==1:
+            check_col.append(real_tmp_col[0])
+    if len(check_col)>=1:
+        cnt+=1
+    if len(check_row)>=1:
+        cnt+=1
 print(cnt)
