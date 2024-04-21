@@ -7,20 +7,18 @@ m_lst=list(map(int,input().split()))
 
 nCr = permutations(m_lst,m)
 cnt=0
-
 nCr=list(set(nCr))
 test=[]
 for i in nCr:
     tmp=[]
     for j in i:
-        tmp.append(j)
-    test.append(tmp)
+        tmp.append(str(j))
+    test.append(''.join(tmp))
+tmp=[]
+for i in n_lst:
+    tmp.append(str(i))
+n_str_lst=''.join(tmp)
 for x in test:
-    for i in range(n-m+1):
-        tmp=[]
-        for j in range(i,i+m):
-            tmp.append(n_lst[j])
-        if tmp==x:
-            cnt+=1
-
+    if x in n_str_lst:
+        cnt+=1
 print(cnt)
