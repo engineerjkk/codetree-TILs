@@ -15,10 +15,8 @@ for i in nCr:
     for j in i:
         tmp.append(j)
     test.append(tmp)
+print(test)
 for x in test:
-    # tmp2=[]
-    # for k in x:
-    #     tmp2.append(k)
     for i in range(n-m+1):
         tmp=[]
         for j in range(i,i+m):
