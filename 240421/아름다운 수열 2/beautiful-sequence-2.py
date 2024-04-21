@@ -10,14 +10,11 @@ cnt=0
 
 nCr=list(set(nCr))
 for x in nCr:
-    tmp2=[]
-    for k in x:
-        tmp2.append(k)
     for i in range(n-m+1):
         tmp=[]
         for j in range(i,i+m):
             tmp.append(n_lst[j])
-        if tmp==tmp2:
+        if tmp==x:
             cnt+=1
 
 print(cnt)
