@@ -1,11 +1,11 @@
 import sys
 input = sys.stdin.readline
-from itertools import combinations
+from itertools import combinations, combinations_with_replacement
 n,m = map(int,input().split())
 n_lst=list(map(int,input().split()))
 m_lst=list(map(int,input().split()))
 
-nCr = combinations(n_lst,m)
+nCr = combinations_with_replacement(n_lst,m)
 cnt=0
 
 for x in nCr:
