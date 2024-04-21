@@ -11,7 +11,7 @@ for num,i in lst:
 
 ans=0
 answer=0
-for i in range(k,101-k+1):
+for i in range(k,101-k):
     nm=0
     for j in range(i-k,i+k+1):
         nm+=arr[j]
