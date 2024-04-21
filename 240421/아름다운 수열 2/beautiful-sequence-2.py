@@ -20,6 +20,6 @@ for i in n_lst:
 n_str_lst=''.join(tmp)
 for i in range(n-m+1):
     for x in test:
-        if n_str_lst[i:i+3]==x:
+        if n_str_lst[i:i+m]==x:
             cnt+=1
 print(cnt)
