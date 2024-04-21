@@ -18,10 +18,9 @@ for i in range(n):
         tmp_col.append(space[j][i]) 
     real_tmp_row=[]
     real_tmp_col=[]
-    for row in range(n-m+1):
-        tmpp_row=0
-        tmpp_col=0
-        
+    tmpp_row=0
+    tmpp_col=0
+    for row in range(n-m):
         for k in range(row,row+m):
             real_tmp_row.append(tmp_row[k])
             real_tmp_col.append(tmp_col[k])
