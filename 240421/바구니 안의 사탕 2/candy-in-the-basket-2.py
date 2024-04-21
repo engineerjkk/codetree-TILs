@@ -4,14 +4,15 @@ n,k = map(int,input().split())
 lst=[]
 for _ in range(n):
     lst.append(list(map(int,input().split())))
-arr=[0]*101
+maximum=100000
+arr=[0]*(maximum+1)
 
 for num,i in lst:
     arr[i]+=num
 
 ans=0
 answer=0
-for i in range(k,101-k):
+for i in range(k,maximum-k):
     nm=0
     for j in range(i-k,i+k+1):
         nm+=arr[j]
