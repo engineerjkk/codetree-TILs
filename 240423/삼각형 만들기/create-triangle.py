@@ -8,12 +8,12 @@ for _ in range(n):
 def check(i,j,k):
     check_x=False
     check_y=False
-    for i in range(3):
-        for j in range(i,3):
-            if i==j:
+    for a in range(3):
+        for b in range(a,3):
+            if a==b:
                 continue
-            x1,y1=points[i]
-            x2,y2=points[j]
+            x1,y1=points[a]
+            x2,y2=points[b]
             x=abs(x1-x2)
             y=abs(y1-y2)
             if x==0:
