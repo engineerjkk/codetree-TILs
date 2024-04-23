@@ -1,23 +1,23 @@
 import sys
-input=sys.stdin.readline
-n,m= tuple(map(int,input().split()))
+input = sys.stdin.readline
 
-space=[list(map(int,input().split())) for _ in range(n)]
-
+n,m = map(int,input().split())
+space=[]
+for _ in range(n):
+    space.append(list(map(int,input().split())))
 
 def get_num_of_gold(space,row,col,k):
-    cnt=0
+    nm=0
     for i in range(n):
         for j in range(n):
-            if abs(i-row)+abs(j-col)<=k:
-                cnt+=space[i][j]
-    return cnt
-    
-
+            if abs(row-i)+abs(col-j)<=k:
+                nm+=space[i][j]
+    return nm
 answer=0
 for row in range(n):
     for col in range(n):
         for k in range(n+1):
-            if get_num_of_gold(space,row,col,k)*m >=(k*k+(k+1)*(k+1)):
-                answer=max(answer,get_num_of_gold(space,row,col,k))
+            price = get_num_of_gold(space,row,col,k)
+            if price*m>=(k*k+(k+1)*(k+1)):
+                answer=max(answer,price)
 print(answer)
