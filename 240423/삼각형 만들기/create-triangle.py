@@ -6,15 +6,16 @@ for _ in range(n):
     points.append(list(map(int,input().split())))
 
 def check(i,j,k):
+    point=[i,j,k]
     check_x=False
     check_y=False
-    for a in range(3):
-        for b in range(a,3):
+    for a in range(len(point)):
+        for b in range(a,len(point)):
             if a==b:
                 continue
             else:
-                x1,y1=points[a]
-                x2,y2=points[b]
+                x1,y1=points[point[a]]
+                x2,y2=points[point[b]]
                 x=abs(x1-x2)
                 y=abs(y1-y2)
                 if x==0:
