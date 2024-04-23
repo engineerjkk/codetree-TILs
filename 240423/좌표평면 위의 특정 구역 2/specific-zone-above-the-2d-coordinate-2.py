@@ -6,7 +6,7 @@ for _ in range(n):
     space.append(list(map(int,input().split())))
 
 
-ans=1000000
+ans=sys.maxsize
 for i in range(n):
     row=[]
     col=[]
