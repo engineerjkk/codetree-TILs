@@ -35,5 +35,6 @@ answer=0
 for i in range(n):
     for j in range(n):
         value=rec(space,i,j)
+        print(value)
         answer=max(answer,sum(value))
 print(answer)
