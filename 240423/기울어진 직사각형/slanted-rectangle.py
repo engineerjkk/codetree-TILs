@@ -12,19 +12,16 @@ dc=[1,-1,-1,1]
 def rec(space,r,c):
     visited=[[False]*n for _ in range(n)]
     lst=[]
-    lst.append(space[r][c])
-    visited[r][c]=True
     arr=[False]*4
-    for i in range(4):
+    for num in range(4):
         while True:
-            nr=r+dr[i]
-            nc=c+dc[i]
-            if -1<nr<n and -1<nc<n and not visited[nr][nc]:
+            nr=r+dr[num]
+            nc=c+dc[num]
+            if -1<nr<n and -1<nc<n :
                 r=nr
                 c=nc
                 lst.append(space[r][c])
-                visited[nr][nc]=True
-                arr[i]=True
+                arr[num]=True
             else:
                 break
     if arr.count(True)==4:
@@ -35,6 +32,5 @@ answer=0
 for i in range(n):
     for j in range(n):
         value=rec(space,i,j)
-        print(value)
         answer=max(answer,sum(value))
 print(answer)
