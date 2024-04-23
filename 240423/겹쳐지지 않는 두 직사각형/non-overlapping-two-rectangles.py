@@ -1,61 +1,64 @@
 import sys
-input=sys.stdin.readline
-n,m = map(int,input().split())
+INT_MIN = - sys.maxsize
+n,m = tuple(map(int,input().split()))
+grid = [
+    list(map(int,input().split()))
+    for _ in range(n)
+]
 
-space=[]
-for _ in range(n):
-    space.append(list(map(int,input().split())))
+board=[
+    [0 for _ in range(m)]
+    for _ in range(n)
+]
 
-def in_range(x,y):
-    return -1<x<n and -1<y<m
+def clear_board():
+    for i in range(n):
+        for j in range(m):
+            board[i][j]=0
 
-def score(i,j,k,l):
-    drs=[1,0,-1,0]
-    dcs=[0,-1,0,1]
-    moves=[k,l,k,l]
-    nm=0
-    for dr,dc,move in zip(drs,dcs,moves):
-        i=i+dr
-        j=j+dc
-        if not in_range(i,j):
-            return 0
-        nm+=space[i][j]
-    return nm
+def draw(x1,y1,x2,y2):
+    for i in range(x1,x2+1):
+        for j in range(y1,y2+1):
+            board[i][j]+=1
 
-def score2(i,j,k,l,visited):
-    drs=[0,-1,0,1]
-    dcs=[1,0,-1,0]
-    moves=[k,l,k,l]
-    nm=0
-    for dr,dc,move in zip(drs,dcs,moves):
-        i=i+dr
-        j=j+dc
-        if not in_range(i,j) or visited[i][j]==True:
-            return 0
-        nm+=space[i][j]
-    return nm
+def check_board():
+    for i in range(n):
+        for j in range(m):
+            if board[i][j] >=2:
+                return True
+    return False
 
+def overlapped(x1,y1,x2,y2,x3,y3,x4,y4):
+    clear_board()
+    draw(x1,y1,x2,y2)
+    draw(x3,y3,x4,y4)
+    return check_board()
 
+def rect_sum(x1,y1,x2,y2):
+    return sum([
+        grid[i][j]
+        for i in range(x1,x2+1)
+        for j in range(y1,y2+1) 
+    ])
 
-ans1=-sys.maxsize
-visited=[[False]*m for _ in range(n)]
-for i in range(n):
-    for j in range(m):
-        for k in range(1,n):
-            for l in range(1,m):
-                value=score(i,j,k,l)
-                if value>ans1:
-                    ans1=value
-                    visited=[[False]*m for _ in range(n)]
-                    for row in range(i,k+1):
-                        for col in range(j,l+1):
-                            visited[row][col]=True
-ans2=-sys.maxsize
-for i in range(n):
-    for j in range(m):
-        for k in range(1,n):
-            for l in range(1,m):
-                value=score2(i,j,k,l,visited)
-                ans2=max(ans2,value)
-                    
-print(ans1+ans2)
+def find_max_sum_with_rect(x1,y1,x2,y2):
+    max_sum=INT_MIN
+    for i in range(n):
+        for j in range(m):
+            for k in range(i,n):
+                for l in range(j,m):
+                    if not overlapped(x1,y1,x2,y2,i,j,k,l):
+                        max_sum = max(max_sum,rect_sum(x1,y1,x2,y2)+rect_sum(i,j,k,l))
+    return max_sum
+
+def find_max_sum():
+    max_sum=INT_MIN
+    for i in range(n):
+        for j in range(m):
+            for k in range(i,n):
+                for l in range(j,m):
+                    max_sum = max(max_sum,find_max_sum_with_rect(i,j,k,l))
+    return max_sum
+
+ans=find_max_sum()
+print(ans)
