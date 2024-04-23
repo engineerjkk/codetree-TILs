@@ -6,7 +6,11 @@ lines=[]
 mil=1000000
 check=[0]*(mil*2+1)
 for _ in range(n):
-    lines.append(list(map(int,input().split())))
+    a=list(map(int,input().split()))
+    a.sort
+    lines.append(a)
+
+
 
 lines.sort(key=lambda x:x[0])
 
