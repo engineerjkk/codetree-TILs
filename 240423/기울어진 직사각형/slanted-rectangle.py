@@ -14,6 +14,7 @@ def rec(space,r,c):
     lst=[]
     lst.append(space[r][c])
     visited[r][c]=True
+    arr=[False]*4
     for i in range(4):
         while True:
             nr=r+dr[i]
@@ -23,10 +24,13 @@ def rec(space,r,c):
                 c=nc
                 lst.append(space[r][c])
                 visited[nr][nc]=True
+                arr[i]=True
             else:
                 break
-        
-    return lst
+    if arr.count(True)==4:
+        return lst
+    else:
+        return [0]
 answer=0
 for i in range(n):
     for j in range(n):
