@@ -1,36 +1,33 @@
 import sys
 input = sys.stdin.readline
-from collections import deque
-n=int(input())
+
+n = int(input())
 space=[]
 for _ in range(n):
     space.append(list(map(int,input().split())))
 
-dr=[-1,-1,1,1]
-dc=[1,-1,-1,1]
+def in_range(r,c):
+    return -1<r<n and -1<c<n
 
-def rec(space,r,c):
-    visited=[[False]*n for _ in range(n)]
-    lst=[]
-    arr=[False]*4
-    for num in range(4):
-        while True:
-            nr=r+dr[num]
-            nc=c+dc[num]
-            if -1<nr<n and -1<nc<n :
-                r=nr
-                c=nc
-                lst.append(space[r][c])
-                arr[num]=True
-            else:
-                break
-    if arr.count(True)==4:
-        return lst
-    else:
-        return [0]
+def score(i,j,k,l):
+    drs=[-1,-1,1,1]
+    dcs=[1,-1,-1,1]
+    move_nums=[k,l,k,l]
+    nm=0
+    for dr,dc,move_num in zip(drs,dcs,move_nums):
+        for _ in range(move_num):
+            i=i+dr
+            j=j+dc
+            if not in_range(i,j):
+                return 0
+            nm+=space[i][j]
+    return nm
+
 answer=0
 for i in range(n):
     for j in range(n):
-        value=rec(space,i,j)
-        answer=max(answer,sum(value))
+        for k in range(1,n):
+            for l in range(1,n):
+                value=score(i,j,k,l)
+                answer=max(answer,value)
 print(answer)
