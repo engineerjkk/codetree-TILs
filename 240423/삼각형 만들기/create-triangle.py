@@ -12,14 +12,15 @@ def check(i,j,k):
         for b in range(a,3):
             if a==b:
                 continue
-            x1,y1=points[a]
-            x2,y2=points[b]
-            x=abs(x1-x2)
-            y=abs(y1-y2)
-            if x==0:
-                check_x=True
-            if y==0:
-                check_y=True
+            else:
+                x1,y1=points[a]
+                x2,y2=points[b]
+                x=abs(x1-x2)
+                y=abs(y1-y2)
+                if x==0:
+                    check_x=True
+                if y==0:
+                    check_y=True
     return check_x and check_y
 
 def cal(i,j,k):
