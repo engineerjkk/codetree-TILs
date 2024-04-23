@@ -19,7 +19,7 @@ max_gold = 0
 
 for row in range(n):
     for col in range(n):
-        for k in range(n-1):
+        for k in range(n):
             num_of_gold=get_num_of_gold(row,col,k)
             if num_of_gold *m >=get_area(k):
                 max_gold=max(max_gold,num_of_gold)
