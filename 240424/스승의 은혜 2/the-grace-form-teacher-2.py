@@ -14,7 +14,7 @@ for i in range(n):
             cash=0
             for l in range(i,k+1):
                 if l==k:
-                    cash+=student[l]//2
+                    cash+=(student[l]//2)
                 else:
                     cash+=student[l]
 
