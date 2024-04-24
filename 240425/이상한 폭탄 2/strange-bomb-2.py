@@ -5,12 +5,12 @@ lst=[]
 for _ in range(n):
     lst.append(int(input()))
 
-ans=0
+ans=-1
 for i in range(n):
-    for j in range(,n):
-        if i==j:
+    for j in range(i+1,n):
+        if j-i>k:
+            break
+        if lst[i] !=lst[j]:
             continue
-        elif lst[i]==lst[j]:
-            if lst[i]>=abs(i-j):
-                ans=max(ans,lst[i])
+        ans=max(ans,lst[i])
 print(ans)
