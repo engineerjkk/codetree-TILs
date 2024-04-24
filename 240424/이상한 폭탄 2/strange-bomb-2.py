@@ -14,5 +14,5 @@ for i in range(n):
         if lst[i]==lst[j]:
             dis=abs(i-j)
             if lst[i]>=dis:
-                tmp.append(lst[i])
-print(max(tmp))
+                ans=max(ans,lst[i])
+print(ans)
