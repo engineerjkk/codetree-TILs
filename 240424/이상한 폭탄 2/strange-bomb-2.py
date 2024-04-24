@@ -14,4 +14,6 @@ for i in range(n):
         if lst[i]==lst[j]:
             if lst[i]>=abs(i-j):
                 ans=max(ans,lst[i])
+            else:
+                break
 print(ans)
