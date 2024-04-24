@@ -1,5 +1,5 @@
-import sys
-input = sys.stdin.readline
+# import sys
+# input = sys.stdin.readline
 n,k = map(int,input().split())
 lst=[]
 for _ in range(n):
@@ -14,6 +14,4 @@ for i in range(n):
         if lst[i]==lst[j]:
             if lst[i]>=abs(i-j):
                 ans=max(ans,lst[i])
-            else:
-                break
 print(ans)
