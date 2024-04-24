@@ -5,8 +5,6 @@ lst=[]
 for _ in range(n):
     lst.append(int(input()))
 
-arr=[0]*n
-
 ans=0
 tmp=[]
 for i in range(n):
@@ -15,5 +13,6 @@ for i in range(n):
             continue
         if lst[i]==lst[j]:
             dis=abs(i-j)
-            tmp.append(lst[i])
+            if lst[i]>=dis:
+                tmp.append(lst[i])
 print(max(tmp))
