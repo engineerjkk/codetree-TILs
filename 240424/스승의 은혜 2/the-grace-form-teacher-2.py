@@ -5,19 +5,22 @@ student=[]
 for _ in range(n):
     student.append(int(input()))
 
-
-
 ans=0
 for i in range(n):
+    tmp=[]
     for j in range(n):
-        for k in range(i,j+1):
-            cash=0
-            for l in range(i,k+1):
-                if l==k:
-                    cash+=(student[l]//2)
-                else:
-                    cash+=student[l]
-
-            if b>=int(cash):
-                ans=max(ans,k-i+1)
+        tmp.append(student[j])
+    if i==j:
+        tmp[j]=tmp[j]/2
+    
+    cnt=0
+    cash=0
+    tmp.sort()
+    for j in range(n):
+        if cash+tmp[j]>b:
+            break
+        cash+=tmp[j]
+        cnt+=1
+    ans=max(ans,cnt)
+        
 print(ans)
