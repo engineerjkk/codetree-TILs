@@ -10,8 +10,9 @@ for i in range(n):
     for j in range(i+1,n):
         if i-j>k:
             break
-        if i==j:
+
+        if bom[i]!=bom[j]:
             continue
-        if bom[i]==bom[j]:
-            ans=max(ans,bom[i])
+
+        ans=max(ans,bom[i])
 print(ans)
