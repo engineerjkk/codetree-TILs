@@ -4,7 +4,7 @@ n,b = map(int,input().split())
 student=[]
 for _ in range(n):
     student.append(int(input()))
-
+ans=0
 for i in range(n):
     tmp=[]
     for j in range(n):
@@ -14,7 +14,6 @@ for i in range(n):
     
     cnt=0
     cash=0
-    ans=0
     tmp.sort()
     for j in range(n):
         if cash+tmp[j]>b:
