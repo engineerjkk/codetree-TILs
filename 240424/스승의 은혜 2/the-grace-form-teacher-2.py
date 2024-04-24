@@ -19,5 +19,5 @@ for i in range(n):
                     cash+=student[l]
 
             if b>=int(cash):
-                ans=max(ans,k+1)
+                ans=max(ans,k-i+1)
 print(ans)
