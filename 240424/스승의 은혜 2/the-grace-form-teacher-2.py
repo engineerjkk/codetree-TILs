@@ -17,6 +17,7 @@ for i in range(n):
                     cash+=student[l]//2
                 else:
                     cash+=student[l]
-            if b>=cash:
+
+            if b>=int(cash):
                 ans=max(ans,k)
 print(ans)
