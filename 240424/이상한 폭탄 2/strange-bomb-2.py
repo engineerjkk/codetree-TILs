@@ -13,8 +13,7 @@ for i in range(n):
     for j in range(n):
         if i==j:
             continue
-        else:
-            if lst[i]==lst[j]:
-                dis=abs(i-j)
-                tmp.append(lst[i])
+        if lst[i]==lst[j]:
+            dis=abs(i-j)
+            tmp.append(lst[i])
 print(max(tmp))
