@@ -12,7 +12,6 @@ for i in range(n):
         if i==j:
             continue
         if lst[i]==lst[j]:
-            dis=abs(i-j)
-            if lst[i]>=dis:
+            if lst[i]>=abs(i-j):
                 ans=max(ans,lst[i])
 print(ans)
