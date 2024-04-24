@@ -12,7 +12,7 @@ for i in range(n):
     for j in range(n):
         for k in range(i,j+1):
             cash=0
-            for l in range(i,k):
+            for l in range(i,k+1):
                 if l==k:
                     cash+=student[l]//2
                 else:
