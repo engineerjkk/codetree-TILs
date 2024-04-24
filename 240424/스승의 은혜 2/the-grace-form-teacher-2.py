@@ -22,4 +22,4 @@ for i in range(n):
         cash+=tmp[j]
         cnt+=1
     ans=max(ans,cnt)
-print(cnt)
+print(ans)
