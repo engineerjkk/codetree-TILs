@@ -14,10 +14,12 @@ for i in range(n):
     
     cnt=0
     cash=0
+    ans=0
     tmp.sort()
     for j in range(n):
         if cash+tmp[j]>b:
             break
         cash+=tmp[j]
         cnt+=1
+    ans=max(ans,cnt)
 print(cnt)
