@@ -9,8 +9,7 @@ for i in range(n):
     tmp=[]
     for j in range(n):
         tmp.append(student[j])
-    if i==j:
-        tmp[j]=tmp[j]/2
+    tmp[i]=tmp[i]/2
     
     cnt=0
     cash=0
