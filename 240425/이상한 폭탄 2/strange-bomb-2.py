@@ -1,16 +1,17 @@
-# import sys
-# input = sys.stdin.readline
-n,k = tuple(map(int,input().split()))
-lst=[]
+import sys
+input = sys.stdin.readline
+n,k=map(int,input().split())
+bom=[]
 for _ in range(n):
-    lst.append(int(input()))
+    bom.append(int(input()))
 
-ans=0
+ans=-1
 for i in range(n):
     for j in range(i+1,n):
-        if j-i>k:
+        if i-j>k:
             break
-        if lst[i] !=lst[j]:
+        if i==j:
             continue
-        ans=max(ans,lst[i])
+        if bom[i]==bom[j]:
+            ans=max(ans,bom[i])
 print(ans)
