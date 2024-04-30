@@ -7,7 +7,7 @@ hour=11
 minute=11
 ans=0
 while True:
-    if a<11 or (a<11 and b<11) or (a<11 and b<11 and c<11):
+    if a<11 or (a<=11 and b<11) or (a<=11 and b<=11 and c<11):
         print(-1)
         exit()
     if day==a and hour==b and minute==c:
