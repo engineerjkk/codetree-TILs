@@ -17,13 +17,12 @@ for i in range(n):
     tmp[i][0]=tmp[i][0]//2
     cash=0
     cnt=0
-    #tmp_price = sorted(tmp, key=lambda x: x[0])
-    tmp.sort()
+    tmp_price = sorted(tmp, key=lambda x: x[0])
     for x in range(n):
-        if cash+tmp[x][0]+tmp[x][1]>b:
+        if cash+tmp_price[x][0]+tmp_price[x][1]>b:
             break
-        cash+=tmp[x][0]
-        cash+=tmp[x][1]
+        cash+=tmp_price[x][0]
+        cash+=tmp_price[x][1]
         cnt+=1
     ans=max(ans,cnt)
 
