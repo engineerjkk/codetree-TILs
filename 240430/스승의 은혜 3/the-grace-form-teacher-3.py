@@ -25,17 +25,16 @@ for i in range(n):
         cash+=tmp[x][0]
         cash+=tmp[x][1]
         cnt+=1
-    if cnt>ans:
-        ans=cnt
+    ans=max(ans,cnt)
 
-    # tmp_cheap = sorted(tmp, key=lambda x: x[1])
-    # cnt=0
-    # cash=0
-    # for x in range(n):
-    #     if cash+tmp_cheap[x][0]+tmp_cheap[x][1]>b:
-    #         break
-    #     cash+=tmp_cheap[x][0]
-    #     cash+=tmp_cheap[x][1]
-    #     cnt+=1
-    # ans=max(ans,cnt)
+    tmp_cheap = sorted(tmp, key=lambda x: x[1])
+    cnt=0
+    cash=0
+    for x in range(n):
+        if cash+tmp_cheap[x][0]+tmp_cheap[x][1]>b:
+            break
+        cash+=tmp_cheap[x][0]
+        cash+=tmp_cheap[x][1]
+        cnt+=1
+    ans=max(ans,cnt)
 print(ans)
