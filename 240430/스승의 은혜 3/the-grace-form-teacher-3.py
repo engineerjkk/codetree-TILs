@@ -20,7 +20,7 @@ for i in range(n):
     tmp.sort()
     tmp_price = sorted(tmp, key=lambda x: x[0])
     for x in range(n):
-        if cash+tmp[x][0]+tmp_price[x][1]>b:
+        if cash+tmp_price[x][0]+tmp_price[x][1]>b:
             break
         cash+=tmp_price[x][0]
         cash+=tmp_price[x][1]
