@@ -44,8 +44,12 @@ for i in range(m):
             pos_B-=1
             cnt_B+=1
             tmp_B[cnt_B]=pos_B
-
+ans=False
 for i in range(1,len(tmp_A)):
     if tmp_A[i]==tmp_B[i]:
-        print(i)
-        exit()
+        ans=True
+        break
+if ans:
+    print(i)
+else:
+    print(-1)
