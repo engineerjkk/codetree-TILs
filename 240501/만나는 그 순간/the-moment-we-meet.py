@@ -1,3 +1,4 @@
+import sys
 n,m=map(int,input().split())
 lst_A=[]
 for _ in range(n):
@@ -6,7 +7,7 @@ for _ in range(n):
 lst_B=[]
 for _ in range(m):
     lst_B.append(list(map(str,input().split())))
-
+MAX=sys.maxsize
 tmp_A=[0]*1000000
 tmp_B=[0]*1000000
 i=0
