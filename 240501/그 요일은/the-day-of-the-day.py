@@ -19,7 +19,7 @@ while True:
         break
     day+=1
     DoW+=1
-    if day>year[month-1]:
+    if day==year[month-1]+1:
         day=1
         month+=1
     if DoW==7:
