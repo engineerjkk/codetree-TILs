@@ -14,7 +14,7 @@ for i in range(k):
         if 0 in tmp[1:]:
             print(num)
             exit()
-
+print(-1)
 
 # 2,5,2,3,5,2,4
 # 2,4,2,3,5,2,3
