@@ -1,5 +1,5 @@
-import sys
-input = sys.stdin.readline
+#import sys
+#input = sys.stdin.readline
 m1,d1,m2,d2=map(int,input().split())
 A=str(input())
 year=[31,29,31,30,31,30,31,31,30,31,30,31]
