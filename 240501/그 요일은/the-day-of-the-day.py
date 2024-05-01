@@ -22,29 +22,7 @@ while True:
     if day>year[month-1]:
         day=1
         month+=1
-    if DoW>6:
+    if DoW==6:
         DoW=0
-    if DayOfWeek[DoW]==A:
-        ans+=1
-
-month=m1
-day=d1
-DoW=0
-ans=0
-if DayOfWeek[DoW]==A:
-    ans+=1
-while True:
-    if month==m2 and day==d2:
-        print(ans)
-        exit()
-    if month==1 and day==1:
-        break
-    day-=1
-    DoW-=1
-    if day<1:
-        month-=1
-        day=year[month-1]
-    if DoW<0:
-        DoW=6
     if DayOfWeek[DoW]==A:
         ans+=1
