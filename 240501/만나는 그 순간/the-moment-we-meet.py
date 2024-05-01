@@ -44,8 +44,9 @@ for i in range(m):
             pos_B-=1
             cnt_B+=1
             tmp_B[cnt_B]=pos_B
+threshold=max(cnt_B,cnt_A)
 ans=False
-for i in range(1,len(tmp_A)):
+for i in range(1,threshold+1):
     if tmp_A[i]==tmp_B[i]:
         ans=True
         break
