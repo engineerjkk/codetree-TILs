@@ -7,8 +7,8 @@ lst_B=[]
 for _ in range(m):
     lst_B.append(list(map(str,input().split())))
 
-tmp_A=[0]*1001
-tmp_B=[0]*1001
+tmp_A=[0]*10000
+tmp_B=[0]*10000
 i=0
 cnt_A=0
 pos_A=0
@@ -44,6 +44,7 @@ for i in range(m):
             pos_B-=1
             cnt_B+=1
             tmp_B[cnt_B]=pos_B
+
 threshold=max(cnt_B,cnt_A)
 ans=False
 for i in range(1,threshold+1):
