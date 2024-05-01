@@ -7,8 +7,8 @@ lst_B=[]
 for _ in range(m):
     lst_B.append(list(map(str,input().split())))
 
-tmp_A=[0]*10000
-tmp_B=[0]*10000
+tmp_A=[0]*1000000
+tmp_B=[0]*1000000
 i=0
 cnt_A=0
 pos_A=0
