@@ -22,7 +22,7 @@ while True:
     if day>year[month-1]:
         day=1
         month+=1
-    if DoW==6:
+    if DoW==7:
         DoW=0
     if DayOfWeek[DoW]==A:
         ans+=1
