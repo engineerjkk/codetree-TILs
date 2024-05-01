@@ -3,7 +3,7 @@ lst=[]
 ans=False
 for _ in range(m):
     lst.append(int(input()))
-tmp=[0]*n+1
+tmp=[0]*(n+1)
 for i in lst:
     tmp.append(i)
 for j,num in enumerate(lst):
