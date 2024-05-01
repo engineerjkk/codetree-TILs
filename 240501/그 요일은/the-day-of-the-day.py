@@ -15,14 +15,12 @@ while True:
     if month==m2 and day==d2:
         print(ans)
         exit()
-    if month==12 and day==31:
-        break
     day+=1
     DoW+=1
-    if day==(year[month-1]+1):
+    if day>year[month-1]:
         day=1
         month+=1
-    if DoW==7:
+    if DoW>6:
         DoW=0
     if DayOfWeek[DoW]==A:
         ans+=1
