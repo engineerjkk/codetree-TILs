@@ -1,5 +1,3 @@
-import sys
-input = sys.stdin.readline
 import copy
 n,m,k = map(int,input().split())
 lst=[]
