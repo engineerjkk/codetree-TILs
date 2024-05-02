@@ -6,7 +6,8 @@ lstB=[]
 for _ in range(m):
     lstB.append(list(map(str,input().split())))
 
-MAX=100001
+MAX=1,000,001
+
 tmpA=[0]*MAX
 tmpB=[0]*MAX
 cntA=0
