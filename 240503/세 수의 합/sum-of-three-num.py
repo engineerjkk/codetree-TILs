@@ -11,7 +11,7 @@ for i in range(n-1):
             continue
         else:
             value = lst[i]+lst[j]
-            diff = k - lst[i] - lst[j]
+            diff = k - value
             if diff in dic:
                 ans+=dic[diff]
             if value in dic:
