@@ -5,8 +5,8 @@ lst=list(map(int,input().split()))
 dic={}
 ans=0
 
-for i in range(n-1):
-    for j in range(i+1,n):
+for i in range(n):
+    for j in range(i,n):
         if i==j:
             continue
         else:
