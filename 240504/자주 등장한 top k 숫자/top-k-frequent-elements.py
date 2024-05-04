@@ -12,17 +12,19 @@ for elem in lst:
 ans_1st=0
 ans_lst=[]
 ans_cnt=[]
-ans=0
+ans_cnt=0
+ans_value=0
+check=0
 for i in range(k):
+    ans_cnt=0
+    ans_value=0
     for j in range(n):
         if lst[j] in count:
-            if count[lst[j]] >= ans:
-                ans=count[lst[j]]
-                ans_1st=lst[j]
-    count.pop(ans_1st,None)
-    ans_cnt.append((ans_1st,ans))
-
-ans_lst = sorted(ans_cnt, key = lambda x : (x[1], x[0]),reverse=True)
+            if count[lst[j]] >= ans_cnt and lst[j] >= ans_value:
+                ans_cnt=count[lst[j]]
+                ans_value=lst[j]
+    count.pop(ans_value,None)
+    ans_lst.append(ans_value)
 
 for i in ans_lst:
-    print(i[0],end=" ")
+    print(i,end=" ")
