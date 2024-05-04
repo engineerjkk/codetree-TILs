@@ -9,43 +9,12 @@ for i in lst:
         count[i]+=1
     else:
         count[i]=1
-sorted(count.items(), key = lambda item: item[1],reverse=True)
-answer={}
-for key, value in count.items():
-    if value in answer:
-        answer[value].append(key)
-    else:
-        answer[value]=[key]
-count={}
-ans_lst=[]
-cnt=0
 
-while True:
-    for key, value in answer.items():
-        tmp_lst=[]
-        for i in value:
-            tmp_lst.append(i)
-        tmp_lst=sorted(tmp_lst,reverse=True)
-        for i in tmp_lst:
-            print(i,end=" ")
-            cnt+=1
-            if cnt==k:
-                exit()
+new_arr=[]
+for key,value in count.items():
+    new_arr.append([value,key])
 
-    
-
-# ans_cnt=0
-# ans_value=0
-# ans_lst=[]
-# for i in range(k):
-#     ans_cnt=0
-#     ans_value=0
-#     for j in lst:
-#         if j in count and j >= ans_cnt and lst[j] >= ans_value:
-#             ans_cnt=count[lst[j]]
-#             ans_value=lst[j]
-#     count.pop(ans_value,None)
-#     ans_lst.append(ans_value)
-
-# for i in ans_lst:
-#     print(i,end=" ")
+new_arr = sorted(new_arr)
+leng=len(new_arr)
+for i in range(leng-1,leng-k-1,-1):
+    print(new_arr[i][1], end=" ")
