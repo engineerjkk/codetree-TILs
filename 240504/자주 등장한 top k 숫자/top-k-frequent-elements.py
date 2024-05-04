@@ -14,7 +14,7 @@ new_arr=[]
 for key,value in count.items():
     new_arr.append([value,key])
 
-new_arr = sorted(new_arr)
+new_arr = sorted(new_arr,reverse=True)
 leng=len(new_arr)
-for i in range(leng-1,leng-k-1,-1):
+for i in range(k):
     print(new_arr[i][1], end=" ")
