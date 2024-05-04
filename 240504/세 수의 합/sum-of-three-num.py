@@ -12,7 +12,7 @@ for elem in lst:
         count[elem]=1
 ans=0
 for i in range(n):
-    count[elem]-=1
+    count[lst[i]]-=1
     for j in range(i):
         diff = k - lst[i] - lst[j]
         if diff in count:
