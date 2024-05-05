@@ -12,6 +12,7 @@ for elem in lst:
     if dic[elem]==1:
         print(elem)
         exit()
+print("None")
 # sorted_dic=sorted(dic.items(),key=lambda x:x[1])
 # if sorted_dic[0][1]!=1:
 #     print("None")
