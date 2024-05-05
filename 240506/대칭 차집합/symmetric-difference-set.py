@@ -10,8 +10,8 @@ set_B=set(B)
 ans=[]
 for i in A:
     if i in set_B:
-        ans.append(i)
+        set_B.remove(i)
 for i in B:
     if i in set_A:
-        ans.append(i)
-print(len(list(set(ans))))
+        set_A.remove(i)
+print(len(set_A)+len(set_B))
