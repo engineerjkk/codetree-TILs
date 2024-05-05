@@ -6,7 +6,7 @@ m=int(input())
 lst_m=list(map(int,input().split()))
 set_n=set(lst_n)
 for i in lst_m:
-    if i in lst_n:
+    if i in set_n:
         print(1)
     else:
         print(0)
