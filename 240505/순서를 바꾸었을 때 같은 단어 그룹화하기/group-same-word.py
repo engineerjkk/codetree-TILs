@@ -16,5 +16,6 @@ for i in lst:
         count[cnt]+=1
     else:
         count[cnt]=1
-count2=sorted(count.items(),reverse=True)
+count2=sorted(count.items(),key=lambda x: x[1],reverse=True)
+#print(count2)
 print(count2[0][1])
