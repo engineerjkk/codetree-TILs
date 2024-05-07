@@ -7,7 +7,7 @@ lst=[]
 for _ in range(n):
     lst.append(list(map(int,input().split())))
 
-sorted(lst)
+lst=sorted(lst)
 MAX=1001
 
 
@@ -15,22 +15,20 @@ comb=[]
 for i in range(n):
     comb.append(i)
 
+arr=[0,0,0,0,1,1,1,1]
 for i in range(n,0,-1):
-    arr=[0]*MAX
     nCr=combinations(comb,i)
-    check=True
+    check=False
     for x in nCr:
+        arr=[0]*MAX
+        #print(x)
         for k in x:
             start=lst[k][0]
             end=lst[k][1]
             for j in range(start,end+1):
                 arr[j]+=1
-                if arr[j]>=2:
-                    check=False
-                    break
-            if check==False:
-                break
-        if check==False:
-            break
-        else:
+        if arr.count(0)+arr.count(1)==len(arr):
+            check=True
+        if check==True:
             print(i)
+            exit()
