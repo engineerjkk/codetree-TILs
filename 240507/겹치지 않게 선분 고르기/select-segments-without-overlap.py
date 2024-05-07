@@ -9,13 +9,14 @@ for _ in range(n):
 
 sorted(lst)
 MAX=1001
-arr=[0]*MAX
+
 
 comb=[]
 for i in range(n):
     comb.append(i)
 
 for i in range(n,0,-1):
+    arr=[0]*MAX
     nCr=combinations(comb,i)
     check=True
     for x in nCr:
@@ -29,6 +30,7 @@ for i in range(n,0,-1):
                     break
             if check==False:
                 break
-            else:
-                print(i)
-                exit()
+        if check==False:
+            break
+        else:
+            print(i)
