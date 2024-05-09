@@ -1,0 +1,28 @@
+import sys
+input = sys.stdin.readline
+import copy
+n,b = map(int,input().split())
+lst=[]
+for _ in range(n):
+    lst.append(list(map(int,input().split())))
+
+ans=0
+for i in range(n):
+    arr=copy.deepcopy(lst)
+    arr=sorted(arr)
+
+    for j in range(n):
+        if i==j:
+            arr[i][0]=arr[i][0]/2
+    cash=0
+    cheap=0
+    cnt=0
+    for j in range(n):
+        if cash+arr[j][0]+cheap+arr[j][1]>b:
+            break
+        else:
+            cash+=arr[j][0]
+            cheap+=arr[j][1]
+            cnt+=1
+    ans=max(ans,cnt)
+print(ans)
