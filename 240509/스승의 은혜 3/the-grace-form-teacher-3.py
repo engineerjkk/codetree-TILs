@@ -12,7 +12,7 @@ for i in range(n):
     cash=0
     cheap=0
     cnt=0
-    arr=sorted(arr)
+    arr=sorted(arr,key=lambda x:(x[0]+x[1]))
     for j in range(n):
         if cash+arr[j][0]+cheap+arr[j][1]>b:
             break
