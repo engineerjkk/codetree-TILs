@@ -8,6 +8,7 @@ for _ in range(n):
 
 ans=0
 for i in range(n):
+    arr=[]
     arr=copy.deepcopy(lst)
     arr[i][0]=arr[i][0]//2
     cash=0
