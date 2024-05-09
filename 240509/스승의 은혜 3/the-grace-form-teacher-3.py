@@ -9,7 +9,6 @@ for _ in range(n):
 ans=0
 for i in range(n):
     arr=copy.deepcopy(lst)
-    arr=sorted(arr)
 
     for j in range(n):
         if i==j:
@@ -17,6 +16,7 @@ for i in range(n):
     cash=0
     cheap=0
     cnt=0
+    arr=sorted(arr)
     for j in range(n):
         if cash+arr[j][0]+cheap+arr[j][1]>b:
             break
