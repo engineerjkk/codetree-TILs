@@ -1,16 +1,17 @@
 import sys
-input = sys.stdin.readline
-from itertools import combinations
-n,s = map(int,input().split())
-lst=list(map(int,input().split()))
+INT_MAX = sys.maxsize
+n,s = tuple(map(int,input().split()))
+arr = list(map(int,input().split()))
+array_sum=0
+ans=INT_MAX
+arr_sum=sum(arr)
 
-nCr = combinations(lst,n-2)
-
-ans=sys.maxsize
-for x in nCr:
-    total=0
-    for i in x:
-        total+=i
-    value=abs(s-total)
-    ans=min(ans,value)
+for i in range(n):
+    for j in range(i+1,n):
+        if i==j:
+            continue
+        else:
+            new_sum=arr_sum-arr[i]-arr[j]
+            diff = abs(new_sum-s)
+            ans=min(ans,diff)
 print(ans)
