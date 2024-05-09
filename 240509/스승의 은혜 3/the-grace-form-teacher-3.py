@@ -9,7 +9,7 @@ for _ in range(n):
 ans=0
 for i in range(n):
     arr=copy.deepcopy(lst)
-
+    arr=sorted(arr,reverse=True)
     for j in range(n):
         if i==j:
             arr[i][0]=arr[i][0]/2
