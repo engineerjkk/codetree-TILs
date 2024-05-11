@@ -5,9 +5,9 @@ lst=[]
 for _ in range(n):
     lst.append(list(map(str,input().split())))
 
-arr=[0]*101
+arr=[0]*1001
 
-current=50
+current=500
 for i in range(n):
     cnt,direction = lst[i]
     cnt=int(cnt)
