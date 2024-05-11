@@ -1,16 +1,15 @@
-import sys
-input = sys.stdin.readline
 n=int(input())
-lst=[]
-for _ in range(n):
-    lst.append(list(map(int,input().split())))
 
-tmp=sorted(lst,key=lambda x:(x[0],-x[1]))
-ans=[]
-for i in range(n):
-    idx=lst.index(tmp[i])
-    ans.append([tmp[i][0],tmp[i][1],idx+1])
-for i in ans:
-    for j in i:
-        print(j,end=" ")
-    print()
+class Student:
+    def __init__(self,height,weight,number):
+        self.height,self.weight,self.number=height,weight,number
+
+students=[]
+for i in range(1,n+1):
+    height,weight=tuple(map(int,input().split()))
+    students.append(Student(height,weight,i))
+
+students.sort(key=lambda x:(x.height,-x.weight))
+
+for student in students:
+    print(student.height,student.weight,student.number)
