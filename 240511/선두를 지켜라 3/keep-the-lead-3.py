@@ -1,3 +1,5 @@
+import sys
+input = sys.stdin.readline
 n,m = map(int,input().split())
 lst_A=[]
 lst_B=[]
@@ -13,18 +15,18 @@ cnt_A=0
 for i in range(n):
     v,t=lst_A[i]
     for j in range(t):
-        dis_A[cnt_A]=dis
         dis+=v
         cnt_A+=1
+        dis_A[cnt_A]=dis
 
 dis=0
 cnt_B=0
 for i in range(m):
     v,t=lst_B[i]
     for j in range(t):
-        dis_B[cnt_B]=dis
         dis+=v
         cnt_B+=1
+        dis_B[cnt_B]=dis
 cnt=max(cnt_A,cnt_B)
 
 ans=0
