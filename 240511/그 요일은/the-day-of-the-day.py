@@ -1,5 +1,3 @@
-import sys
-input = sys.stdin.readline
 m1, d1, m2, d2 = map(int,input().split())
 day=str(input())
 
@@ -29,6 +27,7 @@ for i in range(diff):
     if today == day:
         ans+=1
     cnt+=1
+
     last_month = Month[m1-1]
     d1+=1
     if d1>last_month:
