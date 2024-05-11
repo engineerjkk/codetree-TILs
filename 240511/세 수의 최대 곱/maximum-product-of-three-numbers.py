@@ -6,15 +6,12 @@ ans=-sys.maxsize
 
 tmp=sorted(lst)
 
-check=True
-for i in tmp:
-    if i<0:
-        check=False
+tmp1=1
+tmp2=1
+for i in range(1,4):
+    tmp1*=tmp[-i]
 
-if check == True:
-    ans=tmp[-1]*tmp[-2]*tmp[-3]
-elif check==False:
-    ans=tmp[0]*tmp[1]*tmp[-1]
-    if 0 in tmp:
-        ans=max(ans,0)
-print(ans)
+for i in range(2):
+    tmp2*=tmp[i]
+tmp2*=tmp[-1]
+print(max(tmp1,tmp2))
