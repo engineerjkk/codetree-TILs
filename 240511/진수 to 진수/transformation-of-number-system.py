@@ -3,12 +3,15 @@ input = sys.stdin.readline
 a,b = map(int,input().split())
 value = str(input())
 
-if a ==2:
-    tmp = int('0b'+value,2)
-elif a == 8:
-    tmp = int('0o'+value,8)
+def solution(n, q):
+    rev_base = ''
 
-if b == 2:
-    print(bin(tmp)[2:])
-elif b == 8:
-    print(oct(tmp)[2:])
+    while n > 0:
+        n, mod = divmod(n, q)
+        rev_base += str(mod)
+
+    return rev_base[::-1] 
+    # 역순인 진수를 뒤집어 줘야 원래 변환 하고자하는 base가 출력
+tmp = int(value,a)
+
+print(solution(tmp, b))
