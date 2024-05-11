@@ -41,4 +41,4 @@ for i in range(cnt):
     elif dis_A[i]==dis_B[i] and check!=3:
         check=3
         ans+=1
-print(ans)
+print(ans-1)
