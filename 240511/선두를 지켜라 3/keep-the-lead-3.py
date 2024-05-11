@@ -34,7 +34,7 @@ check=0
 for i in range(cnt):
     if dis_A[i]>dis_B[i] and check!=1:
         check=1
-        ans++1
+        ans+=1
     elif dis_A[i]<dis_B[i] and check!=2:
         check=2
         ans+=1
