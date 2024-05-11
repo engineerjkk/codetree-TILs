@@ -1,5 +1,3 @@
-import sys
-input = sys.stdin.readline
 n,m = map(int,input().split())
 lst_A=[]
 lst_B=[]
