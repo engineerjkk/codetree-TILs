@@ -3,12 +3,12 @@ start=input()
 end=input()
 
 cnt=0
-mismatched=True
+mismatched=False
 
 for i in range(n):
-    if start[i]!=end[i] and mismatched==True :
-        mismatched=False
+    if start[i]!=end[i] and mismatched==False :
+        mismatched=True
         cnt+=1
     else:
-        mismatched=True
+        mismatched=False
 print(cnt)
