@@ -16,6 +16,7 @@ for i in range(n):
         if cnt>4:
             cnt=0
             ans+=1
+            mismatched=False
             
     else:
         mismatched=False
