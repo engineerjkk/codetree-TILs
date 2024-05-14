@@ -24,7 +24,7 @@ for i in range(n):
         cnt=0
         for j in idx_lst:
             start,end=sorted_lst[j]
-            for k in range(start,end):
+            for k in range(start,end+1):
                 arr[j]+=1
                 cnt+=1
         for j in range(cnt):
