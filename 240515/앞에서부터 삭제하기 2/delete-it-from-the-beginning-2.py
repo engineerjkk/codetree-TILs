@@ -8,7 +8,7 @@ ans=0
 
 sum_avg+=lst[n-1]
 pq=[]
-
+heapq.heappush(pq,lst[n-1])
 for i in range(n-2,0,-1):
     heapq.heappush(pq,lst[i])
     sum_avg+=lst[i]
