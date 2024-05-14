@@ -19,4 +19,5 @@ for i in range(n):
             
     else:
         mismatched=False
+        cnt=0
 print(ans)
