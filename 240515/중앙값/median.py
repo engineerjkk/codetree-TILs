@@ -1,27 +1,27 @@
 import heapq
+import sys
+input = sys.stdin.readline
 n=int(input())
-
 for _ in range(n):
     m=int(input())
     lst=list(map(int,input().split()))
-    pq=[]
-    ans=[]
-    heapmax=[]
-    heapmin=[]
+
+    max_heap=[]
+    min_heap=[]
     mid=[]
-    for i in range(m): 
-        if len(heapmax)==len(heapmin):
-            heapq.heappush(heapmax,-lst[i])
+    for i in range(m):
+        if len(max_heap)==len(min_heap):
+            heapq.heappush(max_heap,-lst[i])
         else:
-            heapq.heappush(heapmin,lst[i])
+            heapq.heappush(min_heap,lst[i])
         
-        if heapmin and -heapmax[0]>heapmin[0]:
-            big=-heapq.heappop(heapmax)
-            small=heapq.heappop(heapmin)
-            heapq.heappush(heapmax,-small)
-            heapq.heappush(heapmin,big)
+        if min_heap and -max_heap[0]>min_heap[0]:
+            big=-heapq.heappop(max_heap)
+            small=heapq.heappop(min_heap)
+            heapq.heappush(min_heap,big)
+            heapq.heappush(max_heap,-small)
         if (i+1)%2==1:
-            mid.append(-heapmax[0])
-    for i in range(len(mid)):
-        print(mid[i],end=" ")
+            mid.append(-max_heap[0])
+    for j in range(len(mid)):
+        print(mid[j],end=" ")
     print()
