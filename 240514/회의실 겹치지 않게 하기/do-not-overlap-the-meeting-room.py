@@ -13,7 +13,7 @@ idx_lst=[]
 for i in range(n):
     idx_lst.append(i)
 ans=100001
-for i in range(1,n):
+for i in range(n):
     nCr=combinations(idx_lst,i)
     for x in nCr:
         arr=[0]*100001
