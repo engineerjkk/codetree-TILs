@@ -7,10 +7,9 @@ lst_n = list(map(int,input().split()))
 lst_m = list(map(int,input().split()))
 
 lst=[]
-hq=[]
+pq=[]
 for i in range(n):
     for j in range(m):
-        heapq.heappush(hq,lst_n[i]+lst_m[j])
-for i in range(k-1):
-    heapq.heappop(hq)
-print(hq[0])
+        heapq.heappush(pq,lst_n[i]+lst_m[j])
+#print(pq)
+print(heapq.nsmallest(k,pq)[-1])
