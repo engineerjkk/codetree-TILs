@@ -7,10 +7,7 @@ lst=list(map(int,input().split()))
 
 ans=0
 for i in range(1,n-2):
-    tmp=copy.deepcopy(lst)
-    for j in range(i):
-        tmp.pop(0)
-    pq=copy.deepcopy(tmp)
+    pq=lst[i:]
     heapq.heapify(pq)
     heapq.heappop(pq)
     ans=max(ans,sum(pq)/len(pq))
