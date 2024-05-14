@@ -1,14 +1,14 @@
 import sys
 input = sys.stdin.readline
 import heapq
+import copy
 n = int(input())
 lst=list(map(int,input().split()))
 
 ans=0
 for i in range(1,n-2):
-    pq=[]
-    for j in range(i,n):
-        heapq.heappush(pq,lst[j])
+    pq=copy.deepcopy(lst[i:])
+    heapq.heapify(pq)
     heapq.heappop(pq)
     ans=max(ans,sum(pq)/len(pq))
     # tmp=[]
