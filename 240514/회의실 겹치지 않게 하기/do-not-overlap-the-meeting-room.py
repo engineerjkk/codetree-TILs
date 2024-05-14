@@ -21,12 +21,14 @@ for i in range(n):
         tmp_lst=copy.deepcopy(sorted_lst)
         for j in x:
             idx_lst.remove(j)
+        cnt=0
         for j in idx_lst:
             start,end=sorted_lst[j]
             for k in range(start,end):
                 arr[j]+=1
-        for j in arr:
-            if j>1:
+                cnt+=1
+        for j in range(cnt):
+            if arr[j]>1:
                 check=False
         if check==True:
             ans=min(ans,i)
