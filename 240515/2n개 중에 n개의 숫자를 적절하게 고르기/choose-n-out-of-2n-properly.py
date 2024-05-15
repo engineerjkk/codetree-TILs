@@ -5,13 +5,15 @@ lst=list(map(int,input().split()))
 lst.sort()
 nCr=combinations(lst,len(lst)//2)
 
-lst_a=[]
-lst_b=[]
-for i in range(n):
-    if i%2==0:
-        lst_a.append(lst[i])
-        lst_a.append(lst[2*n-i-1])
-    else:
-        lst_b.append(lst[i])
-        lst_b.append(lst[2*n-i-1])
-print(abs(sum(lst_a)-sum(lst_b)))
+arr=[]
+for x in nCr:
+    arr.append(x)
+dictionary={}
+for i in range(len(arr)//2):
+    dictionary[arr[i]]=arr[len(arr)-i-1]
+
+ans=100000000
+for key,value in dictionary.items():
+    ans2=abs(sum(key)-sum(value))
+    ans=min(ans,ans2)
+print(ans)
