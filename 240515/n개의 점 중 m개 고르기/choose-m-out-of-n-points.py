@@ -14,6 +14,7 @@ final_ans=1000000
 for x in nCr:
     nXr=combinations(x,2)
     for j in nXr:
+        distance=0
         distance=dist(j[0][0],j[1][0],j[0][1],j[1][1])
         ans=max(ans,distance)
     final_ans=min(final_ans,ans)
