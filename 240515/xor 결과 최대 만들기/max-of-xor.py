@@ -7,7 +7,7 @@ lst=list(map(int,input().split()))
 nCr=combinations(lst,m)
 ans=0
 for x in nCr:
-    check=1
+    check=0
     for i in x:
         check^=i
     ans=max(ans,check)
