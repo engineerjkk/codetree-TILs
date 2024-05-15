@@ -17,4 +17,4 @@ for x in nCr:
         distance=dist(j[0][0],j[1][0],j[0][1],j[1][1])
         ans=max(ans,distance)
     final_ans=min(final_ans,ans)
-print(int(final_ans**2))
+print(round(final_ans**2))
