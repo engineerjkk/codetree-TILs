@@ -1,7 +1,5 @@
 import sys
-input = sys.stdin.readline
 from itertools import combinations
-import math
 
 n,m=map(int,input().split())
 lst=[]
