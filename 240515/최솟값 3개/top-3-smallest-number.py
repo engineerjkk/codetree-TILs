@@ -9,12 +9,16 @@ pq=[]
 ans_lst=[]
 for i in range(n):
     heapq.heappush(pq,lst[i])
-    ans=1
-    if len(pq)<=2:
+    if i<2:
         ans_lst.append(-1)
     else:
-        for j in heapq.nsmallest(3,pq):
-            ans*=j
+        tmp=[]
+        ans=1
+        for j in range(3):
+            tmp.append(heapq.heappop(pq))
+        for j in range(3):
+            ans*=tmp[j]
+            heapq.heappush(pq,tmp[j])
         ans_lst.append(ans)
 
 for i in ans_lst:
