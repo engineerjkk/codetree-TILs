@@ -1,5 +1,3 @@
-import sys
-input = sys.stdin.readline
 from itertools import permutations
 n=int(input())
 lst=[]
