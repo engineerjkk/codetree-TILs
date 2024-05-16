@@ -19,7 +19,7 @@ for x in nCr:
     value=0
     for i in range(n):
         r,c=x[i],x[i+1]
-        if r==c:
+        if r==c or lst[r][c]==0:
             value+=sys.maxsize
         else:
             value+=lst[r][c]
