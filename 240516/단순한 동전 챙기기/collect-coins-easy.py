@@ -39,7 +39,4 @@ for k in range(3,len(arr)+1):
         if cnt<3:
             value+=sys.maxsize
         ans=min(ans,value)
-if cnt<3:
-    print(-1)
-else:
-    print(ans)
+print(ans)
