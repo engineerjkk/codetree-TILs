@@ -20,7 +20,8 @@ for i in range(n):
 
 ans=sys.maxsize
 for k in range(3,len(arr)+1):
-    nCr=permutations(arr,k)
+    nCr=list(permutations(arr,k))
+    nCr=sorted(nCr)
     for x in nCr:
         value=abs(start[0][0]-x[0][0])+abs(start[0][1]-x[0][1])
         cnt=1
@@ -37,6 +38,9 @@ for k in range(3,len(arr)+1):
         if cnt<3:
             value+=sys.maxsize
         ans=min(ans,value)
+    if ans<100:
+        print(ans)
+        exit()
 if cnt<3:
     print(-1)
 else:
