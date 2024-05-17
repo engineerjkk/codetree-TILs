@@ -9,12 +9,11 @@ for i in range(1,5):
 
 nCr=product(lst,repeat=n)
 
-i=0
 cnt=0
 for x in nCr:
     check=True
+    i=0
     while i<n:
-        check=True
         if i+x[i]-1>=n:
             check=False
         if check==True:
@@ -22,6 +21,6 @@ for x in nCr:
                 if x[j]!=x[i]:
                     check=False
         i+=x[i]
-        if check==True:
-            cnt+=1
+    if check==True:
+        cnt+=1
 print(cnt)
