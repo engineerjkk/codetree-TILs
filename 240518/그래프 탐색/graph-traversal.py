@@ -19,5 +19,6 @@ for _ in range(m):
     graph[a].append(b)
     graph[b].append(a)
 
+visited[1]=True
 dfs(1)
 print(vertex_cnt)
