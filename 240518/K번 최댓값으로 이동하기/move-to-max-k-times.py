@@ -11,6 +11,7 @@ queue.append((r-1,c-1))
 dr=[-1,0,1,0]
 dc=[0,1,0,-1]
 cnt=0
+tmp_queue=deque()
 while cnt<k:
     if len(queue)==0:
         print(target[1]+1,end=" ")
@@ -19,7 +20,7 @@ while cnt<k:
     else:
         r,c=queue.popleft()
     available=[[False]*n for _ in range(n)]
-    tmp_queue=deque()
+    tmp_queue.clear()
     tmp_queue.append((r,c))
     while tmp_queue:
         tmp_r,tmp_c=tmp_queue.popleft()
