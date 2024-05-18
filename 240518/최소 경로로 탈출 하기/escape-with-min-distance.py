@@ -27,4 +27,7 @@ while queue:
             queue.append((nr,nc,cnt))
 # for i in range(n):
 #     print(visited[i])
-print(visited[-1][-1])
+if visited[-1][-1]==0:
+    print(-1)
+else:
+    print(visited[-1][-1])
