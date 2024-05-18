@@ -21,7 +21,9 @@ def bfs(r,c):
     global cnt
     queue=deque()
     visited=[[False]*(n) for _ in range(n)]
-    visited[r][c]=True
+    if visited[r][c]==False:
+        visited[r][c]=True
+        cnt+=1
     queue.append((r,c))
     while queue:
         r,c=queue.popleft()
