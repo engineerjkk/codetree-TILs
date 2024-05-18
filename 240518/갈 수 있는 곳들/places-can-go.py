@@ -24,7 +24,7 @@ def bfs(r,c):
     if visited[r][c]==False:
         visited[r][c]=True
         cnt+=1
-    queue.append((r,c))
+        queue.append((r,c))
     while queue:
         r,c=queue.popleft()
         for i in range(4):
