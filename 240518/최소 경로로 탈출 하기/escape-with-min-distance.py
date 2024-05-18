@@ -30,10 +30,8 @@ visited[0][0]=0
 # for i in range(n):
 #     print(visited[i])
 
-if n==1 and m==1:
-    print(1)
+
+if visited[-1][-1]==0:
+    print(-1)
 else:
-    if visited[-1][-1]==0:
-        print(-1)
-    else:
-        print(visited[-1][-1])
+    print(visited[-1][-1])
