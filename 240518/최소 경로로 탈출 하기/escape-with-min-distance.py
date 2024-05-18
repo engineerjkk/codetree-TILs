@@ -13,7 +13,8 @@ queue.append((0,0,0))
 dr=[-1,0,1,0]
 dc=[0,1,0,-1]
 
-visited=[[0]*m for _ in range(n)]
+visited=[['*']*m for _ in range(n)]
+visited[0][0]=0
 
 cnt=0
 while queue:
@@ -22,16 +23,15 @@ while queue:
     for i in range(4):
         nr=r+dr[i]
         nc=c+dc[i]
-        if -1<nr<n and -1<nc<n and lst[nr][nc]==1 and visited[nr][nc]==0:
-            visited[nr][nc]=cnt
-            lst[nr][nc]==cnt
-            queue.append((nr,nc,cnt))
-visited[0][0]=0
+        if -1<nr<n and -1<nc<n and lst[nr][nc]==1:
+            if visited[nr][nc]=='*':
+                visited[nr][nc]=cnt
+                queue.append((nr,nc,cnt))
+#visited[0][0]=0
 # for i in range(n):
 #     print(visited[i])
 
-
-if visited[-1][-1]==0:
+if visited[n-1][m-1]==0:
     print(-1)
 else:
-    print(visited[-1][-1])
+    print(visited[n-1][m-1])
