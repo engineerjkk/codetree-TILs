@@ -20,6 +20,7 @@ while cnt<k:
     else:
         r,c=queue.popleft()
     available=[[False]*n for _ in range(n)]
+    available[r][c]=True
     tmp_queue.clear()
     tmp_queue.append((r,c))
     while tmp_queue:
@@ -37,8 +38,8 @@ while cnt<k:
                 tmp.append([lst[i][j],i,j])
     tmp=sorted(tmp,key=lambda x:(x[0],-x[1],-x[2]),reverse=True)
     if len(tmp)==0:
-        print(target[1]+1,end=" ")
-        print(target[2]+1,end=" ")
+        print(r+1,end=" ")
+        print(c+1,end=" ")
         exit()
     else:
         target=tmp[0]
