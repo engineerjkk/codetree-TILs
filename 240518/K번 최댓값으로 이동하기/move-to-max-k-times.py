@@ -36,8 +36,13 @@ while cnt<k:
             if available[i][j]==True:
                 tmp.append([lst[i][j],i,j])
     tmp=sorted(tmp,key=lambda x:(x[0],-x[1],-x[2]),reverse=True)
-    target=tmp[0]
-    queue.append((target[1],target[2]))
-    cnt+=1
+    if len(tmp)==0:
+        print(target[1]+1,end=" ")
+        print(target[2]+1,end=" ")
+        exit()
+    else:
+        target=tmp[0]
+        queue.append((target[1],target[2]))
+        cnt+=1
 print(target[1]+1,end=" ")
 print(target[2]+1,end=" ")
