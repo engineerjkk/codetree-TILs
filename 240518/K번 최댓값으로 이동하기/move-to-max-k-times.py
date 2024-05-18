@@ -33,7 +33,7 @@ while cnt<k:
     tmp=[]
     for i in range(n):
         for j in range(n):
-            if available[i][j]==True:
+            if available[i][j]==True and lst[i][j]<lst[r][c]:
                 tmp.append([lst[i][j],i,j])
     tmp=sorted(tmp,key=lambda x:(x[0],-x[1],-x[2]),reverse=True)
     if len(tmp)==0:
