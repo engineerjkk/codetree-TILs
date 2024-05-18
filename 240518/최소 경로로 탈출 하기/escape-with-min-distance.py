@@ -25,8 +25,10 @@ while queue:
         if -1<nr<n and -1<nc<n and lst[nr][nc]==1 and visited[nr][nc]==0:
             visited[nr][nc]=cnt
             queue.append((nr,nc,cnt))
+visited[0][0]=0
 # for i in range(n):
 #     print(visited[i])
+
 if visited[-1][-1]==0:
     print(-1)
 else:
