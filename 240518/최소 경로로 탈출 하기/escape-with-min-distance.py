@@ -23,15 +23,14 @@ while queue:
     for i in range(4):
         nr=r+dr[i]
         nc=c+dc[i]
-        if -1<nr<n and -1<nc<n and lst[nr][nc]==1:
-            if visited[nr][nc]=='*':
-                visited[nr][nc]=cnt
-                queue.append((nr,nc,cnt))
-#visited[0][0]=0
+        if -1<nr<n and -1<nc<m and lst[nr][nc]==1 and visited[nr][nc]=='*':
+            visited[nr][nc]=cnt
+            queue.append((nr,nc,cnt))
+
 # for i in range(n):
 #     print(visited[i])
 
 if visited[n-1][m-1]=='*':
     print(-1)
 else:
-    print(visited[n-1][m-1])
+    print(visited[-1][-1])
