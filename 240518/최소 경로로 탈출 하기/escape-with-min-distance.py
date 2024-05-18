@@ -15,7 +15,7 @@ dc=[0,1,0,-1]
 
 visited=[[0]*n for _ in range(n)]
 
-cnt=1
+cnt=0
 while queue:
     r,c,cnt = queue.popleft()
     cnt+=1
@@ -30,7 +30,10 @@ visited[0][0]=0
 # for i in range(n):
 #     print(visited[i])
 
-if visited[-1][-1]==0:
-    print(-1)
-else:
+if len(visited)==1:
     print(visited[-1][-1])
+else:
+    if visited[-1][-1]==0:
+        print(-1)
+    else:
+        print(visited[-1][-1])
