@@ -4,10 +4,8 @@ n, k = map(int,input().split())
 lst=[]
 for _ in range(n):
     lst.append(list(map(int,input().split())))
-
 r,c=map(int,input().split())
 
-visited=[False*n for _ in range(n)]
 queue=deque()
 queue.append((r-1,c-1))
 dr=[-1,0,1,0]
@@ -15,12 +13,12 @@ dc=[0,1,0,-1]
 cnt=0
 while cnt<k:
     if len(queue)==0:
-        print((target[1],target[2]))
+        print(target[1]+1,end=" ")
+        print(target[2]+1,end=" ")
         exit()
     else:
         r,c=queue.popleft()
     available=[[False]*n for _ in range(n)]
-    tmp_visited=[[False]*n for _ in range(n)]
     tmp_queue=deque()
     tmp_queue.append((r,c))
     while tmp_queue:
