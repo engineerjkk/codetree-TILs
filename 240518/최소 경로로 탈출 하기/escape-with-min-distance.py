@@ -31,7 +31,7 @@ while queue:
 # for i in range(n):
 #     print(visited[i])
 
-if visited[n-1][m-1]==0:
+if visited[n-1][m-1]=='*':
     print(-1)
 else:
     print(visited[n-1][m-1])
