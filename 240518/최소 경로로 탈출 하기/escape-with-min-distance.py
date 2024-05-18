@@ -13,7 +13,7 @@ queue.append((0,0,0))
 dr=[-1,0,1,0]
 dc=[0,1,0,-1]
 
-visited=[[0]*n for _ in range(n)]
+visited=[[0]*m for _ in range(n)]
 
 cnt=0
 while queue:
