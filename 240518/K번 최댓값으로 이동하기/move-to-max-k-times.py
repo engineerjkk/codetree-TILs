@@ -1,5 +1,3 @@
-import sys
-input = sys.stdin.readline
 from collections import deque
 
 n, k = map(int,input().split())
@@ -41,7 +39,6 @@ while cnt<k:
     tmp=sorted(tmp,key=lambda x:(x[0],-x[1],-x[2]),reverse=True)
     target=tmp[0]
     queue.append((target[1],target[2]))
-    #print(target[1],target[2])
     cnt+=1
 print(target[1]+1,end=" ")
 print(target[2]+1,end=" ")
