@@ -8,11 +8,11 @@ graph=[[] for _ in range(n+1)]
 vertex_cnt=0
 def dfs(vertex):
     global vertex_cnt
-    for node in graph[vertex]:
-        if not visited[node]:
-            visited[node]=True
-            vertex_cnt+=1
-            dfs(vertex)
+    if not visited[vertex]:
+        for node in graph[vertex]:
+                visited[node]=True
+                vertex_cnt+=1
+                dfs(node)
 
 for _ in range(m):
     a,b=tuple(map(int,input().split()))
