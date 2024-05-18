@@ -26,9 +26,9 @@ while queue:
             visited[nr][nc]=cnt
             lst[nr][nc]==cnt
             queue.append((nr,nc,cnt))
-visited[0][0]=0
-# for i in range(n):
-#     print(visited[i])
+visited[0][0]=1
+for i in range(n):
+    print(visited[i])
 
 if n==1 and m==1:
     print(visited[-1][-1])
