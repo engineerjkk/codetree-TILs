@@ -13,6 +13,6 @@ for i in range(n-1,-1,-1):
 ans=0    
 for i in range(n-2):
     if lst[i]+lst[i+1]=='((':
-        ans+=R[i]
+        ans+=R[i+2]
 
 print(ans)
