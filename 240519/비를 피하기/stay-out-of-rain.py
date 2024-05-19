@@ -14,7 +14,7 @@ dc=[0,1,0,-1]
 ans=[[0]*n for _ in range(n)]
 def bfs(a,b):
     visited=[[False]*n for _ in range(n)]
-    tmp=[[0]*n for _ in range(n)]
+    #tmp=[[0]*n for _ in range(n)]
     queue=deque()
     queue.append((a,b,0))
     while queue:
@@ -28,7 +28,7 @@ def bfs(a,b):
             nc=c+dc[i]
             if -1<nr<n and -1<nc<n and lst[nr][nc] != 1 and not visited[nr][nc]:
                 visited[nr][nc]=True
-                tmp[nr][nc]=cnt
+                #tmp[nr][nc]=cnt
                 queue.append((nr,nc,cnt))
     ans[a][b]=-1
     return
