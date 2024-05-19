@@ -30,7 +30,7 @@ def bfs(a,b):
                 visited[nr][nc]=True
                 tmp[nr][nc]=cnt
                 queue.append((nr,nc,cnt))
-    ans[i][j]=-1
+    ans[a][b]=-1
     return
 
 for i in range(n):
