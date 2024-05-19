@@ -40,3 +40,4 @@ for i in range(n):
             if value==1:
                 print(i)
                 exit()
+print(0)
