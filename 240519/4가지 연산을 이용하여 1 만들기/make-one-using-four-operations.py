@@ -20,7 +20,7 @@ def divide(value):
 queue=deque()
 queue.append(n)
 
-for i in range(1,n):
+for i in range(n):
     nCr=product(cal,repeat=i)
     for x in nCr:
         value=n
