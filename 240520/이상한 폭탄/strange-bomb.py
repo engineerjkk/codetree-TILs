@@ -16,6 +16,6 @@ for i in range(n-1,-1,-1):
 
 ans=-1
 for i in range(n):
-    if R[i] !=-1 and i-R[i]<=k:
+    if R[i] !=-1 and i-R[i]<k:
         ans=max(ans,lst[i])
 print(ans)
