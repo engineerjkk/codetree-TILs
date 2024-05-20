@@ -13,9 +13,8 @@ for i in range(n-1,-1,-1):
     else:
         R[i]=latest_index[lst[i]]
     latest_index[lst[i]]=i
-
 ans=-1
 for i in range(n):
-    if R[i] !=-1 and i-R[i]<k:
+    if R[i] !=-1 and R[i]-i<=k:
         ans=max(ans,lst[i])
 print(ans)
