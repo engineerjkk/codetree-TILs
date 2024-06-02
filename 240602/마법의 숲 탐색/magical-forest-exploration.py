@@ -14,12 +14,8 @@ answer=0
 #(y-1,x)에 위치할 때의 범위를 모두 확인한다.
 def canGo(y,x):
     flag = 0<=x-1 and x+1 <C and -1<y-1 and y+1 < R+3
-    flag = flag and (A[y-1][x-1]==0) # 왼쪽 아래에 공간이 있는경우
-    flag = flag and (A[y-1][x]==0) #아래에 공간이있는경우
-    flag = flag and (A[y-1][x+1]==0) #오른쪽 아래에 공간이 있는 경우
-    flag = flag and (A[y][x-1]==0) #왼쪽에 공간이있는경우
-    flag = flag and (A[y][x+1]==0) #오른쪽에 공간이 있는경우
-    flag = flag and (A[y+1][x]==0) #위쪽에 공간이 있는경우
+    flag = flag and (A[y-1][x-1]==0) and (A[y-1][x]==0) and (A[y-1][x+1]==0)# 왼쪽 아래에 공간이 있는경우
+    flag = flag and (A[y][x-1]==0) and (A[y][x+1]==0) and (A[y+1][x]==0)#왼쪽에 공간이있는경우
     return flag
 
 # (y,x)가 숲의 범위 안에 있는지 확인하는 함수
@@ -65,7 +61,7 @@ def down(y,x,d,id):
         down(y+1,x+1,(d+1)%4,id)
     # 1,2,3의 움직임을 모두 취할 수 없을 때
     else:
-        if not inRange(y-1,x-1) or not inRange(y+1,x+1):
+        if not inRange(y-1,x-1) or not inRange(y-1,x+1):
             #숲을 벗어나는 경우 모든 골렘이 숲을 빠져나갑니다.
             resetMap()
         else:
