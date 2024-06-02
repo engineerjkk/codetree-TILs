@@ -20,7 +20,7 @@ def canGo(y,x):
 
 # (y,x)가 숲의 범위 안에 있는지 확인하는 함수
 def inRange(y,x):
-    return 3<=y<R+3 and 0<=x<C
+    return 1<y<R+3 and -1<x<C
 
 # 숲에 있는 골렘들이 모두 빠져나갑니다.
 def resetMap():
