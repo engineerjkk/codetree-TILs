@@ -1,13 +1,5 @@
 from collections import deque
-MAX_L = 70
-R, C, K = 0,0,0
-# 실제 숲을 [3~R+2][0~C-1]로 사용하기위해 행은 3만큼의 크기를 더 갖습니다
-A=[[0]*MAX_L for _ in range(MAX_L+3)]
-dy=[-1,0,1,0]
-dx=[0,1,0,-1]
-# g해당 칸이 골렘의 출구인지 저장한다.
-isExit=[[False]*MAX_L for _ in range(MAX_L +3)]
-answer=0
+
 
 #골렘의 중심이 y,x에 위치할 수 있는지 확인한다.
 #북쪽에서 남쪽으로 내려와야하므로 중심이 (y,x)에 위치할때의 범위와
@@ -20,7 +12,7 @@ def canGo(y,x):
 
 # (y,x)가 숲의 범위 안에 있는지 확인하는 함수
 def inRange(y,x):
-    return 1<y<R+3 and -1<x<C
+    return 2<y<R+3 and -1<x<C
 
 # 숲에 있는 골렘들이 모두 빠져나갑니다.
 def resetMap():
@@ -74,10 +66,25 @@ def down(y,x,d,id):
             global answer
             #bfs를 통해 점령이 최대로 내려갈 수 있는 행을 계산하여 누적한다. 
             answer+=bfs(y,x)-3+1
-
+            
+#MAX_L = 70
+#R, C, K = 0,0,0
+# 실제 숲을 [3~R+2][0~C-1]로 사용하기위해 행은 3만큼의 크기를 더 갖습니다
+# A=[[0]*MAX_L for _ in range(MAX_L+3)]
+# dy=[-1,0,1,0]
+# dx=[0,1,0,-1]
+# # g해당 칸이 골렘의 출구인지 저장한다.
+# isExit=[[False]*MAX_L for _ in range(MAX_L +3)]
+# answer=0
 
 #main
 R,C,K = map(int,input().split())
+A=[[0]*R for _ in range(R+3)]
+dy=[-1,0,1,0]
+dx=[0,1,0,-1]
+# g해당 칸이 골렘의 출구인지 저장한다.
+isExit=[[False]*R for _ in range(R +3)]
+answer=0
 for id in range(1,K+1): #골렘 번호 id
     #골렘의 출발 x좌표, 방향 d를 입력받는다.
     x,d=map(int,input().split())
