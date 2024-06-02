@@ -13,7 +13,7 @@ answer=0
 #북쪽에서 남쪽으로 내려와야하므로 중심이 (y,x)에 위치할때의 범위와
 #(y-1,x)에 위치할 때의 범위를 모두 확인한다.
 def canGo(y,x):
-    flag = 0<=x-1 and x+1 <C and -1<y+1 < R+3
+    flag = 0<=x-1 and x+1 <C and -1<y-1 and y+1 < R+3
     flag = flag and (A[y-1][x-1]==0) # 왼쪽 아래에 공간이 있는경우
     flag = flag and (A[y-1][x]==0) #아래에 공간이있는경우
     flag = flag and (A[y-1][x+1]==0) #오른쪽 아래에 공간이 있는 경우
