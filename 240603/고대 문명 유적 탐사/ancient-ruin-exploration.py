@@ -44,16 +44,19 @@ class Board:
                 if not visit[i][j]:
                     # BFS를 활용한 Flood Fill 알고리즘을 사용하여 visit 배열을 채웁니다.
                     # 이때 trace 안에 조각들의 위치가 저장됩니다.
-                    q, trace = deque([(i, j)]), deque([(i, j)])
+                    queue=deque()
+                    queue.append((i,j))
+                    trace=deque()
+                    trace.append((i,j))
                     visit[i][j] = True
-                    while q:
-                        cur = q.popleft()
+                    while queue:
+                        cur = queue.popleft()
                         for k in range(4):
-                            ny, nx = cur[0] + dy[k], cur[1] + dx[k]
-                            if self.in_range(ny, nx) and self.space[ny][nx] == self.space[cur[0]][cur[1]] and not visit[ny][nx]:
-                                q.append((ny, nx))
-                                trace.append((ny, nx))
-                                visit[ny][nx] = True
+                            nr, nc = cur[0] + dy[k], cur[1] + dx[k]
+                            if self.in_range(nr, nc) and self.space[nr][nc] == self.space[cur[0]][cur[1]] and not visit[nr][nc]:
+                                queue.append((nr, nc))
+                                trace.append((nr, nc))
+                                visit[nr][nc] = True
                     # 위에서 진행된 Flood Fill을 통해 조각들이 모여 유물이 되고 사라지는지 확인힙니다.
                     if len(trace) >= 3:
                         # 유물이 되어 사라지는 경우 가치를 더해주고 조각이 비어있음을 뜻하는 0으로 바꿔줍니다.
@@ -64,12 +67,12 @@ class Board:
         return score
 
     # 유물 획득과정에서 조각이 비어있는 곳에 새로운 조각을 채워줍니다.
-    def fill(self, que):
+    def fill(self, queue):
         # 열이 작고 행이 큰 우선순위로 채워줍니다.
         for j in range(N_large):
             for i in reversed(range(N_large)):
                 if self.space[i][j] == 0:
-                    self.space[i][j] = que.popleft()
+                    self.space[i][j] = queue.popleft()
 
 def main():
     # 입력을 받습니다.
@@ -77,9 +80,9 @@ def main():
     board = Board()
     for i in range(N_large):
         board.space[i] = list(map(int, input().split()))
-    q = deque()
+    queue = deque()
     for t in list(map(int, input().split())):
-        q.append(t)
+        queue.append(t)
 
     # 최대 K번의 탐사과정을 거칩니다.
     for _ in range(K):
@@ -103,7 +106,7 @@ def main():
         board = maxScoreBoard
         # 유물의 연쇄 획득을 위해 유물 조각을 채우고 유물을 획득하는 과정을 더이상 획득할 수 있는 유물이 없을때까지 반복합니다.
         while True:
-            board.fill(q)
+            board.fill(queue)
             newScore = board.cal_score()
             if newScore == 0:
                 break
