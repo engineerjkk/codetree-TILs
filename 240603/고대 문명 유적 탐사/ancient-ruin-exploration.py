@@ -37,7 +37,7 @@ class Board:
     def cal_score(self):
         score = 0
         visit = [[False for _ in range(N_large)] for _ in range(N_large)]
-        dy, dx = [0, 1, 0, -1], [1, 0, -1, 0]
+        dr, dc = [0, 1, 0, -1], [1, 0, -1, 0]
 
         for i in range(N_large):
             for j in range(N_large):
@@ -50,10 +50,10 @@ class Board:
                     trace.append((i,j))
                     visit[i][j] = True
                     while queue:
-                        cur = queue.popleft()
+                        r,c = queue.popleft()
                         for k in range(4):
-                            nr, nc = cur[0] + dy[k], cur[1] + dx[k]
-                            if self.in_range(nr, nc) and self.space[nr][nc] == self.space[cur[0]][cur[1]] and not visit[nr][nc]:
+                            nr, nc = r + dr[k], c + dc[k]
+                            if self.in_range(nr, nc) and self.space[nr][nc] == self.space[r][c] and not visit[nr][nc]:
                                 queue.append((nr, nc))
                                 trace.append((nr, nc))
                                 visit[nr][nc] = True
@@ -62,8 +62,8 @@ class Board:
                         # 유물이 되어 사라지는 경우 가치를 더해주고 조각이 비어있음을 뜻하는 0으로 바꿔줍니다.
                         score += len(trace)
                         while trace:
-                            t = trace.popleft()
-                            self.space[t[0]][t[1]] = 0
+                            r,c = trace.popleft()
+                            self.space[r][c] = 0
         return score
 
     # 유물 획득과정에서 조각이 비어있는 곳에 새로운 조각을 채워줍니다.
