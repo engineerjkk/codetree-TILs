@@ -7,7 +7,7 @@ N_small = 3  # 회전시킬 격자의 크기입니다.
 # 고대 문명 격자를 정의합니다
 class Board:
     def __init__(self):
-        self.a = [[0 for _ in range(N_large)] for _ in range(N_large)]
+        self.space = [[0 for _ in range(N_large)] for _ in range(N_large)]
 
     def in_range(self, y, x):
         # 주어진 y, x가 고대 문명 격자의 범위안에 있는지 확인하는 함수 입니다.
@@ -17,19 +17,19 @@ class Board:
     def rotate(self, sy, sx, cnt):
         result = Board()
         #result.a = [row[:] for row in self.a]
-        result.a=copy.deepcopy(self.a)
+        result.space=copy.deepcopy(self.space)
         for _ in range(cnt):
             # sy, sx를 좌측상단으로 하여 시계방향 90도 회전합니다.
-            tmp = result.a[sy + 0][sx + 2]
-            result.a[sy + 0][sx + 2] = result.a[sy + 0][sx + 0]
-            result.a[sy + 0][sx + 0] = result.a[sy + 2][sx + 0]
-            result.a[sy + 2][sx + 0] = result.a[sy + 2][sx + 2]
-            result.a[sy + 2][sx + 2] = tmp
-            tmp = result.a[sy + 1][sx + 2]
-            result.a[sy + 1][sx + 2] = result.a[sy + 0][sx + 1]
-            result.a[sy + 0][sx + 1] = result.a[sy + 1][sx + 0]
-            result.a[sy + 1][sx + 0] = result.a[sy + 2][sx + 1]
-            result.a[sy + 2][sx + 1] = tmp
+            tmp = result.space[sy + 0][sx + 2]
+            result.space[sy + 0][sx + 2] = result.space[sy + 0][sx + 0]
+            result.space[sy + 0][sx + 0] = result.space[sy + 2][sx + 0]
+            result.space[sy + 2][sx + 0] = result.space[sy + 2][sx + 2]
+            result.space[sy + 2][sx + 2] = tmp
+            tmp = result.space[sy + 1][sx + 2]
+            result.space[sy + 1][sx + 2] = result.space[sy + 0][sx + 1]
+            result.space[sy + 0][sx + 1] = result.space[sy + 1][sx + 0]
+            result.space[sy + 1][sx + 0] = result.space[sy + 2][sx + 1]
+            result.space[sy + 2][sx + 1] = tmp
         return result
 
     # 현재 격자에서 유물을 획득합니다.
@@ -50,7 +50,7 @@ class Board:
                         cur = q.popleft()
                         for k in range(4):
                             ny, nx = cur[0] + dy[k], cur[1] + dx[k]
-                            if self.in_range(ny, nx) and self.a[ny][nx] == self.a[cur[0]][cur[1]] and not visit[ny][nx]:
+                            if self.in_range(ny, nx) and self.space[ny][nx] == self.space[cur[0]][cur[1]] and not visit[ny][nx]:
                                 q.append((ny, nx))
                                 trace.append((ny, nx))
                                 visit[ny][nx] = True
@@ -60,7 +60,7 @@ class Board:
                         score += len(trace)
                         while trace:
                             t = trace.popleft()
-                            self.a[t[0]][t[1]] = 0
+                            self.space[t[0]][t[1]] = 0
         return score
 
     # 유물 획득과정에서 조각이 비어있는 곳에 새로운 조각을 채워줍니다.
@@ -68,15 +68,15 @@ class Board:
         # 열이 작고 행이 큰 우선순위로 채워줍니다.
         for j in range(N_large):
             for i in reversed(range(N_large)):
-                if self.a[i][j] == 0:
-                    self.a[i][j] = que.popleft()
+                if self.space[i][j] == 0:
+                    self.space[i][j] = que.popleft()
 
 def main():
     # 입력을 받습니다.
     K, M = map(int, input().split())
     board = Board()
     for i in range(N_large):
-        board.a[i] = list(map(int, input().split()))
+        board.space[i] = list(map(int, input().split()))
     q = deque()
     for t in list(map(int, input().split())):
         q.append(t)
