@@ -93,8 +93,8 @@ for _ in range(K):
     # (2) 회전한 각도가 가장 작은 방법을 선택
     # (3) 회전 중심 좌표의 열이 가장 작은 구간을, 그리고 열이 같다면 행이 가장 작은 구간을 선택
     for cnt in range(1, 4):
-        for r in range(N_large - N_small + 1):
-            for c in range(N_large - N_small + 1):
+        for c in range(3):
+            for r in range(3):
                 rotated = board.rotate(r, c, cnt)
                 score = rotated.cal_score()
                 if maxScore < score:
