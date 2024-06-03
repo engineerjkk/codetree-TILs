@@ -25,21 +25,22 @@ class Board:
             result.space[r + 0][c + 0] = result.space[r + 2][c + 0]
             result.space[r + 2][c + 0] = result.space[r + 2][c + 2]
             result.space[r + 2][c + 2] = tmp
-            tmp = result.space[r+0][c+1]
-            result.space[r+0][c+1] = result.space[r+1][c+0]
-            result.space[r+1][c+0] = result.space[r+2][c+1]
-            result.space[r+2][c+1] = result.space[r+1][c+2]
-            result.space[r+1][c+2] = tmp
+            tmp = result.space[r + 1][c + 2]
+            result.space[r + 1][c + 2] = result.space[r + 0][c + 1]
+            result.space[r + 0][c + 1] = result.space[r + 1][c + 0]
+            result.space[r + 1][c + 0] = result.space[r + 2][c + 1]
+            result.space[r + 2][c + 1] = tmp
         return result
 
     # 현재 격자에서 유물을 획득합니다.
     # 새로운 유물 조각을 채우는것은 여기서 고려하지 않습니다.
     def cal_score(self):
         score = 0
-        visit = [[False for _ in range(N_large)] for _ in range(N_large)]
-        dr=[0,1,0,-1]
-        dc=[1,0,-1,0]
-
+        visit = [[False]*N_large for _ in range(N_large)]
+        #dr=[0,1,0,-1]
+        #dc=[1,0,-1,0]
+        dr=[1,0,-1,0]
+        dc=[0,-1,0,1]
         for i in range(N_large):
             for j in range(N_large):
                 if not visit[i][j]:
