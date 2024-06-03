@@ -37,7 +37,8 @@ class Board:
     def cal_score(self):
         score = 0
         visit = [[False for _ in range(N_large)] for _ in range(N_large)]
-        dr, dc = [0, 1, 0, -1], [1, 0, -1, 0]
+        dr=[0,1,0,-1]
+        dc=[1,0,-1,0]
 
         for i in range(N_large):
             for j in range(N_large):
@@ -74,45 +75,41 @@ class Board:
                 if self.space[i][j] == 0:
                     self.space[i][j] = queue.popleft()
 
-def main():
-    # 입력을 받습니다.
-    K, M = map(int, input().split())
-    board = Board()
-    for i in range(N_large):
-        board.space[i] = list(map(int, input().split()))
-    queue = deque()
-    for t in list(map(int, input().split())):
-        queue.append(t)
+# 입력을 받습니다.
+K, M = map(int, input().split())
+board = Board()
+for i in range(N_large):
+    board.space[i] = list(map(int, input().split()))
+queue = deque()
+for t in list(map(int, input().split())):
+    queue.append(t)
 
-    # 최대 K번의 탐사과정을 거칩니다.
-    for _ in range(K):
-        maxScore = 0
-        maxScoreBoard = None
-        # 회전 목표에 맞는 결과를 maxScoreBoard에 저장합니다.
-        # (1) 유물 1차 획득 가치를 최대화
-        # (2) 회전한 각도가 가장 작은 방법을 선택
-        # (3) 회전 중심 좌표의 열이 가장 작은 구간을, 그리고 열이 같다면 행이 가장 작은 구간을 선택
-        for cnt in range(1, 4):
-            for sc in range(N_large - N_small + 1):
-                for sr in range(N_large - N_small + 1):
-                    rotated = board.rotate(sr, sc, cnt)
-                    score = rotated.cal_score()
-                    if maxScore < score:
-                        maxScore = score
-                        maxScoreBoard = rotated
-        # 회전을 통해 더 이상 유물을 획득할 수 없는 경우 탐사를 종료합니다.
-        if maxScoreBoard is None:
+# 최대 K번의 탐사과정을 거칩니다.
+for _ in range(K):
+    maxScore = 0
+    maxScoreBoard = None
+    # 회전 목표에 맞는 결과를 maxScoreBoard에 저장합니다.
+    # (1) 유물 1차 획득 가치를 최대화
+    # (2) 회전한 각도가 가장 작은 방법을 선택
+    # (3) 회전 중심 좌표의 열이 가장 작은 구간을, 그리고 열이 같다면 행이 가장 작은 구간을 선택
+    for cnt in range(1, 4):
+        for sc in range(N_large - N_small + 1):
+            for sr in range(N_large - N_small + 1):
+                rotated = board.rotate(sr, sc, cnt)
+                score = rotated.cal_score()
+                if maxScore < score:
+                    maxScore = score
+                    maxScoreBoard = rotated
+    # 회전을 통해 더 이상 유물을 획득할 수 없는 경우 탐사를 종료합니다.
+    if maxScoreBoard is None:
+        break
+    board = maxScoreBoard
+    # 유물의 연쇄 획득을 위해 유물 조각을 채우고 유물을 획득하는 과정을 더이상 획득할 수 있는 유물이 없을때까지 반복합니다.
+    while True:
+        board.fill(queue)
+        newScore = board.cal_score()
+        if newScore == 0:
             break
-        board = maxScoreBoard
-        # 유물의 연쇄 획득을 위해 유물 조각을 채우고 유물을 획득하는 과정을 더이상 획득할 수 있는 유물이 없을때까지 반복합니다.
-        while True:
-            board.fill(queue)
-            newScore = board.cal_score()
-            if newScore == 0:
-                break
-            maxScore += newScore
+        maxScore += newScore
 
-        print(maxScore, end=" ")
-
-if __name__ == '__main__':
-    main()
+    print(maxScore, end=" ")
