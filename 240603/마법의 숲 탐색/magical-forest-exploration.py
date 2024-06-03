@@ -50,8 +50,6 @@ def down(r,c,d,id):
     elif cango(r+1,c+1):
         down(r+1,c+1,(d+1)%4,id)
     else:
-        #if not inrange(r-1,c-1) or not inrange(r-1,c+1) or not inrange(r-1,c) or not inrange(r-2,c):# or not inrange(r-1,c) or not inrange(r+1,c):
-        #    resetMap()
         if (not inrange(r,c-1) and not inrange(r,c+1) and not inrange(r,c) and not inrange(r-1,c)) or not inrange(r-1,c):
             resetMap()
         else:
