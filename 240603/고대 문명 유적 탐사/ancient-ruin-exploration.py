@@ -7,8 +7,8 @@ N_small = 3  # 회전시킬 격자의 크기입니다.
 # 고대 문명 격자를 정의합니다
 class Board:
     def __init__(self):
-        self.space = [[0 for _ in range(N_large)] for _ in range(N_large)]
-
+        #self.space = [[0 for _ in range(N_large)] for _ in range(N_large)]
+        self.space = [[0]*N_large for _ in range(N_large)]
     def in_range(self, y, x):
         # 주어진 y, x가 고대 문명 격자의 범위안에 있는지 확인하는 함수 입니다.
         return 0 <= y < N_large and 0 <= x < N_large
