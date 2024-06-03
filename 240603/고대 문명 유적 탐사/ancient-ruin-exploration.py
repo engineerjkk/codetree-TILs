@@ -9,9 +9,9 @@ class Board:
     def __init__(self):
         #self.space = [[0 for _ in range(N_large)] for _ in range(N_large)]
         self.space = [[0]*N_large for _ in range(N_large)]
-    def in_range(self, y, x):
+    def in_range(self, r, c):
         # 주어진 y, x가 고대 문명 격자의 범위안에 있는지 확인하는 함수 입니다.
-        return 0 <= y < N_large and 0 <= x < N_large
+        return -1< r < N_large and -1< c < N_large
 
     # 현재 격자에서 sy, sx를 좌측상단으로 하여 시계방향 90도 회전을 cnt번 시행했을때 결과를 return 합니다.
     def rotate(self, r, c, cnt):
@@ -92,15 +92,15 @@ for _ in range(K):
     # (1) 유물 1차 획득 가치를 최대화
     # (2) 회전한 각도가 가장 작은 방법을 선택
     # (3) 회전 중심 좌표의 열이 가장 작은 구간을, 그리고 열이 같다면 행이 가장 작은 구간을 선택
-    for cnt in range(1, 4):
-        for c in range(3):
+    for cnt in range(1, 4): #회전을 총 세번까지 할수있으니까 cnt! 회전기 가장 작은거를 우선순위해서 cnt를 먼저한다.
+        for c in range(3):#score가 같다면 열이 가장 작은 구간이니, c를 먼저돈다.
             for r in range(3):
                 rotated = board.rotate(r, c, cnt)
                 score = rotated.cal_score()
                 if maxScore < score:
                     maxScore = score
                     maxScoreBoard = rotated
-    # 회전을 통해 더 이상 유물을 획득할 수 없는 경우 탐사를 종료합니다.
+    # 회전을 통해 더 이상 유물을 획득할 수 없는 경우 탐사를 종료합니다. 다음 턴에 없을경우 종료하는거임
     if maxScoreBoard is None:
         break
     board = maxScoreBoard
