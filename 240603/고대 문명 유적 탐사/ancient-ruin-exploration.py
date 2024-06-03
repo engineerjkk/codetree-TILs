@@ -1,92 +1,115 @@
 from collections import deque
-import sys
-input = sys.stdin.readline
-N_large=5
-N_small=3
 
-class Board:
-    def __init__(self):
-        self.a=[[0 for _ in range(N_large)] for _ in range(N_large)]
-    
-    def in_range(self,y,x):
-        return 0<=y<N_large and 0<=x<N_large
-    
-    def rotate(self,sy,sx,cnt):
-        result=Board()
-        result.a=[row[:] for row in self.a]
-        for _ in range(cnt):
-            # sy,sx를 좌측상단으로하여 시계방향 90도 회전을 cnt번 시행했을때 결과를 return 한다.
-            tmp=result.a[sy+0][sx+2]
-            result.a[sy+0][sx+2]=result.a[sy+0][sx+0]
-            result.a[sy+0][sx+0]=result.a[sy+2][sx+0]
-            result.a[sy+2][sx+0]=result.a[sy+2][sx+2]
-            result.a[sy+2][sx+2]=tmp
-            tmp=result.a[sy+1][sx+2]
-            result.a[sy+1][sx+2]=result.a[sy+0][sx+1]
-            result.a[sy+0][sx+1]=result.a[sy+1][sx+0]
-            result.a[sy+1][sx+0]=result.a[sy+2][sx+1]
-            result.a[sy+2][sx+1]=tmp
-        return result
+def rotate(arr):
+    return [list(matrix[::-1]) for matrix in zip(*arr)]
 
-    def cal_score(self):
-        score=0
-        visit=[[False for _ in range(N_large)] for _ in range(N_large)]
-        dy=[0,1,0,-1]
-        dx=[1,0,-1,0]
-    
+k, m = map(int, input().split())
+field = [list(map(int, input().split())) for _ in range(5)]
+wall_nums = deque(list(map(int, input().split())))
+direc = [(-1, 0), (0, 1), (1, 0), (0, -1)]
 
-        for i in range(N_large):
-            for j in range(N_large):
-                if not visit[i][j]:
-                    q,trace=deque([(i,j)]),deque([(i,j)])
-                    visit[i][j]=True
-                    while q:
-                        cur=q.popleft()
-                        for k in range(4):
-                            ny,nx=cur[0]+dy[k],cur[1]+dx[k]
-                            if self.in_range(ny,nx) and self.a[ny][nx]==self.a[cur[0]][cur[1]] and not visit[ny][nx]:
-                                q.append((ny,nx))
-                                trace.append((ny,nx))
-                                visit[ny][nx]=True
-                    if len(trace)>=3:
-                        score+=len(trace)
-                        while trace:
-                            t=trace.popleft()
-                            self.a[t[0]][t[1]]=0
-        return score
-    def fill(self,que):
-        for j in range(N_large):
-            for i in reversed(range(N_large)):
-                if self.a[i][j]==0:
-                    self.a[i][j]=que.popleft()
+time = 0
+tmp = 0
+while time < k:
+    candits = []
 
+    for i in range(1, 4):
+        for j in range(1, 4):
+            for rot in range(4):
+                sub_arr = [arr[j-1:j+2] for arr in field[i-1:i+2]]
+                sub_arr = rotate(sub_arr)
 
-K,M = map(int,input().split())
-board=Board()
-for i in range(N_large):
-    board.a[i]=list(map(int,input().split()))
-q=deque()
-for t in list(map(int,input().split())):
-    q.append(t)
+                for p in range(3):
+                    for q in range(3):
+                        field[p+i-1][q+j-1] = sub_arr[p][q]
 
-for _ in range(K):
-    maxScore=0
-    maxScoreBoard=None
-    for cnt in range(1,4):
-        for sx in range(N_large-N_small+1):
-            for sy in range(N_large-N_small+1):
-                rotated=board.rotate(sy,sx,cnt)
-                score=rotated.cal_score()
-                if maxScore<score:
-                    maxScore=score
-                    maxScoreBoard=rotated
-    if maxScoreBoard is None:
+                if rot == 3:
+                    continue
+
+                cur_paths = []
+                visit = [[False]*5 for _ in range(5)]
+                for p in range(5):
+                    for q in range(5):
+                        if visit[p][q]:
+                            continue
+                        
+                        path = [(p, q)]
+                        dq = deque([(p, q)])
+                        visit[p][q] = True
+
+                        while dq:
+                            cx, cy = dq.popleft()                            
+                            for dx, dy in direc:
+                                nx, ny = cx+dx, cy+dy
+                                if nx < 0 or nx >= 5 or ny < 0 or ny >= 5:
+                                    continue
+                                if visit[nx][ny] or field[nx][ny] != field[p][q]:
+                                    continue
+                                visit[nx][ny] = True
+                                path.append((nx, ny))
+                                dq.append((nx, ny))
+
+                        if len(path) < 3:
+                            continue
+                        cur_paths.extend(path)
+                candits.append((cur_paths, i, j, rot)) # path, cx, cy, rot
+
+    # select 
+    candits.sort(key=lambda x: (-len(x[0]), x[3], x[2], x[1]))
+    paths, cx, cy, rot = candits[0]
+    if len(paths) == 0:
         break
-    board=maxScoreBoard
+
+    tmp += len(paths)
+
+    # update
+    for _ in range(rot+1):
+        sub_arr = [arr[cy-1:cy+2] for arr in field[cx-1:cx+2]]
+        sub_arr = rotate(sub_arr)
+
+        for p in range(3):
+            for q in range(3):
+                field[p+cx-1][q+cy-1] = sub_arr[p][q]
+    
+    paths.sort(key=lambda x: (x[1], -x[0]))
+    for tx, ty in paths:
+        field[tx][ty] = wall_nums.popleft()
+
+    # check
     while True:
-        board.fill(q)
-        newScore=board.cal_score()
-        if newScore==0:
+        n_paths = []
+        visit = [[False]*5 for _ in range(5)]
+        for p in range(5):
+            for q in range(5):
+                if visit[p][q]:
+                    continue
+
+                paths = [(p, q)]
+                dq = deque([(p, q)])
+                visit[p][q] = True
+                while dq:
+                    cx, cy = dq.popleft()                            
+                    for dx, dy in direc:
+                        nx, ny = cx+dx, cy+dy
+                        if nx < 0 or nx >= 5 or ny < 0 or ny >= 5:
+                            continue
+                        if visit[nx][ny] or field[nx][ny] != field[p][q]:
+                            continue
+                        visit[nx][ny] = True
+                        paths.append((nx, ny))
+                        dq.append((nx, ny))
+
+                if len(paths) >= 3:
+                    n_paths.extend(paths)
+
+        if not n_paths:
             break
-        maxScore+=newScore
-    print(maxScore,end=" ")
+
+        tmp += len(n_paths)
+        n_paths.sort(key=lambda x: (x[1], -x[0]))
+        for tx, ty in n_paths:
+            field[tx][ty] = wall_nums.popleft()
+
+    print(tmp, end=" ")          
+    tmp = 0
+    time += 1
