@@ -3,7 +3,7 @@ import sys
 input = sys.stdin.readline
 import copy
 
-class Board:
+class Board():
     def __init__(self):
         self.space=[[0]*5 for _ in range(5)]
     
@@ -45,23 +45,23 @@ class Board:
                             nr=r+dr[k]
                             nc=c+dc[k]
                             if self.in_range(nr,nc) and self.space[nr][nc]==self.space[r][c] and not visit[nr][nc]:
+                                visit[nr][nc]=True
                                 queue.append((nr,nc))
                                 trace.append((nr,nc))
-                                visit[nr][nc]=True
                     if len(trace)>=3:
                         score+=len(trace)
                         while trace:
                             r,c=trace.popleft()
                             self.space[r][c]=0
         return score
-    
+
     def fill(self,queue):
         for j in range(5):
             for i in reversed(range(5)):
                 if self.space[i][j]==0:
                     self.space[i][j]=queue.popleft()
 
-K,M = map(int,input().split())
+K,M=map(int,input().split())
 board=Board()
 for i in range(5):
     board.space[i]=list(map(int,input().split()))
@@ -80,7 +80,7 @@ for _ in range(K):
                 if maxScore<score:
                     maxScore=score
                     maxScoreBoard=rotated
-    if maxScoreBoard is None:
+    if maxScoreBoard==None:
         break
     board=maxScoreBoard
     while True:
