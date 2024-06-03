@@ -15,11 +15,10 @@ class Board:
     # 현재 격자에서 sy, sx를 좌측상단으로 하여 시계방향 90도 회전을 cnt번 시행했을때 결과를 return 합니다.
     def rotate(self, sr, sc, cnt):
         result = Board()
-        result.space=[]
-        for row in self.space:
-            result.space.append(row[:])
-        #result.space = [row[:] for row in self.space]
-        #result
+        #result.space=[]
+        #for row in self.space:
+        #    result.append(row[:])
+        result.space = [row[:] for row in self.space]
         for _ in range(cnt):
             # sy, sx를 좌측상단으로 하여 시계방향 90도 회전합니다.
             tmp = result.space[sr + 0][sc + 2]
