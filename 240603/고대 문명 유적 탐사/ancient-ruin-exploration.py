@@ -1,115 +1,122 @@
 from collections import deque
 
-def rotate(arr):
-    return [list(matrix[::-1]) for matrix in zip(*arr)]
+N_large = 5  # 고대 문명 전체 격자 크기입니다.
+N_small = 3  # 회전시킬 격자의 크기입니다.
 
-k, m = map(int, input().split())
-field = [list(map(int, input().split())) for _ in range(5)]
-wall_nums = deque(list(map(int, input().split())))
-direc = [(-1, 0), (0, 1), (1, 0), (0, -1)]
+# 고대 문명 격자를 정의합니다
+class Board:
+    def __init__(self):
+        self.space = [[0 for _ in range(N_large)] for _ in range(N_large)]
 
-time = 0
-tmp = 0
-while time < k:
-    candits = []
+    def in_range(self, r, c):
+        # 주어진 y, x가 고대 문명 격자의 범위안에 있는지 확인하는 함수 입니다.
+        return -1< r < N_large and -1< c < N_large
 
-    for i in range(1, 4):
-        for j in range(1, 4):
-            for rot in range(4):
-                sub_arr = [arr[j-1:j+2] for arr in field[i-1:i+2]]
-                sub_arr = rotate(sub_arr)
+    # 현재 격자에서 sy, sx를 좌측상단으로 하여 시계방향 90도 회전을 cnt번 시행했을때 결과를 return 합니다.
+    def rotate(self, sr, sc, cnt):
+        result = Board()
+        result.space=[]
+        for row in self.space:
+            result.space.append(row[:])
+        #result.space = [row[:] for row in self.space]
+        #result
+        for _ in range(cnt):
+            # sy, sx를 좌측상단으로 하여 시계방향 90도 회전합니다.
+            tmp = result.space[sr + 0][sc + 2]
+            result.space[sr + 0][sc + 2] = result.space[sr + 0][sc + 0]
+            result.space[sr + 0][sc + 0] = result.space[sr + 2][sc + 0]
+            result.space[sr + 2][sc + 0] = result.space[sr + 2][sc + 2]
+            result.space[sr + 2][sc + 2] = tmp
+            tmp = result.space[sr + 1][sc + 2]
+            result.space[sr + 1][sc + 2] = result.space[sr + 0][sc + 1]
+            result.space[sr + 0][sc + 1] = result.space[sr + 1][sc + 0]
+            result.space[sr + 1][sc + 0] = result.space[sr + 2][sc + 1]
+            result.space[sr + 2][sc + 1] = tmp
+        return result
 
-                for p in range(3):
-                    for q in range(3):
-                        field[p+i-1][q+j-1] = sub_arr[p][q]
+    # 현재 격자에서 유물을 획득합니다.
+    # 새로운 유물 조각을 채우는것은 여기서 고려하지 않습니다.
+    def cal_score(self):
+        score = 0
+        visit = [[False for _ in range(N_large)] for _ in range(N_large)]
+        dr = [0, 1, 0, -1]
+        dc = [1, 0, -1, 0]
 
-                if rot == 3:
-                    continue
+        for i in range(N_large):
+            for j in range(N_large):
+                if not visit[i][j]:
+                    # BFS를 활용한 Flood Fill 알고리즘을 사용하여 visit 배열을 채웁니다.
+                    # 이때 trace 안에 조각들의 위치가 저장됩니다.
+                    queue = deque()
+                    queue.append((i,j)) 
+                    trace = deque()
+                    trace.append((i,j))
+                    visit[i][j] = True
+                    while queue:
+                        r,c = queue.popleft()
+                        for k in range(4):
+                            nr=r+dr[k]
+                            nc=c+dc[k]
+                            if self.in_range(nr, nc) and self.space[nr][nc] == self.space[r][c] and not visit[nr][nc]:
+                                queue.append((nr, nc))
+                                trace.append((nr, nc))
+                                visit[nr][nc] = True
+                    # 위에서 진행된 Flood Fill을 통해 조각들이 모여 유물이 되고 사라지는지 확인힙니다.
+                    if len(trace) >= 3:
+                        # 유물이 되어 사라지는 경우 가치를 더해주고 조각이 비어있음을 뜻하는 0으로 바꿔줍니다.
+                        score += len(trace)
+                        while trace:
+                            r,c = trace.popleft()
+                            self.space[r][c] = 0
+        return score
 
-                cur_paths = []
-                visit = [[False]*5 for _ in range(5)]
-                for p in range(5):
-                    for q in range(5):
-                        if visit[p][q]:
-                            continue
-                        
-                        path = [(p, q)]
-                        dq = deque([(p, q)])
-                        visit[p][q] = True
+    # 유물 획득과정에서 조각이 비어있는 곳에 새로운 조각을 채워줍니다.
+    def fill(self, queue):
+        # 열이 작고 행이 큰 우선순위로 채워줍니다.
+        for j in range(N_large):
+            for i in reversed(range(N_large)):
+                if self.space[i][j] == 0:
+                    self.space[i][j] = queue.popleft()
 
-                        while dq:
-                            cx, cy = dq.popleft()                            
-                            for dx, dy in direc:
-                                nx, ny = cx+dx, cy+dy
-                                if nx < 0 or nx >= 5 or ny < 0 or ny >= 5:
-                                    continue
-                                if visit[nx][ny] or field[nx][ny] != field[p][q]:
-                                    continue
-                                visit[nx][ny] = True
-                                path.append((nx, ny))
-                                dq.append((nx, ny))
+def main():
+    # 입력을 받습니다.
+    K, M = map(int, input().split())
+    board = Board()
+    for i in range(N_large):
+        board.space[i] = list(map(int, input().split()))
+    queue = deque()
+    for t in list(map(int, input().split())):
+        queue.append(t)
 
-                        if len(path) < 3:
-                            continue
-                        cur_paths.extend(path)
-                candits.append((cur_paths, i, j, rot)) # path, cx, cy, rot
-
-    # select 
-    candits.sort(key=lambda x: (-len(x[0]), x[3], x[2], x[1]))
-    paths, cx, cy, rot = candits[0]
-    if len(paths) == 0:
-        break
-
-    tmp += len(paths)
-
-    # update
-    for _ in range(rot+1):
-        sub_arr = [arr[cy-1:cy+2] for arr in field[cx-1:cx+2]]
-        sub_arr = rotate(sub_arr)
-
-        for p in range(3):
-            for q in range(3):
-                field[p+cx-1][q+cy-1] = sub_arr[p][q]
-    
-    paths.sort(key=lambda x: (x[1], -x[0]))
-    for tx, ty in paths:
-        field[tx][ty] = wall_nums.popleft()
-
-    # check
-    while True:
-        n_paths = []
-        visit = [[False]*5 for _ in range(5)]
-        for p in range(5):
-            for q in range(5):
-                if visit[p][q]:
-                    continue
-
-                paths = [(p, q)]
-                dq = deque([(p, q)])
-                visit[p][q] = True
-                while dq:
-                    cx, cy = dq.popleft()                            
-                    for dx, dy in direc:
-                        nx, ny = cx+dx, cy+dy
-                        if nx < 0 or nx >= 5 or ny < 0 or ny >= 5:
-                            continue
-                        if visit[nx][ny] or field[nx][ny] != field[p][q]:
-                            continue
-                        visit[nx][ny] = True
-                        paths.append((nx, ny))
-                        dq.append((nx, ny))
-
-                if len(paths) >= 3:
-                    n_paths.extend(paths)
-
-        if not n_paths:
+    # 최대 K번의 탐사과정을 거칩니다.
+    for _ in range(K):
+        maxScore = 0
+        maxScoreBoard = None
+        # 회전 목표에 맞는 결과를 maxScoreBoard에 저장합니다.
+        # (1) 유물 1차 획득 가치를 최대화
+        # (2) 회전한 각도가 가장 작은 방법을 선택
+        # (3) 회전 중심 좌표의 열이 가장 작은 구간을, 그리고 열이 같다면 행이 가장 작은 구간을 선택
+        for cnt in range(1, 4):
+            for sr in range(N_large - N_small + 1):
+                for sc in range(N_large - N_small + 1):
+                    rotated = board.rotate(sr, sc, cnt)
+                    score = rotated.cal_score()
+                    if maxScore < score:
+                        maxScore = score
+                        maxScoreBoard = rotated
+        # 회전을 통해 더 이상 유물을 획득할 수 없는 경우 탐사를 종료합니다.
+        if maxScoreBoard is None:
             break
+        board = maxScoreBoard
+        # 유물의 연쇄 획득을 위해 유물 조각을 채우고 유물을 획득하는 과정을 더이상 획득할 수 있는 유물이 없을때까지 반복합니다.
+        while True:
+            board.fill(queue)
+            newScore = board.cal_score()
+            if newScore == 0:
+                break
+            maxScore += newScore
 
-        tmp += len(n_paths)
-        n_paths.sort(key=lambda x: (x[1], -x[0]))
-        for tx, ty in n_paths:
-            field[tx][ty] = wall_nums.popleft()
+        print(maxScore, end=" ")
 
-    print(tmp, end=" ")          
-    tmp = 0
-    time += 1
+if __name__ == '__main__':
+    main()
