@@ -52,7 +52,7 @@ def down(r,c,d,id):
     else:
         #if not inrange(r-1,c-1) or not inrange(r-1,c+1) or not inrange(r-1,c) or not inrange(r-2,c):# or not inrange(r-1,c) or not inrange(r+1,c):
         #    resetMap()
-        if not inrange(r,c-1) or not inrange(r,c+1) or not inrange(r,c) or not inrange(r-1,c):
+        if (not inrange(r,c-1) and not inrange(r,c+1) and not inrange(r,c) and not inrange(r-1,c)) or not inrange(r-1,c):
             resetMap()
         else:
             space[r][c]=id
