@@ -14,22 +14,22 @@ class Board:
         return 0 <= y < N_large and 0 <= x < N_large
 
     # 현재 격자에서 sy, sx를 좌측상단으로 하여 시계방향 90도 회전을 cnt번 시행했을때 결과를 return 합니다.
-    def rotate(self, sr, sc, cnt):
+    def rotate(self, r, c, cnt):
         result = Board()
         #result.a = [row[:] for row in self.a]
         result.space=copy.deepcopy(self.space)
         for _ in range(cnt):
             # sy, sx를 좌측상단으로 하여 시계방향 90도 회전합니다.
-            tmp = result.space[sr + 0][sc + 2]
-            result.space[sr + 0][sc + 2] = result.space[sr + 0][sc + 0]
-            result.space[sr + 0][sc + 0] = result.space[sr + 2][sc + 0]
-            result.space[sr + 2][sc + 0] = result.space[sr + 2][sc + 2]
-            result.space[sr + 2][sc + 2] = tmp
-            tmp = result.space[sr + 1][sc + 2]
-            result.space[sr + 1][sc + 2] = result.space[sr + 0][sc + 1]
-            result.space[sr + 0][sc + 1] = result.space[sr + 1][sc + 0]
-            result.space[sr + 1][sc + 0] = result.space[sr + 2][sc + 1]
-            result.space[sr + 2][sc + 1] = tmp
+            tmp = result.space[r + 0][c + 2]
+            result.space[r + 0][c + 2] = result.space[r + 0][c + 0]
+            result.space[r + 0][c + 0] = result.space[r + 2][c + 0]
+            result.space[r + 2][c + 0] = result.space[r + 2][c + 2]
+            result.space[r + 2][c + 2] = tmp
+            tmp = result.space[r + 1][c + 2]
+            result.space[r + 1][c + 2] = result.space[r + 0][c + 1]
+            result.space[r + 0][c + 1] = result.space[r + 1][c + 0]
+            result.space[r + 1][c + 0] = result.space[r + 2][c + 1]
+            result.space[r + 2][c + 1] = tmp
         return result
 
     # 현재 격자에서 유물을 획득합니다.
