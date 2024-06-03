@@ -1,5 +1,5 @@
 from collections import deque
-
+import copy
 N_large = 5  # 고대 문명 전체 격자 크기입니다.
 N_small = 3  # 회전시킬 격자의 크기입니다.
 
@@ -8,17 +8,17 @@ class Board:
     def __init__(self):
         self.space = [[0 for _ in range(N_large)] for _ in range(N_large)]
 
-    def in_range(self, r, c):
+    #def in_range(self, r, c):
         # 주어진 y, x가 고대 문명 격자의 범위안에 있는지 확인하는 함수 입니다.
-        return -1< r < N_large and -1< c < N_large
+    #    return -1< r < N_large and -1< c < N_large
+    def in_range(self, r, c):
+        return 0 <= r < N_large and 0 <= c < N_large
+
 
     # 현재 격자에서 sy, sx를 좌측상단으로 하여 시계방향 90도 회전을 cnt번 시행했을때 결과를 return 합니다.
     def rotate(self, sr, sc, cnt):
         result = Board()
-        #result.space=[]
-        #for row in self.space:
-        #    result.append(row[:])
-        result.space = [row[:] for row in self.space]
+        result.space=copy.deepcopy(self.space)
         for _ in range(cnt):
             # sy, sx를 좌측상단으로 하여 시계방향 90도 회전합니다.
             tmp = result.space[sr + 0][sc + 2]
