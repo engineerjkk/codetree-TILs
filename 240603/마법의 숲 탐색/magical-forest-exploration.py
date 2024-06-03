@@ -7,6 +7,7 @@ answer=0
 dr=[-1,0,1,0]
 dc=[0,1,0,-1]
 
+
 def inrange(r,c):
     return 2<r<R+3 and -1<c<C
 
@@ -18,9 +19,9 @@ def resetMap():
 
 def cango(r,c):
     flag = -1<r-1 and r+1<R+3 and -1<c-1 and c+1<C
-    flag = flag and space[r-1][c-1]==0  and space[r-1][c+1]==0
-    flag = flag and space[r][c-1]==0 and space[r][c]==0 and space[r][c+1]==0
-    flag = flag and space[r+1][c]==0 and space[r-1][c]==0
+    flag = flag and space[r-1][c-1]==0 and space[r-1][c+1]==0 and space[r-1][c]==0
+    flag = flag and space[r][c-1]==0 and space[r][c] ==0 and space[r][c+1]==0
+    flag = flag and space[r+1][c]==0
     return flag
 
 def bfs(r,c):
@@ -39,6 +40,8 @@ def bfs(r,c):
                 visit[nr][nc]=True
                 result=max(result,nr)
     return result
+
+
 def down(r,c,d,id):
     if cango(r+1,c):
         down(r+1,c,d,id)
@@ -47,7 +50,9 @@ def down(r,c,d,id):
     elif cango(r+1,c+1):
         down(r+1,c+1,(d+1)%4,id)
     else:
-        if not inrange(r-1,c-1) or not inrange(r-1,c+1):
+        #if not inrange(r-1,c-1) or not inrange(r-1,c+1) or not inrange(r-1,c) or not inrange(r-2,c):# or not inrange(r-1,c) or not inrange(r+1,c):
+        #    resetMap()
+        if not inrange(r,c-1) or not inrange(r,c+1) or not inrange(r,c) or not inrange(r-1,c):
             resetMap()
         else:
             space[r][c]=id
@@ -58,7 +63,6 @@ def down(r,c,d,id):
             Exit[r+dr[d]][c+dc[d]]=True
             global answer
             answer+=bfs(r,c)-3+1
-    
 
 R,C,K=map(int,input().split())
 for id in range(1,K+1):
