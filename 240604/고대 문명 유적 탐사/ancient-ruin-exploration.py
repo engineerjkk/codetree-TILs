@@ -39,8 +39,8 @@ class Board:
         visit = [[False]*N_large for _ in range(N_large)]
         #dr=[0,1,0,-1]
         #dc=[1,0,-1,0]
-        dr=[1,0,-1,0]
-        dc=[0,-1,0,1]
+        dr=[-1,0,1,0]
+        dc=[0,1,0,-1]
         for i in range(N_large):
             for j in range(N_large):
                 if not visit[i][j]:
