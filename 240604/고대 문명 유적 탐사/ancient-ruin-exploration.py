@@ -2,40 +2,37 @@ from collections import deque
 import sys
 input = sys.stdin.readline
 import copy
-N_large=5
-N_small=3
 
 class Board:
     def __init__(self):
-        self.space=[[0]*N_large for _ in range(N_large)]
+        self.space=[[0]*5 for _ in range(5)]
     
     def in_range(self,r,c):
-        return -1<r<N_large and -1<c<N_large
+        return -1<r<5 and -1<c<5
     
-    def rotate(self, r, c, cnt):
-        result = Board()
+    def rotate(self,r,c,cnt):
+        result=Board()
         result.space=copy.deepcopy(self.space)
         for _ in range(cnt):
-            # sy, sx를 좌측상단으로 하여 시계방향 90도 회전합니다.
-            tmp = result.space[r + 0][c + 2]
-            result.space[r + 0][c + 2] = result.space[r + 0][c + 0]
-            result.space[r + 0][c + 0] = result.space[r + 2][c + 0]
-            result.space[r + 2][c + 0] = result.space[r + 2][c + 2]
-            result.space[r + 2][c + 2] = tmp
-            tmp = result.space[r + 1][c + 2]
-            result.space[r + 1][c + 2] = result.space[r + 0][c + 1]
-            result.space[r + 0][c + 1] = result.space[r + 1][c + 0]
-            result.space[r + 1][c + 0] = result.space[r + 2][c + 1]
-            result.space[r + 2][c + 1] = tmp
+            tmp=result.space[r+0][c+2]
+            result.space[r+0][c+2] = result.space[r+0][c+0]
+            result.space[r+0][c+0] = result.space[r+2][c+0]
+            result.space[r+2][c+0] = result.space[r+2][c+2]
+            result.space[r+2][c+2] = tmp
+            tmp = result.space[r+1][c+2]
+            result.space[r+1][c+2] = result.space[r+0][c+1]
+            result.space[r+0][c+1] = result.space[r+1][c+0]
+            result.space[r+1][c+0] = result.space[r+2][c+1]
+            result.space[r+2][c+1] = tmp
         return result
-    
+
     def cal_score(self):
         score=0
-        visit=[[False]*N_large for _ in range(N_large)]
+        visit=[[False]*5 for _ in range(5)]
         dr=[-1,0,1,0]
         dc=[0,1,0,-1]
-        for i in range(N_large):
-            for j in range(N_large):
+        for i in range(5):
+            for j in range(5):
                 if not visit[i][j]:
                     queue=deque()
                     queue.append((i,j))
@@ -59,14 +56,14 @@ class Board:
         return score
     
     def fill(self,queue):
-        for j in range(N_large):
-            for i in reversed(range(N_large)):
+        for j in range(5):
+            for i in reversed(range(5)):
                 if self.space[i][j]==0:
                     self.space[i][j]=queue.popleft()
 
 K,M = map(int,input().split())
 board=Board()
-for i in range(N_large):
+for i in range(5):
     board.space[i]=list(map(int,input().split()))
 queue=deque()
 for i in list(map(int,input().split())):
