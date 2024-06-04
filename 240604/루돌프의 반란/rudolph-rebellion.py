@@ -110,10 +110,15 @@ for _ in range(M):
         if status[i]!=-1:
             score[i]+=1
             status[i]=max(0,status[i]-1)
+    check=[]
     for i in range(P):
-        if status[i]!=-1:
-            break
-    else:
+        if status[i]==-1:
+            check.append(True)
+        else:
+            check.append(False)
+    if all(check):
         break
+    else:
+        continue
 
 print(*score)
