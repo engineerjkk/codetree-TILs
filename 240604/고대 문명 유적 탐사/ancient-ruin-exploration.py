@@ -8,7 +8,6 @@ class Board():
         self.space=[[0]*5 for _ in range(5)]
     def in_range(self,r,c):
         return -1<r<5 and -1<c<5
-    
     def rotate(self,r,c,cnt):
         result=Board()
         result.space=copy.deepcopy(self.space)
@@ -24,7 +23,6 @@ class Board():
             result.space[r+1][c+0]=result.space[r+2][c+1]
             result.space[r+2][c+1]=tmp
         return result
-    
     def cal_score(self):
         score=0
         visit=[[False]*5 for _ in range(5)]
@@ -40,10 +38,10 @@ class Board():
                     visit[i][j]=True
                     while queue:
                         r,c=queue.popleft()
-                        for k in range(4):
+                        for k in range(4):        
                             nr=r+dr[k]
                             nc=c+dc[k]
-                            if self.in_range(nr,nc) and not visit[nr][nc] and (self.space[nr][nc]==self.space[r][c]):
+                            if self.in_range(nr,nc) and not visit[nr][nc] and self.space[nr][nc]==self.space[r][c]:
                                 queue.append((nr,nc))
                                 trace.append((nr,nc))
                                 visit[nr][nc]=True
@@ -53,13 +51,11 @@ class Board():
                             r,c=trace.popleft()
                             self.space[r][c]=0
         return score
-    
     def fill(self,queue):
         for j in range(5):
             for i in reversed(range(5)):
                 if self.space[i][j]==0:
                     self.space[i][j]=queue.popleft()
-
 
 
 
@@ -70,6 +66,7 @@ for i in range(5):
 queue=deque()
 for i in list(map(int,input().split())):
     queue.append(i)
+
 for _ in range(K):
     maxScore=0
     maxScoreBoard=None
@@ -84,6 +81,7 @@ for _ in range(K):
     if maxScoreBoard==None or maxScore==0:
         break
     board=maxScoreBoard
+    
     while True:
         board.fill(queue)
         newScore=board.cal_score()
