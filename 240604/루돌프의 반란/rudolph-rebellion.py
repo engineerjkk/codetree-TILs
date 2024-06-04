@@ -21,13 +21,12 @@ def santa_to_rudolf(r1,c1,r2,c2):
     for i in range(4):
         nr=r1+dr[i]
         nc=c1+dc[i]
-        if not in_range(nr,nc) or check_santa(nr,nc)!=-1:
-            continue
-        tmp=((nr-r2)**2)+((nc-c2)**2)
-        if distance>tmp:
-            ret_r=dr[i]
-            ret_c=dc[i]
-            distance=tmp
+        if in_range(nr,nc) and check_santa(nr,nc)==-1:
+            distance2=((nr-r2)**2)+((nc-c2)**2)
+            if distance2<distance:
+                ret_r=dr[i]
+                ret_c=dc[i]
+                distance=distance2
     return ret_r,ret_c
 
 def move_santa(number):
@@ -83,20 +82,20 @@ def rudolf_to_santa(r1,c1,r2,c2):
 def move_rudolf():
     s_info=[0,0,0,sys.maxsize]
     for i in range(P):
-        if status[i]==-1:
-            continue
-        tmp=(rudolf[0]-santas[i][0])**2+(rudolf[1]-santas[i][1])**2
-        if tmp<s_info[3]:
-            s_info=[i,santas[i][0],santas[i][1],tmp]
-        elif tmp==s_info[3]:
-            if s_info[1]<santas[i][0]:
-                s_info=[i,santas[i][0],santas[i][1],tmp]
-            elif s_info[1]==santas[i][0] and s_info[2]<santas[i][1]:
-                s_info=[i,santas[i][0],santas[i][1],tmp]
-    cr,cc=rudolf_to_santa(rudolf[0],rudolf[1],s_info[1],s_info[2])
-    rudolf[0]+=cr
-    rudolf[1]+=cc
-    check_collision(cr,cc,C)
+        if status[i]!=-1:
+            distance=(rudolf[0]-santas[i][0])**2 + (rudolf[1]-santas[i][1])**2
+            if distance<s_info[3]:
+                s_info=[i,santas[i][0],santas[i][1],distance]
+            elif distance==s_info[3]:
+                if s_info[1]<santas[i][0]:
+                    s_info=[i,santas[i][0],santas[i][1],distance]
+                elif s_info[1]==santas[i][0] and s_info[2]<santas[i][1]:
+                    s_info=[i,santas[i][0],santas[i][1],distance]
+    #가장 우선순위가 높은 산타를 향해 8방향 중 가장 가까워지는 방향으로 한칸 돌진
+    move_r,move_c=rudolf_to_santa(rudolf[0],rudolf[1],s_info[1],s_info[2])
+    rudolf[0]+=move_r
+    rudolf[1]+=move_c
+    check_collision(move_r,move_c,C)
     return
 
 for _ in range(M):
