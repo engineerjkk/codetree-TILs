@@ -93,7 +93,7 @@ def move_rudolf():
                 s_info=[i,santas[i][0],santas[i][1],tmp]
             elif s_info[1]==santas[i][0] and s_info[2]<santas[i][1]:
                 s_info=[i,santas[i][0],santas[i][1],tmp]
-    cr,cc=rudolf_to_santa(rudolf[0],rudolf[1],santas[s_info[0]][0],santas[s_info[0]][1])
+    cr,cc=rudolf_to_santa(rudolf[0],rudolf[1],s_info[1],s_info[2])
     rudolf[0]+=cr
     rudolf[1]+=cc
     check_collision(cr,cc,C)
