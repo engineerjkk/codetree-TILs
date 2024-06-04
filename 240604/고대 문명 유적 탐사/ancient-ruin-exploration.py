@@ -80,7 +80,7 @@ for _ in range(K):
                 if maxScore<score:
                     maxScore=score
                     maxScoreBoard=rotated
-    if maxScoreBoard==None:
+    if maxScoreBoard==None or maxScore==0:
         break
     board=maxScoreBoard
     while True:
