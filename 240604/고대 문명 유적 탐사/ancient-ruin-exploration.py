@@ -3,29 +3,28 @@ import sys
 input = sys.stdin.readline
 import copy
 
-class Board():
+
+
+class Board:
     def __init__(self):
         self.space=[[0]*5 for _ in range(5)]
-    
     def in_range(self,r,c):
         return -1<r<5 and -1<c<5
-    
     def rotate(self,r,c,cnt):
         result=Board()
         result.space=copy.deepcopy(self.space)
         for _ in range(cnt):
             tmp=result.space[r+0][c+2]
-            result.space[r+0][c+2] = result.space[r+0][c+0]
-            result.space[r+0][c+0] = result.space[r+2][c+0]
-            result.space[r+2][c+0] = result.space[r+2][c+2]
-            result.space[r+2][c+2] = tmp
-            tmp = result.space[r+1][c+2]
-            result.space[r+1][c+2] = result.space[r+0][c+1]
-            result.space[r+0][c+1] = result.space[r+1][c+0]
-            result.space[r+1][c+0] = result.space[r+2][c+1]
-            result.space[r+2][c+1] = tmp
+            result.space[r+0][c+2]=result.space[r+0][c+0]
+            result.space[r+0][c+0]=result.space[r+2][c+0]
+            result.space[r+2][c+0]=result.space[r+2][c+2]
+            result.space[r+2][c+2]=tmp
+            tmp=result.space[r+1][c+2]
+            result.space[r+1][c+2]=result.space[r+0][c+1]
+            result.space[r+0][c+1]=result.space[r+1][c+0]
+            result.space[r+1][c+0]=result.space[r+2][c+1]
+            result.space[r+2][c+1]=tmp
         return result
-
     def cal_score(self):
         score=0
         visit=[[False]*5 for _ in range(5)]
@@ -44,23 +43,21 @@ class Board():
                         for k in range(4):
                             nr=r+dr[k]
                             nc=c+dc[k]
-                            if self.in_range(nr,nc) and self.space[nr][nc]==self.space[r][c] and not visit[nr][nc]:
-                                visit[nr][nc]=True
+                            if self.in_range(nr,nc) and not visit[nr][nc] and self.space[nr][nc]==self.space[r][c]:
                                 queue.append((nr,nc))
                                 trace.append((nr,nc))
+                                visit[nr][nc]=True
                     if len(trace)>=3:
                         score+=len(trace)
                         while trace:
                             r,c=trace.popleft()
                             self.space[r][c]=0
         return score
-
     def fill(self,queue):
         for j in range(5):
             for i in reversed(range(5)):
                 if self.space[i][j]==0:
                     self.space[i][j]=queue.popleft()
-
 K,M=map(int,input().split())
 board=Board()
 for i in range(5):
@@ -68,7 +65,6 @@ for i in range(5):
 queue=deque()
 for i in list(map(int,input().split())):
     queue.append(i)
-
 for _ in range(K):
     maxScore=0
     maxScoreBoard=None
