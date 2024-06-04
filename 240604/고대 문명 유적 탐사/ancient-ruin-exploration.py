@@ -38,7 +38,7 @@ class Board():
                     visit[i][j]=True
                     while queue:
                         r,c=queue.popleft()
-                        for k in range(4):        
+                        for k in range(4):
                             nr=r+dr[k]
                             nc=c+dc[k]
                             if self.in_range(nr,nc) and not visit[nr][nc] and self.space[nr][nc]==self.space[r][c]:
@@ -56,8 +56,6 @@ class Board():
             for i in reversed(range(5)):
                 if self.space[i][j]==0:
                     self.space[i][j]=queue.popleft()
-
-
 
 K,M=map(int,input().split())
 board=Board()
@@ -81,7 +79,6 @@ for _ in range(K):
     if maxScoreBoard==None or maxScore==0:
         break
     board=maxScoreBoard
-    
     while True:
         board.fill(queue)
         newScore=board.cal_score()
