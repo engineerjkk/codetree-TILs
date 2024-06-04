@@ -74,7 +74,7 @@ def move_rudolf():
     return
 
 def santa_to_rudolf(r1,c1,r2,c2):
-    distance=((r1-r2)**2)+((c2-c1)**2)
+    distance=((r1-r2)**2) +((c1-c2)**2)
     dr=[-1,0,1,0]
     dc=[0,1,0,-1]
     ret_r=0
@@ -89,6 +89,7 @@ def santa_to_rudolf(r1,c1,r2,c2):
                 ret_c=dc[i]
                 distance=distance2
     return ret_r,ret_c
+
 
 def move_santa(i):
     sr,sc=santa_to_rudolf(santas[i][0],santas[i][1],rudolf[0],rudolf[1])
