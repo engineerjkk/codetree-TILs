@@ -66,7 +66,7 @@ def move_rudolf():
                 if santa_info[1]<santas[i][0]:
                     santa_info=[i,santas[i][0],santas[i][1],distance]
                 elif santa_info[1]==santas[i][0] and santa_info[2]<santas[i][1]:
-                    s_insanta_infoto=[i,santas[i][0],santas[i][1],distance]
+                    santa_info=[i,santas[i][0],santas[i][1],distance]
     rr,rc=rudolf_to_santa(rudolf[0],santa_info[1],rudolf[1],santa_info[2])
     rudolf[0]+=rr
     rudolf[1]+=rc
