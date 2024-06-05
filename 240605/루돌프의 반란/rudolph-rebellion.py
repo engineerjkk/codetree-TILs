@@ -1,6 +1,5 @@
 import sys
 input = sys.stdin.readline
-
 N,M,P,C,D=map(int,input().split())
 rudolf=list(map(int,input().split()))
 rudolf[0]-=1
@@ -10,37 +9,38 @@ for _ in range(P):
     n,r,c=map(int,input().split())
     santas[n-1][0]=r-1
     santas[n-1][1]=c-1
-
 score=[0]*P
 status=[0]*P
 
-#틀림, 범위는 N까지지!
-def in_range(r,c):
-    return -1<r<N and -1<c<N
+def rudolf_to_santa(sr,sc,rr,rc):
+    r,c=0,0
+    if (sr-rr)!=0:
+        r=(sr-rr)//abs(sr-rr)
+    if (sc-rc)!=0:
+        c=(sc-rc)//abs(sc-rc)
+    return r,c
 
-#맞음
 def check_santa(r,c):
     for i in range(P):
         if santas[i][0]==r and santas[i][1]==c:
             return i
     return -1
 
-#조금틀림, 연쇄충돌헷갈렸음
+def in_range(r,c):
+    return -1<r<N and -1<c<N
+
 def push_santa(i,rr,rc,C):
     if not in_range(santas[i][0]+rr*C,santas[i][1]+rc*C):
         santas[i][0]+=rr*C
         santas[i][1]+=rc*C
         status[i]=-1
-
     s=check_santa(santas[i][0]+rr*C,santas[i][1]+rc*C)
-    #연쇄충돌의 경우 같은방향로 한칸이다.
     if s!=-1:
         push_santa(s,rr,rc,1)
     santas[i][0]+=rr*C
     santas[i][1]+=rc*C
     return
 
-#맞음
 def check_collision(rr,rc,C):
     for i in range(P):
         if rudolf[0]==santas[i][0] and rudolf[1]==santas[i][1]:
@@ -49,19 +49,9 @@ def check_collision(rr,rc,C):
             if status[i]!=-1:
                 status[i]=2
             break
-    return        
+    return
 
-#맞음
-def rudolf_to_santa(rr,sr,rc,sc):
-    r,c=0,0
-    if sr-rr!=0:
-        r=(sr-rr)//abs(sr-rr)
-    if sc-rc!=0:
-        c=(sc-rc)//abs(sc-rc)
-    return r,c
-
-#조금 틀림, santa_info 주의, 
-def move_rudolf():
+def rudolf_move():
     santa_info=[0,0,0,sys.maxsize]
     for i in range(P):
         if status[i]!=-1:
@@ -73,12 +63,11 @@ def move_rudolf():
                     santa_info=[i,santas[i][0],santas[i][1],distance]
                 elif santa_info[1]==santas[i][0] and santa_info[2]<santas[i][1]:
                     santa_info=[i,santas[i][0],santas[i][1],distance]
-    rr,rc=rudolf_to_santa(rudolf[0],santa_info[1],rudolf[1],santa_info[2])
+    rr,rc=rudolf_to_santa(santa_info[1],santa_info[2],rudolf[0],rudolf[1])
     rudolf[0]+=rr
     rudolf[1]+=rc
     check_collision(rr,rc,C)
     return
-#맞음
 def santa_to_rudolf(sr,sc,rr,rc):
     ret_r=0
     ret_c=0
@@ -89,34 +78,29 @@ def santa_to_rudolf(sr,sc,rr,rc):
         nr=sr+dr[i]
         nc=sc+dc[i]
         if in_range(nr,nc) and check_santa(nr,nc)==-1:
-            distance2=(nr-rr)**2+(nc-rc)**2
+            distance2=(rr-nr)**2+(rc-nc)**2
             if distance2<distance:
                 distance=distance2
                 ret_r=dr[i]
                 ret_c=dc[i]
     return ret_r,ret_c
 
-
-#좀 틀림 오타주의!!
-def move_santa(i):
+def santa_move(i):
     sr,sc=santa_to_rudolf(santas[i][0],santas[i][1],rudolf[0],rudolf[1])
     santas[i][0]+=sr
     santas[i][1]+=sc
-    #이걸몰랐네, 산타가움직여서 루돌프와 충돌한경우
     if santas[i][0]==rudolf[0] and santas[i][1]==rudolf[1]:
         push_santa(i,-sr,-sc,D)
         score[i]+=D
         if status[i]!=-1:
             status[i]=2
     return
-
-
-
+    
 for _ in range(M):
-    move_rudolf()
+    rudolf_move()
     for i in range(P):
         if status[i]==0:
-            move_santa(i)
+            santa_move(i)
     for i in range(P):
         if status[i]!=-1:
             score[i]+=1
