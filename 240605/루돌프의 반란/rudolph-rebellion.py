@@ -14,9 +14,9 @@ status=[0]*P
 
 def rudolf_to_santa(sr,sc,rr,rc):
     r,c=0,0
-    if (sr-rr)!=0:
+    if sr-rr!=0:
         r=(sr-rr)//abs(sr-rr)
-    if (sc-rc)!=0:
+    if sc-rc!=0:
         c=(sc-rc)//abs(sc-rc)
     return r,c
 
@@ -43,7 +43,7 @@ def push_santa(i,rr,rc,C):
 
 def check_collision(rr,rc,C):
     for i in range(P):
-        if rudolf[0]==santas[i][0] and rudolf[1]==santas[i][1]:
+        if santas[i][0]==rudolf[0] and santas[i][1]==rudolf[1]:
             push_santa(i,rr,rc,C)
             score[i]+=C
             if status[i]!=-1:
@@ -51,7 +51,8 @@ def check_collision(rr,rc,C):
             break
     return
 
-def rudolf_move():
+
+def move_rudolf():
     santa_info=[0,0,0,sys.maxsize]
     for i in range(P):
         if status[i]!=-1:
@@ -68,9 +69,9 @@ def rudolf_move():
     rudolf[1]+=rc
     check_collision(rr,rc,C)
     return
+
 def santa_to_rudolf(sr,sc,rr,rc):
-    ret_r=0
-    ret_c=0
+    ret_r,ret_c=0,0
     distance=(sr-rr)**2+(sc-rc)**2
     dr=[-1,0,1,0]
     dc=[0,1,0,-1]
@@ -78,14 +79,14 @@ def santa_to_rudolf(sr,sc,rr,rc):
         nr=sr+dr[i]
         nc=sc+dc[i]
         if in_range(nr,nc) and check_santa(nr,nc)==-1:
-            distance2=(rr-nr)**2+(rc-nc)**2
+            distance2=(nr-rr)**2+(nc-rc)**2
             if distance2<distance:
                 distance=distance2
                 ret_r=dr[i]
                 ret_c=dc[i]
     return ret_r,ret_c
 
-def santa_move(i):
+def move_santa(i):
     sr,sc=santa_to_rudolf(santas[i][0],santas[i][1],rudolf[0],rudolf[1])
     santas[i][0]+=sr
     santas[i][1]+=sc
@@ -95,12 +96,12 @@ def santa_move(i):
         if status[i]!=-1:
             status[i]=2
     return
-    
+
 for _ in range(M):
-    rudolf_move()
+    move_rudolf()
     for i in range(P):
         if status[i]==0:
-            santa_move(i)
+            move_santa(i)
     for i in range(P):
         if status[i]!=-1:
             score[i]+=1
