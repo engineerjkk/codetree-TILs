@@ -41,7 +41,7 @@ def try_movement(idx,d):
                     return False
 
         for i in range(1,N+1):
-            if is_moved[i] or K[i]<=0:
+            if K[i]<=0 or is_moved[i]==True:
                 continue
             if R[i]>nr[r]+H[r]-1 or nr[r]>R[i]+H[i]-1:
                 continue
@@ -55,7 +55,7 @@ def try_movement(idx,d):
 def move_piece(idx,d):
     if K[idx]<=0:
         return
-    if try_movement(idx,d):
+    if try_movement(idx,d):#이거 순서 바꾸는 치명적 실수 ㅠ
         for i in range(1,N+1):
             R[i]=nr[i]
             C[i]=nc[i]
