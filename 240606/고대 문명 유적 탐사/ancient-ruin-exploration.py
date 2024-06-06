@@ -10,16 +10,11 @@ class Board():
         result=Board()
         result.space=copy.deepcopy(self.space)
         for _ in range(cnt):
-            tmp=result.space[r+0][c+2]
-            result.space[r+0][c+2]=result.space[r+0][c+0]
-            result.space[r+0][c+0]=result.space[r+2][c+0]
-            result.space[r+2][c+0]=result.space[r+2][c+2]
-            result.space[r+2][c+2]=tmp
-            tmp=result.space[r+1][c+2]
-            result.space[r+1][c+2]=result.space[r+0][c+1]
-            result.space[r+0][c+1]=result.space[r+1][c+0]
-            result.space[r+1][c+0]=result.space[r+2][c+1]
-            result.space[r+2][c+1]=tmp
+            for i in range(r,r+3):
+                for j in range(c,c+3):
+                    Or,Oc=i-r,j-c
+                    rr,rc=Oc,3-Or-1
+                    result.space[rr+r][rc+c]=self.space[i][j]
         return result
     
     def in_range(self,r,c):
