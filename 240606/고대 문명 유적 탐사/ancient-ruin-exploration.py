@@ -16,7 +16,7 @@ class Board():
                 for j in range(c,c+3):
                     Or,Oc=i-r,j-c
                     rr,rc=Oc,3-Or-1
-                    result2.space[rr+r][rc+c]=self.space[i][j]
+                    result2.space[rr+r][rc+c]=result.space[i][j]
             result.space=copy.deepcopy(result2.space)
         return result
     
