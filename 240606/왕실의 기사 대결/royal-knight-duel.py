@@ -11,7 +11,7 @@ W=[0]*MAX_N
 K=[0]*MAX_N
 nr=[0]*MAX_N
 nc=[0]*MAX_N
-is_moved=[False]*MAX_N
+is_moved=[False]*MAX_N#이거 False인데 0으로했네
 initial_K=[0]*MAX_N
 dmg=[0]*MAX_N
 dr=[-1,0,1,0]
@@ -60,7 +60,6 @@ def move_piece(idx,d):
             R[i]=nr[i]
             C[i]=nc[i]
             K[i]-=dmg[i]
-    return
 
 L,N,Q=map(int,input().split())
 for i in range(1,L+1):
