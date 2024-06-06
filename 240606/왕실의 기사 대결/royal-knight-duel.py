@@ -3,25 +3,27 @@ input = sys.stdin.readline
 from collections import deque
 MAX_L=41
 MAX_N=31
-space=[[0]*MAX_L for _ in range(MAX_L)]
+space=[[0]*MAX_N for _ in range(MAX_N)]
 R=[0]*MAX_N
 C=[0]*MAX_N
 H=[0]*MAX_N
 W=[0]*MAX_N
 K=[0]*MAX_N
+initial_K=[0]*MAX_N
+is_moved=[False]*MAX_N
+dmg=[0]*MAX_N
 nr=[0]*MAX_N
 nc=[0]*MAX_N
-is_moved=[False]*MAX_N#이거 False인데 0으로했네
-initial_K=[0]*MAX_N
-dmg=[0]*MAX_N
 dr=[-1,0,1,0]
 dc=[0,1,0,-1]
+
 def try_movement(idx,d):
     for i in range(1,N+1):
         nr[i]=R[i]
         nc[i]=C[i]
-        is_moved[i]=False
         dmg[i]=0
+        is_moved[i]=False
+    
     queue=deque()
     queue.append(idx)
     is_moved[idx]=True
@@ -29,23 +31,20 @@ def try_movement(idx,d):
         r=queue.popleft()
         nr[r]+=dr[d]
         nc[r]+=dc[d]
-        #뭐야 이런실수를...W를 C라고 하다니
         if nr[r]<1 or nc[r]<1 or nr[r]+H[r]-1>L or nc[r]+W[r]-1>L:
             return False
-        
         for i in range(nr[r],nr[r]+H[r]):
             for j in range(nc[r],nc[r]+W[r]):
                 if space[i][j]==1:
                     dmg[r]+=1
                 if space[i][j]==2:
                     return False
-
         for i in range(1,N+1):
-            if K[i]<=0 or is_moved[i]==True:
+            if is_moved[i]==True or K[i]<=0:
                 continue
             if R[i]>nr[r]+H[r]-1 or nr[r]>R[i]+H[i]-1:
                 continue
-            if C[i]>nc[r]+W[r]-1 or nc[r]>C[i]+W[i]-1:
+            if C[i]>nc[r]+C[r]-1 or nc[r]>C[i]+W[i]-1:
                 continue
             is_moved[i]=True
             queue.append(i)
@@ -55,7 +54,7 @@ def try_movement(idx,d):
 def move_piece(idx,d):
     if K[idx]<=0:
         return
-    if try_movement(idx,d):#이거 순서 바꾸는 치명적 실수 ㅠ
+    if try_movement(idx,d):
         for i in range(1,N+1):
             R[i]=nr[i]
             C[i]=nc[i]
