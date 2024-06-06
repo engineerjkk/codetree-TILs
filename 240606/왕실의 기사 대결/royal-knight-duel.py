@@ -47,10 +47,9 @@ def try_movement(idx,d):
                 continue
             if C[i]>nc[r]+W[r]-1 or nc[r]>C[i]+W[i]-1:
                 continue
-            else:
-                is_moved[i]=True
-                queue.append(i)
-    dmg[idx]=0
+            is_moved[i]=True
+            queue.append(i)
+    dmg[idx]=0#여기 틀렸음 ㅠ idx인데 r이라고 했네
     return True
 
 
