@@ -29,8 +29,8 @@ def try_movement(idx,d):
         r=queue.popleft()
         nr[r]+=dr[d]
         nc[r]+=dc[d]
-
-        if nr[r]<1 or nc[r]<1 or nr[r]+H[r]-1>L or nc[r]+C[r]-1>L:
+        #뭐야 이런실수를...W를 C라고 하다니
+        if nr[r]<1 or nc[r]<1 or nr[r]+H[r]-1>L or nc[r]+W[r]-1>L:
             return False
         
         for i in range(nr[r],nr[r]+H[r]):
