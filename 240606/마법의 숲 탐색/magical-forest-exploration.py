@@ -5,7 +5,6 @@ MAX=70
 R,C,K=0,0,0
 space=[[0]*MAX for _ in range(MAX+3)]
 Exit=[[False]*MAX for _ in range(MAX+3)]
-R,C,K=map(int,input().split())
 answer=0
 dr=[-1,0,1,0]
 dc=[0,1,0,-1]
@@ -64,7 +63,7 @@ def down(r,c,d,id):
             global answer
             answer+=bfs(r,c)-3+1
 
-
+R,C,K=map(int,input().split())
 for id in range(1,K+1):
     c,d=map(int,input().split())
     down(0,c-1,d,id)
