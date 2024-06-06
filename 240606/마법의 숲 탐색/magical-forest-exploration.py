@@ -2,6 +2,7 @@ import sys
 input = sys.stdin.readline
 from collections import deque
 MAX=70
+R,C,K=0,0,0
 space=[[0]*MAX for _ in range(MAX+3)]
 Exit=[[False]*MAX for _ in range(MAX+3)]
 R,C,K=map(int,input().split())
