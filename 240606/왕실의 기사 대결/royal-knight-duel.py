@@ -25,6 +25,7 @@ def try_movement(idx,d):
         is_moved[i]=False
     queue=deque()
     queue.append(idx)
+    is_moved[idx]=True #으아 이거 빼먹음
     while queue:
         r=queue.popleft()
         nr[r]+=dr[d]
