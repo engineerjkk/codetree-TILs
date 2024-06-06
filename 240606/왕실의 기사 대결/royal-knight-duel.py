@@ -3,7 +3,7 @@ input = sys.stdin.readline
 from collections import deque
 MAX_L=41
 MAX_N=31
-space=[[0]*MAX_N for _ in range(MAX_N)]
+space=[[0]*MAX_L for _ in range(MAX_L)]
 R=[0]*MAX_N
 C=[0]*MAX_N
 H=[0]*MAX_N
