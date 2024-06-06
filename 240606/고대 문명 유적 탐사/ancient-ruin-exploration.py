@@ -9,12 +9,15 @@ class Board():
     def rotate(self,r,c,cnt):
         result=Board()
         result.space=copy.deepcopy(self.space)
+        result2=Board()
         for _ in range(cnt):
+            result2.space=copy.deepcopy(result.space)
             for i in range(r,r+3):
                 for j in range(c,c+3):
                     Or,Oc=i-r,j-c
                     rr,rc=Oc,3-Or-1
-                    result.space[rr+r][rc+c]=self.space[i][j]
+                    result2.space[rr+r][rc+c]=self.space[i][j]
+            result.space=copy.deepcopy(result2.space)
         return result
     
     def in_range(self,r,c):
