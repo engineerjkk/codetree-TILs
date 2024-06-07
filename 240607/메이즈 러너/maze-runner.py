@@ -95,7 +95,7 @@ def rotate_traveler_and_exits():
 for _ in range(k):
     move_all_traveler()
     is_all_escaped=True
-    for i in range(m):
+    for i in range(m+1):
         if traveler[i]!=exits:
             is_all_escaped=False
     if is_all_escaped==True:
