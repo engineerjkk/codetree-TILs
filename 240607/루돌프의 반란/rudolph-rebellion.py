@@ -1,6 +1,5 @@
 import sys
 input = sys.stdin.readline
-
 N,M,P,C,D=map(int,input().split())
 rudolf=list(map(int,input().split()))
 rudolf[0]-=1
@@ -35,14 +34,14 @@ def push_santa(i,rr,rc,C):
         santas[i][0]+=rr*C
         santas[i][1]+=rc*C
         status[i]=-1
-    s=check_santa(santas[i][0]+rr*C,santas[i][1]+rc*C)
+    s = check_santa(santas[i][0]+rr*C,santas[i][1]+rc*C)
     if s!=-1:
         push_santa(s,rr,rc,1)
     santas[i][0]+=rr*C
     santas[i][1]+=rc*C
     return
 
-def chech_collision(rr,rc,C):
+def check_collision(rr,rc,C):
     for i in range(P):
         if rudolf[0]==santas[i][0] and rudolf[1]==santas[i][1]:
             push_santa(i,rr,rc,C)
@@ -50,7 +49,7 @@ def chech_collision(rr,rc,C):
             if status[i]!=-1:
                 status[i]=2
             break
-    return
+    return### return tab!!!
 def move_rudolf():
     info_santa=[0,0,0,sys.maxsize]
     for i in range(P):
@@ -60,25 +59,25 @@ def move_rudolf():
                 info_santa=[i,santas[i][0],santas[i][1],distance]
             elif distance==info_santa[3]:
                 if info_santa[1]<santas[i][0]:
-                    info_santa=[i,santas[i][0],santas[i][1],distance]   
+                    info_santa=[i,santas[i][0],santas[i][1],distance]
                 elif info_santa[1]==santas[i][0] and info_santa[2]<santas[i][1]:
                     info_santa=[i,santas[i][0],santas[i][1],distance]
     rr,rc=rudolf_to_santa(info_santa[1],info_santa[2],rudolf[0],rudolf[1])
     rudolf[0]+=rr
     rudolf[1]+=rc
-    chech_collision(rr,rc,C)
+    check_collision(rr,rc,C)
     return
 
 def santa_to_rudolf(sr,sc,rr,rc):
     ret_r,ret_c=0,0
-    distance=(sr-rr)**2 + (sc-rc)**2
     dr=[-1,0,1,0]
     dc=[0,1,0,-1]
+    distance=(sr-rr)**2+(sc-rc)**2
     for i in range(4):
         nr=sr+dr[i]
         nc=sc+dc[i]
         if in_range(nr,nc) and check_santa(nr,nc)==-1:
-            distance2=(nr-rr)**2 + (nc-rc)**2
+            distance2=(nr-rr)**2+(nc-rc)**2
             if distance2<distance:
                 distance=distance2
                 ret_r=dr[i]
