@@ -54,14 +54,15 @@ def chech_collision(rr,rc,C):
 def move_rudolf():
     info_santa=[0,0,0,sys.maxsize]
     for i in range(P):
-        distance=(santas[i][0]-rudolf[0])**2+(santas[i][1]-rudolf[1])**2
-        if distance<info_santa[3]:
-            info_santa=[i,santas[i][0],santas[i][1],distance]
-        elif distance==info_santa[3]:
-            if info_santa[1]<santas[i][0]:
-                info_santa=[i,santas[i][0],santas[i][1],distance]   
-            elif info_santa[1]==santas[i][0] and info_santa[2]<santas[i][1]:
+        if status[i]!=-1:
+            distance=(santas[i][0]-rudolf[0])**2+(santas[i][1]-rudolf[1])**2
+            if distance<info_santa[3]:
                 info_santa=[i,santas[i][0],santas[i][1],distance]
+            elif distance==info_santa[3]:
+                if info_santa[1]<santas[i][0]:
+                    info_santa=[i,santas[i][0],santas[i][1],distance]   
+                elif info_santa[1]==santas[i][0] and info_santa[2]<santas[i][1]:
+                    info_santa=[i,santas[i][0],santas[i][1],distance]
     rr,rc=rudolf_to_santa(info_santa[1],info_santa[2],rudolf[0],rudolf[1])
     rudolf[0]+=rr
     rudolf[1]+=rc
