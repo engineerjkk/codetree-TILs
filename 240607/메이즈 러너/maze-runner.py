@@ -95,10 +95,10 @@ def rotate_traveler_and_exits():
 for _ in range(k):
     move_all_traveler()
     is_all_escaped=True
-    for i in range(m+1):
+    for i in range(1,m+1):
         if traveler[i]!=exits:
             is_all_escaped=False
-    if is_all_escaped==True:
+    if is_all_escaped:
         break
     find_minimum_square()
     rotate_square()
