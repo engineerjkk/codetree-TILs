@@ -14,13 +14,13 @@ ans=0
 sr,sc,square_size=0,0,0
 
 def move_all_traveler():
-    global exits, ans
+    global exits,ans
     for i in range(1,m+1):
         if traveler[i]==exits:
             continue
         tr,tc=traveler[i]
         er,ec=exits
-
+        
         if er!=tr:
             nr,nc=tr,tc
             if er>tr:
@@ -28,8 +28,8 @@ def move_all_traveler():
             else:
                 nr-=1
             if space[nr][nc]==0:
-                traveler[i]=[nr,nc]
                 ans+=1
+                traveler[i]=[nr,nc]
                 continue
         if ec!=tc:
             nr,nc=tr,tc
@@ -38,23 +38,23 @@ def move_all_traveler():
             else:
                 nc-=1
             if space[nr][nc]==0:
-                traveler[i]=[nr,nc]
                 ans+=1
+                traveler[i]=[nr,nc]
                 continue
 
 def find_minimum_square():
-    global exits, sr,sc,square_size
+    global exits,sr,sc,square_size
     er,ec=exits
     for size in range(2,n+1):
         for start_r in range(1,n-size+2):
             for start_c in range(1,n-size+2):
                 end_r,end_c=start_r+size-1,start_c+size-1
-                if not(start_r<=er<=end_r and start_c<=ec<=end_c):
+                if not (start_r<=er<=end_r and start_c<=ec<=end_c):
                     continue
-                is_traveler_in=False
+                is_traveler_in = False
                 for i in range(1,m+1):
                     tr,tc=traveler[i]
-                    if start_r<=tr<=end_r and start_c<=tc<=end_c:
+                    if (start_r<=tr<=end_r and start_c<=tc<=end_c):
                         if not(tr==er and tc==ec):
                             is_traveler_in=True
                 if is_traveler_in:
@@ -75,7 +75,7 @@ def rotate_square():
             next_space[rr+sr][rc+sc]=space[r][c]
     for r in range(sr,sr+square_size):
         for c in range(sc,sc+square_size):
-            space[r][c]=next_space[r][c]   
+            space[r][c]=next_space[r][c]
 
 def rotate_traveler_and_exits():
     global exits
@@ -89,18 +89,19 @@ def rotate_traveler_and_exits():
     if sr<=er<sr+square_size and sc<=ec<sc+square_size:
         Or,Oc=er-sr,ec-sc
         rr,rc=Oc,square_size-Or-1
-        exits=[rr+sr,rc+sc]
+        exits=[sr+rr,sc+rc]
+
 
 for _ in range(k):
     move_all_traveler()
     is_all_escaped=True
-    for i in range(1,m+1):
-        if traveler[i][0]!=exits[0] or traveler[i][1]!=exits[1]:
+    for i in range(m):
+        if traveler[i]!=exits:
             is_all_escaped=False
-    if is_all_escaped:
+    if is_all_escaped==True:
         break
     find_minimum_square()
     rotate_square()
     rotate_traveler_and_exits()
 print(ans)
-print(exits[0],exits[1])
+print(*exits)
