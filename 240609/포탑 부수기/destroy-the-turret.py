@@ -10,13 +10,9 @@ dr=[0,1,0,-1]
 dc=[1,0,-1,0]
 dr2=[0,-1,-1,0,1,1,1,0,-1]
 dc2=[0,0,1,1,1,0,-1,-1,-1]
-#dr2=[0,0,0,-1,-1,-1,1,1,1]
-#dc2=[0,-1,1,0,-1,1,0,-1,1]
 turn=0
 visit=[[0]*m for _ in range(n)]
-back_r=[[0]*m for _ in range(n)]
-back_c=[[0]*m for _ in range(n)]
-back=[[0,0]*m for _ in range(n)]
+back=[[0]*m for _ in range(n)]
 is_active=[[False]*m for _ in range(n)]
 
 class Turrent:
