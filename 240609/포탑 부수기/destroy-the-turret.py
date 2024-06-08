@@ -16,7 +16,7 @@ turn=0
 visit=[[0]*m for _ in range(n)]
 back_r=[[0]*m for _ in range(n)]
 back_c=[[0]*m for _ in range(n)]
-back=[[0]*m for _ in range(n)]
+back=[[0,0]*m for _ in range(n)]
 is_active=[[False]*m for _ in range(n)]
 
 class Turrent:
@@ -71,22 +71,19 @@ def laser_attack():
                 visit[nr][nc]=True
                 #back_r[nr][nc]=r
                 #back_c[nr][nc]=c
-                back[nr][nc]=[r,c]
+                back[nr][nc]=(r,c)
                 queue.append((nr,nc))
     if can_attack:
-        print(1)
         board[er][ec]-=power
         board[er][ec]=max(0,board[er][ec])
         is_active[er][ec]=True
-        #cr,cc=back_r[er][ec],back_c[er][ec]
         cr,cc=back[er][ec]
         while not (cr==sr and cc==sc):
+            print(cr,cc)
             board[cr][cc]-=power//2
             board[cr][cc]=max(0,board[cr][cc])
             is_active[cr][cc]=True
             next_cr,next_cc=back[cr][cc]
-            #next_cr=back_r[cr][cc]
-            #next_cc=back_c[cr][cc]
             cr=next_cr
             cc=next_cc
     return can_attack   
