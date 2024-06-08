@@ -133,10 +133,7 @@ def bomb_attack():
     er, ec = strong_turret.r, strong_turret.c
 
     for dr2, dc2 in zip(drcs2[0], drcs2[1]):  # 폭탄 공격 범위 탐색
-        nr, nc = er + dr2, ec + dc2  # 폭탄 범위 계산
-
-        if not (0 <= nr < n and 0 <= nc < m):  # 격자 범위를 벗어나면
-            continue  # 공격 대상에서 제외
+        nr, nc = (er + dr2 + n) % n, (ec + dc2 + m) % m  # 폭탄 범위 계산 (경계 처리)
 
         if nc == sc and nr == sr:  # 각성한 포탑은 제외
             continue
@@ -146,7 +143,7 @@ def bomb_attack():
         else:  # 주변 포탑
             board[nr][nc] -= power // 2  # 공격력의 절반만큼 피해
 
-        board[nr][nc] = max(0, board[nr][nc])  # 공격력 음수 방지
+        board[nr][nc] = max(0, board[nr][nc])  # 공격력 음수
         is_active[nr][nc] = True  # 공격 참여 표시
 
 
