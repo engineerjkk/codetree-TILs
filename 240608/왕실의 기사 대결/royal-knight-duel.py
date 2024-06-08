@@ -34,7 +34,7 @@ def try_movement(idx,d):
         nc[r]+=dc[d]
         
         if nr[r]<1 or nc[r]<1 or nr[r]+H[r]-1>L or nc[r]+W[r]-1>L:
-            return
+            return False
 
         for i in range(nr[r],nr[r]+H[r]):
             for j in range(nc[r],nc[r]+W[r]):
