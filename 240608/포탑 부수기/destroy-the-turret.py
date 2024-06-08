@@ -6,10 +6,10 @@ board=[]
 for _ in range(n):
     board.append(list(map(int,input().split())))
 recent=[[0]*m for _ in range(n)]
-dr=[0,1,0,-1]
-dc=[1,0,-1,0]
-dr2=[0,0,0,-1,-1,-1,1,1,1]
-dc2=[0,-1,1,0,-1,1,0,-1,1]
+dr=[-1,0,1,0]
+dc=[0,1,0,-1]
+dr2=[0,-1,-1,0,1,1,1,0,-1]
+dc2=[0,0,1,1,1,0,-1,-1,-1]
 turn=0
 visit=[[0]*m for _ in range(n)]
 back_r=[[0]*m for _ in range(n)]
