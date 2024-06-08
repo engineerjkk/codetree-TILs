@@ -76,6 +76,7 @@ def laser_attack():
             board[cr][cc]-=power//2
             board[cr][cc]=max(0,board[cr][cc])
             cr,cc=back[cr][cc]
+            is_active[cr][cc]=True
     return can_attack
 
 def bomb_attack():
