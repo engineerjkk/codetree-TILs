@@ -37,16 +37,16 @@ def try_movement(idx,d):
         for i in range(nr[r],nr[r]+H[r]):
             for j in range(nc[r],nc[r]+W[r]):
                 if space[i][j]==1:
-                    dmg[i]+=1
+                    dmg[r]+=1
                 if space[i][j]==2:
                     return False
         
         for i in range(1,N+1):
             if is_moved[i] or K[i]<=0:
                 continue
-            if R[i]>nr[r]+H[r] or nr[r]>R[i]+H[i]:
+            if R[i]>nr[r]+H[r]-1 or nr[r]>R[i]+H[i]-1:
                 continue
-            if C[i]>nc[r]+C[r] or nc[r]>C[i]+W[i]:
+            if C[i]>nc[r]+C[r]-1 or nc[r]>C[i]+W[i]-1:
                 continue
             is_moved[i]=True
             queue.append(i)
@@ -71,8 +71,8 @@ for i in range(1,N+1):
     R[i],C[i],H[i],W[i],K[i]=map(int,input().split())
     initial_K[i]=K[i]
 for _ in range(Q):
-    id,d=map(int,input().split())
-    move_piece(id,d)
+    idx,d=map(int,input().split())
+    move_piece(idx,d)
 ans=0
 for i in range(1,N+1):
     if K[i]>0:
