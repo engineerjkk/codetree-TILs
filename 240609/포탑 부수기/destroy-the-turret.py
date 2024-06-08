@@ -8,8 +8,8 @@ for _ in range(n):
 recent=[[0]*m for _ in range(n)]
 dr=[0,1,0,-1]
 dc=[1,0,-1,0]
-dr2=[0,-1,-1,0,1,1,1,0,-1]
-dc2=[0,0,1,1,1,0,-1,-1,-1]
+dr2=[-1,-1,0,1,1,1,0,-1]
+dc2=[0,1,1,1,0,-1,-1,-1]
 turn=0
 visit=[[0]*m for _ in range(n)]
 back=[[0]*m for _ in range(n)]
@@ -86,17 +86,16 @@ def bomb_attack():
     sr,sc,power=weak_turret.r,weak_turret.c,weak_turret.power
     strong_turret=live_turret[-1]
     er,ec=strong_turret.r,strong_turret.c
-
-    for i in range(9):
+    board[er][ec]-=power
+    board[er][ec]=max(0,board[er][ec])
+    is_active[er][ec]=True
+    for i in range(8):
         nr=(er+dr2[i]+n)%n
         nc=(ec+dc2[i]+m)%m
         if not(nr==sr and nc==sc):
-            if nr==er and nc==ec:
-                board[nr][nc]-=power
-            else:
-                board[nr][nc]-=power//2
-            board[nr][nc]=max(0,board[nr][nc])
-            is_active[nr][nc]=True
+            board[nr][nc]-=power//2
+        board[nr][nc]=max(0,board[nr][nc])
+        is_active[nr][nc]=True
 
 def reserve():
     for i in range(n):
