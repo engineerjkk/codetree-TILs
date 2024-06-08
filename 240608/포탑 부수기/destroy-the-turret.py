@@ -174,7 +174,7 @@ def bomb_attack():
             continue
 
         # 가장 강한 포탑일 경우 pow만큼의 공격을 진행합니다.
-        if nc == ec and nr == ey:
+        if nc == ec and nr == er:
             board[nc][nr] -= power
             if board[nc][nr] < 0: 
                 board[nc][nr] = 0
