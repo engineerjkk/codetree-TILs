@@ -76,7 +76,9 @@ def laser_attack():
         is_active[er][ec]=True
         cr=back_r[er][ec]
         cc=back_c[er][ec]
-        while not (cr==sr and cc==sc):
+        while True:
+            if cr==sr and cc==sc:
+                break
             board[cr][cc]-=power//2
             board[cr][cc]=max(0,board[cr][cc])
             is_active[cr][cc]=True
