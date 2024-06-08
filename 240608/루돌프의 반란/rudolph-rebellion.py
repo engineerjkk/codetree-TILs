@@ -56,14 +56,15 @@ def check_collision(rr,rc,C):
 def move_rudolf():
     santa_info=[0,0,0,sys.maxsize]
     for i in range(P):
-        distance=(santas[i][0]-rudolf[0])**2+(santas[i][1]-rudolf[1])**2
-        if distance<santa_info[3]:
-            santa_info=[i,santas[i][0],santas[i][1],distance]
-        elif distance==santa_info[3]:
-            if santa_info[1]<santas[i][0]:
+        if status[i]!=-1:
+            distance=(santas[i][0]-rudolf[0])**2+(santas[i][1]-rudolf[1])**2
+            if distance<santa_info[3]:
                 santa_info=[i,santas[i][0],santas[i][1],distance]
-            elif santa_info[1]==santas[i][0] and santa_info[2]<santas[i][1]:
-                santa_info=[i,santas[i][0],santas[i][1],distance]
+            elif distance==santa_info[3]:
+                if santa_info[1]<santas[i][0]:
+                    santa_info=[i,santas[i][0],santas[i][1],distance]
+                elif santa_info[1]==santas[i][0] and santa_info[2]<santas[i][1]:
+                    santa_info=[i,santas[i][0],santas[i][1],distance]
     rr,rc=rudolf_to_santa(santa_info[1],santa_info[2],rudolf[0],rudolf[1])
     rudolf[0]+=rr
     rudolf[1]+=rc
