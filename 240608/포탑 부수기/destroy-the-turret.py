@@ -1,235 +1,190 @@
+'''
+
+가장 약한 포탑과 가장 강한 포탑 선정: 특정 조건에 따라 포탑을 정렬하여 선정합니다.
+레이저 공격: BFS를 이용하여 최단 경로를 찾고, 경로 상의 포탑에 피해를 입힙니다.
+포탄 공격: 지정된 범위의 포탑에 피해를 입힙니다.
+포탑 정비: 공격에 참여하지 않은 포탑의 공격력을 증가시킵니다.
+'''
 from collections import deque
 
-# 변수 선언 및 입력:
-n, m, k = tuple(map(int, input().split()))
-# 현재 포탑들이 가진 힘과 언제 각성했는지 기록해줍니다.
-board=[]
+# 변수 선언 및 입력
+n, m, k = tuple(map(int, input().split()))  # 격자 크기 (n x m), 턴 수 (k) 입력
+board = []  # 격자 정보 저장 (2차원 리스트)
 for _ in range(n):
-    board.append(list(map(int,input().split())))
-rec=[[0]*m for _ in range(n)] 
+    board.append(list(map(int, input().split())))  # 격자 정보 입력 (공백 구분)
+rec = [[0] * m for _ in range(n)]  # 각 포탑의 마지막 공격 턴 저장 (2차원 리스트)
+
+drcs = [0, 1, 0, -1], [1, 0, -1, 0]  # 상하좌우 이동 방향 (델타 좌표)
+drcs2 = [0, 0, 0, -1, -1, -1, 1, 1, 1], [0, -1, 1, 0, -1, 1, 0, -1, 1]  # 포탄 공격 범위
+
+turn = 0  # 현재 턴
+
+# 빛의 공격 관련 변수
+vis = [[0] * m for _ in range(n)]  # 방문 여부 기록
+back_r = [[0] * m for _ in range(n)]  # 레이저 경로 역추적용 (행)
+back_c = [[0] * m for _ in range(n)]  # 레이저 경로 역추적용 (열)
+
+# 공격 여부 기록
+is_active = [[False] * m for _ in range(n)]  # 해당 턴에 공격에 참여했는지 여부
 
 
-drcs = [0, 1, 0, -1], [1, 0, -1, 0]
-drcs2 = [0, 0, 0, -1, -1, -1, 1, 1, 1], [0, -1, 1, 0, -1, 1, 0, -1, 1]
-
-turn = 0
-
-# 빛의 공격을 할 때 방문 여부와 경로 방향을 기록해줍니다.
-vis=[[0]*m for _ in range(n)]
-back_r=[[0]*m for _ in range(n)]
-back_c=[[0]*m for _ in range(n)]
-
-# 공격과 무관했는지 여부를 저장합니다.
-is_active=[[False]*m for _ in range(n)]
-
-
-# 구조체 turret을 정의해 관리합니다.
+# 포탑 클래스 정의
+# 포탑의 위치, 마지막 공격턴, 공격력 정보를 담는 클래스
 class Turrent:
     def __init__(self, c, r, rec, p):
-        self.c = c
-        self.r = r
-        self.rec = rec
-        self.p = p
+        self.c = c  # 포탑의 열 위치
+        self.r = r  # 포탑의 행 위치
+        self.rec = rec  # 포탑의 마지막 공격 턴
+        self.p = p  # 포탑의 공격력
 
 
-# 살아있는 포탑들을 관리합니다.
+# 살아있는 포탑 리스트
 live_turret = []
 
 
-# 턴을 진행하기 전 필요한 전처리를 정리해줍니다.
+# 턴 초기화 함수
+# 매 턴 시작 전에 방문 기록과 공격 참여 여부를 초기화
 def init():
-    global turn
-    
-    turn += 1
+    global turn  # 전역 변수 turn 사용
+
+    turn += 1  # 턴 증가
     for i in range(n):
         for j in range(m):
-            vis[i][j] = False
-            is_active[i][j] = False
+            vis[i][j] = False  # 방문 기록 초기화
+            is_active[i][j] = False  # 공격 참여 여부 초기화
 
 
-# 각성을 진행합니다.
-# 각성을 하면 가장 약한 포탑이 n + m만큼 강해집니다.
+# 각성 함수: 가장 약한 포탑 선정 및 공격력 증가
+# 가장 약한 포탑을 선정하고 공격력을 증가시킴. 포탑 정렬 기준은 문제에서 제시한 우선 순위를 따름
 def awake():
-    # 우선순위에 맞게 현재 살아있는 포탑들을 정렬해줍니다.
-    live_turret.sort(key=lambda x : (x.p, -x.rec, -(x.c + x.r), -x.r))
+    # 포탑 정렬 기준: 공격력(낮은 순), 마지막 공격 턴(최근 순), 행+열(큰 순), 열(큰 순)
+    live_turret.sort(key=lambda x: (x.p, -x.rec, -(x.c + x.r), -x.r))  
 
-    # 가장 약한 포탑을 찾아 n + m만큼 더해주고,
-    # is_active와 live_turret 배열도 갱신해줍니다.
-    weak_turret = live_turret[0]
-    c = weak_turret.c
-    r = weak_turret.r
+    weak_turret = live_turret[0]  # 가장 약한 포탑
+    c, r = weak_turret.c, weak_turret.r  # 가장 약한 포탑의 위치
 
-    board[c][r] += n + m
-    rec[c][r] = turn
-    weak_turret.p = board[c][r]
-    weak_turret.rec = rec[c][r]
-    is_active[c][r] = True
+    board[c][r] += n + m  # 공격력 증가 (n + m)
+    rec[c][r] = turn  # 마지막 공격 턴 갱신
+    weak_turret.p = board[c][r]  # 포탑 객체의 공격력 갱신
+    weak_turret.rec = rec[c][r]  # 포탑 객체의 마지막 공격 턴 갱신
+    is_active[c][r] = True  # 공격 참여 표시
 
-    live_turret[0] = weak_turret
+    live_turret[0] = weak_turret  # 정렬된 리스트 갱신
 
 
-# 레이저 공격을 진행합니다.
+# 레이저 공격 함수
+# 1. BFS를 이용하여 공격자에서 가장 강한 포탑까지으 최단 경로를 찾음
+# 2. 경로가 존재하면 경로 상의 포탑과 가장 강한 포탑에 피해를 입힘
+# 3. 공격 성공 여부를 반환
 def laser_attack():
-    # 기존에 정렬된 가장 앞선 포탑이
-    # 각성한 포탑입니다.
-    weak_turret = live_turret[0]
-    sc = weak_turret.c
-    sr = weak_turret.r
-    power = weak_turret.p
+    weak_turret = live_turret[0]  # 각성한 포탑 (공격자)
+    sc, sr, power = weak_turret.c, weak_turret.r, weak_turret.p
 
-    # 기존에 정렬된 가장 뒤 포탑이
-    # 각성한 포탑을 제외한 포탑 중 가장 강한 포탑입니다.
-    strong_turret = live_turret[-1]
-    ec = strong_turret.c
-    er = strong_turret.r
+    strong_turret = live_turret[-1]  # 가장 강한 포탑 (공격 대상)
+    ec, er = strong_turret.c, strong_turret.r
 
-    # bfs를 통해 최단경로를 관리해줍니다.
-    q = deque()
-    vis[sc][sr] = True
-    q.append((sc, sr))
+    q = deque([(sc, sr)])  # BFS 큐 초기화 (공격자 위치)
+    vis[sc][sr] = True  # 공격자 위치 방문 표시
 
-    # 가장 강한 포탑에게 도달 가능한지 여부를 can_attack에 관리해줍니다.
-    can_attack = False
+    can_attack = False  # 레이저 공격 가능 여부
 
-    while q:
-        c, r = q.popleft()
+    while q:  # BFS 시작
+        c, r = q.popleft()  # 현재 위치
 
-        # 가장 강한 포탑에게 도달할 수 있다면
-        # 바로 멈춥니다.
-        if c == ec and r == er:
-            can_attack = True
+        if c == ec and r == er:  # 공격 대상에 도달하면
+            can_attack = True  # 공격 가능
             break
 
-        # 각각 우, 하, 좌, 상 순서대로 방문하며 방문 가능한 포탑들을 찾고
-        # queue에 저장해줍니다.
-        for dc, dr in zip(drcs[0], drcs[1]):
-            nc = (c + dc + n) % n
-            nr = (r + dr + m) % m
+        for dc, dr in zip(drcs[0], drcs[1]):  # 상하좌우 탐색
+            nc, nr = (c + dc + n) % n, (r + dr + m) % m  # 다음 위치 계산 (경계 처리)
 
-            # 이미 방문한 포탑이라면 넘어갑니다.
-            if vis[nc][nr]: 
+            if vis[nc][nr] or board[nc][nr] == 0:  # 이미 방문했거나 벽이면 건너뜀
                 continue
 
-            # 벽이라면 넘어갑니다.
-            if board[nc][nr] == 0: 
-                continue
-
-            vis[nc][nr] = True
-            back_c[nc][nr] = c
+            vis[nc][nr] = True  # 방문 표시
+            back_c[nc][nr] = c  # 경로 역추적 정보 저장
             back_r[nc][nr] = r
-            q.append((nc, nr))
+            q.append((nc, nr))  # 다음 위치 큐에 추가
 
-    # 만약 도달 가능하다면 공격을 진행합니다.
-    if can_attack:
-        # 우선 가장 강한 포탑에게는 power만큼의 공격을 진행합니다.
-        board[ec][er] -= power
-        if board[ec][er] < 0: 
-            board[ec][er] = 0
-        is_active[ec][er] = True
+    if can_attack:  # 공격 가능하면
+        board[ec][er] -= power  # 공격 대상에 피해
+        board[ec][er] = max(0, board[ec][er])  # 공격력 음수 방지
+        is_active[ec][er] = True  # 공격 참여 표시
 
-        # 기존의 경로를 역추적하며
-        # 경로 상에 있는 모든 포탑에게 power // 2만큼의 공격을 진행합니다.
-        cc = back_c[ec][er]
-        cr = back_r[ec][er]
+        cc, cr = back_c[ec][er], back_r[ec][er]  # 경로 역추적 시작
 
-        while not (cc == sc and cr == sr):
-            board[cc][cr] -= power // 2
-            if board[cc][cr] < 0: 
-                board[cc][cr] = 0
-            is_active[cc][cr] = True
+        while not (cc == sc and cr == sr):  # 공격자 위치까지 역추적
+            board[cc][cr] -= power // 2  # 경로 상의 포탑에 피해
+            board[cc][cr] = max(0, board[cc][cr])  # 공격력 음수 방지
+            is_active[cc][cr] = True  # 공격 참여 표시
 
-            next_cc = back_c[cc][cr]
-            next_cr = back_r[cc][cr]
+            cc, cr = back_c[cc][cr], back_r[cc][cr]  # 다음 역추적 위치
 
-            cc = next_cc
-            cr = next_cr
-
-    # 공격을 성공했는지 여부를 반환합니다.
-    return can_attack
+    return can_attack  # 공격 성공 여부 반환
 
 
-# 레이저 공격을 하지 못했다면 폭탄 공격을 진행합니다.
+# 폭탄 공격 함수
+# 가장 강한 포탑과 주변 8개 포탑에 피해를 입힘
 def bomb_attack():
-    # 기존에 정렬된 가장 앞선 포탑이
-    # 각성한 포탑입니다.
-    weak_turret = live_turret[0]
-    sc = weak_turret.c
-    sr = weak_turret.r
-    power = weak_turret.p
+    weak_turret = live_turret[0]  # 각성한 포탑 (공격자)
+    sc, sr, power = weak_turret.c, weak_turret.r, weak_turret.p
 
-    # 기존에 정렬된 가장 뒤 포탑이
-    # 각성한 포탑을 제외한 포탑 중 가장 강한 포탑입니다.
-    strong_turret = live_turret[-1]
-    ec = strong_turret.c
-    er = strong_turret.r
+    strong_turret = live_turret[-1]  # 가장 강한 포탑 (공격 대상)
+    ec, er = strong_turret.c, strong_turret.r
 
-    # 가장 강한 포탑의 3 * 3 범위를 모두 탐색하며
-    # 각각에 맞는 공격을 진행합니다.
-    for dc2, dr2 in zip(drcs2[0], drcs2[1]):
-        nc = (ec + dc2 + n) % n
-        nr = (er + dr2 + m) % m
+    for dc2, dr2 in zip(drcs2[0], drcs2[1]):  # 폭탄 공격 범위 탐색
+        nc, nr = (ec + dc2 + n) % n, (er + dr2 + m) % m  # 폭탄 범위 계산 (경계 처리)
 
-        # 각성한 포탑 자기 자신일 경우 넘어갑니다.
-        if nc == sc and nr == sr: 
+        if nc == sc and nr == sr:  # 각성한 포탑은 제외
             continue
 
-        # 가장 강한 포탑일 경우 pow만큼의 공격을 진행합니다.
-        if nc == ec and nr == er:
-            board[nc][nr] -= power
-            if board[nc][nr] < 0: 
-                board[nc][nr] = 0
-            is_active[nc][nr] = True
-        # 그 외의 경우 pow // 2만큼의 공격을 진행합니다.
-        else:
-            board[nc][nr] -= power // 2
-            if board[nc][nr] < 0: 
-                board[nc][nr] = 0
-            is_active[nc][nr] = True
+        if nc == ec and nr == er:  # 공격 대상 포탑
+            board[nc][nr] -= power  # 공격력만큼 피해
+        else:  # 주변 포탑
+            board[nc][nr] -= power // 2  # 공격력의 절반만큼 피해
+
+        board[nc][nr] = max(0, board[nc][nr])  # 공격력 음수
+        is_active[nc][nr] = True  # 공격 참여 표시
 
 
-# 공격에 관여하지 않은 모든 살아있는 포탑의 힘을 1 증가시킵니다.
+# 포탑 정비 함수: 공격에 참여하지 않은 포탑의 공격력 증가
+# 공격에 참여하지 않은 포탑의 공격력을 1증가시킴
 def reserve():
     for i in range(n):
         for j in range(m):
-            if is_active[i][j]: 
-                continue
-            if board[i][j] == 0: 
-                continue   
-            board[i][j] += 1
+            if not is_active[i][j] and board[i][j] > 0:  # 공격에 참여하지 않고 살아있는 포탑
+                board[i][j] += 1  # 공격력 1 증가
 
-# k턴 동안 진행됩니다.
+
+# 메인 게임 루프 (k 턴 동안 반복)
+# 1. k 턴 동안 반복하며, 매 턴마다 init, awake, laser_attack 또는 bomb_attack, reserve 함수를 순서대로 실행함.
+# 2. 살아있는 포탑이 1개 이하가 되면 게임을 종료
 for _ in range(k):
-    # 턴을 진행하기 전 살아있는 포탑을 정리합니다.
+    # 살아있는 포탑 정보 갱신
     live_turret = []
     for i in range(n):
         for j in range(m):
-            if board[i][j]:
-                new_turret = Turrent(i, j, rec[i][j], board[i][j])
-                live_turret.append(new_turret)
+            if board[i][j]:  # 살아있는 포탑이면
+                new_turret = Turrent(i, j, rec[i][j], board[i][j])  # 포탑 객체 생성
+                live_turret.append(new_turret)  # 살아있는 포탑 리스트에 추가
 
-    # 살아있는 포탑이 1개 이하라면 바로 종료합니다.
-    if len(live_turret) <= 1: 
+    if len(live_turret) <= 1:  # 살아있는 포탑이 1개 이하이면 종료
         break
 
-    # 턴을 진행하기 전 필요한 전처리를 정리해줍니다.
-    init()
+    init()  # 턴 초기화 (방문 기록, 공격 참여 여부 초기화)
+    awake()  # 각성 (가장 약한 포탑 선정 및 공격력 증가)
 
-    # 각성을 진행합니다.
-    awake()
+    is_suc = laser_attack()  # 레이저 공격 시도
+    if not is_suc:  # 레이저 공격 실패 시
+        bomb_attack()  # 폭탄 공격
 
-    # 레이저 공격을 진행합니다.
-    is_suc = laser_attack()
-    # 레이저 공격을 하지 못했다면 포탄 공격을 진행합니다.
-    if not is_suc: 
-        bomb_attack()
+    reserve()  # 포탑 정비 (공격에 참여하지 않은 포탑 공격력 증가)
 
-    # 공격에 관여하지 않은 모든 살아있는 포탑의 힘을 1 증가시킵니다.
-    reserve()
 
-# 살아있는 포탑의 힘 중 가장 큰 값을 출력합니다.
+# 게임 종료 후 가장 강한 포탑 찾기
 ans = 0
 for i in range(n):
     for j in range(m):
-        ans = max(ans, board[i][j])
+        ans = max(ans, board[i][j])  # 최대 공격력 갱신
 
-print(ans)
+print(ans)  # 가장 강한 포탑의 공격력 출력
