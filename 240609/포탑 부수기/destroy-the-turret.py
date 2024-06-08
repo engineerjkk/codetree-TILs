@@ -90,12 +90,12 @@ def bomb_attack():
     board[er][ec]=max(0,board[er][ec])
     is_active[er][ec]=True
     for i in range(8):
-        nr=(er+dr2[i]+n)%n
+        nr=(er+dr2[i]+n)%n#음수가 될수도있으니까 +n을 해준다. 
         nc=(ec+dc2[i]+m)%m
         if not(nr==sr and nc==sc):
             board[nr][nc]-=power//2
-        board[nr][nc]=max(0,board[nr][nc])
-        is_active[nr][nc]=True
+            board[nr][nc]=max(0,board[nr][nc])
+            is_active[nr][nc]=True
 
 def reserve():
     for i in range(n):
