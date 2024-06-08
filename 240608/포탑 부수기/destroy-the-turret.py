@@ -14,8 +14,8 @@ for _ in range(n):
     board.append(list(map(int, input().split())))  # 격자 정보 입력 (공백 구분)
 rec = [[0] * m for _ in range(n)]  # 각 포탑의 마지막 공격 턴 저장 (2차원 리스트)
 
-drcs = [0, 1, 0, -1], [1, 0, -1, 0]  # 상하좌우 이동 방향 (델타 좌표)
-drcs2 = [0, 0, 0, -1, -1, -1, 1, 1, 1], [0, -1, 1, 0, -1, 1, 0, -1, 1]  # 포탄 공격 범위
+drs, dcs = [0, 1, 0, -1], [1, 0, -1, 0]
+drs2, dcs2 = [0, 0, 0, -1, -1, -1, 1, 1, 1], [0, -1, 1, 0, -1, 1, 0, -1, 1]
 
 turn = 0  # 현재 턴
 
@@ -58,10 +58,11 @@ def init():
 # 가장 약한 포탑을 선정하고 공격력을 증가시킴. 포탑 정렬 기준은 문제에서 제시한 우선 순위를 따름
 def awake():
     # 포탑 정렬 기준: 공격력(낮은 순), 마지막 공격 턴(최근 순), 행+열(큰 순), 열(큰 순)
-    live_turret.sort(key=lambda x: (x.p, -x.rec, -(x.c + x.r), -x.r))  
+    live_turret.sort(key=lambda x: (x.p, -x.rec, -(x.r + x.c), -x.c))  
 
     weak_turret = live_turret[0]  # 가장 약한 포탑
-    c, r = weak_turret.c, weak_turret.r  # 가장 약한 포탑의 위치
+    r=weak_turret.r
+    c=weak_turret.c
 
     board[r][c] += n + m  # 공격력 증가 (n + m)
     rec[r][c] = turn  # 마지막 공격 턴 갱신
@@ -78,7 +79,9 @@ def awake():
 # 3. 공격 성공 여부를 반환
 def laser_attack():
     weak_turret = live_turret[0]  # 각성한 포탑 (공격자)
-    sr, sc, power = weak_turret.r, weak_turret.c, weak_turret.p
+    sr=weak_turret.r
+    sc=weak_turret.c
+    power=weak_turret.p
 
     strong_turret = live_turret[-1]  # 가장 강한 포탑 (공격 대상)
     er, ec = strong_turret.r, strong_turret.c
@@ -91,19 +94,22 @@ def laser_attack():
     while q:  # BFS 시작
         r, c = q.popleft()  # 현재 위치
 
-        if c == ec and r == er:  # 공격 대상에 도달하면
+        if r == er and c == ec:  # 공격 대상에 도달하면
             can_attack = True  # 공격 가능
             break
 
-        for dr, dc in zip(drcs[0], drcs[1]):  # 상하좌우 탐색
-            nr, nc = (r + dr + n) % n, (c + dc + m) % m  # 다음 위치 계산 (경계 처리)
+        for dr, dc in zip(drs,dcs):  # 상하좌우 탐색
+            nr=(r+dr+n)%n
+            nc=(c+dc+m)%m
 
-            if vis[nr][nc] or board[nr][nc] == 0:  # 이미 방문했거나 벽이면 건너뜀
+            if vis[nr][nc]:
+                continue
+            if board[nr][nc] == 0:  # 이미 방문했거나 벽이면 건너뜀
                 continue
 
             vis[nr][nc] = True  # 방문 표시
-            back_c[nr][nc] = c  # 경로 역추적 정보 저장
-            back_r[nr][nc] = r
+            back_r[nr][nc] = r  # 경로 역추적 정보 저장
+            back_c[nr][nc] = c
             q.append((nr, nc))  # 다음 위치 큐에 추가
 
     if can_attack:  # 공격 가능하면
@@ -118,7 +124,10 @@ def laser_attack():
             board[cr][cc] = max(0, board[cr][cc])  # 공격력 음수 방지
             is_active[cr][cc] = True  # 공격 참여 표시
 
-            cr, cc = back_r[cr][cc], back_c[cr][cc]  # 다음 역추적 위치
+            next_cr=back_r[cr][cc]
+            next_cc=back_c[cr][cc]
+            cr=next_cr
+            cc=next_cc
 
     return can_attack  # 공격 성공 여부 반환
 
@@ -132,19 +141,22 @@ def bomb_attack():
     strong_turret = live_turret[-1]  # 가장 강한 포탑 (공격 대상)
     er, ec = strong_turret.r, strong_turret.c
 
-    for dr2, dc2 in zip(drcs2[0], drcs2[1]):  # 폭탄 공격 범위 탐색
+    for dr2, dc2 in zip(drs2,dcs2):  # 폭탄 공격 범위 탐색
         nr, nc = (er + dr2 + n) % n, (ec + dc2 + m) % m  # 폭탄 범위 계산 (경계 처리)
 
-        if nc == sc and nr == sr:  # 각성한 포탑은 제외
+        if nr == sr and nc == sc:  # 각성한 포탑은 제외
             continue
 
-        if nc == ec and nr == er:  # 공격 대상 포탑
+        if nr == er and nc == ec:  # 공격 대상 포탑
             board[nr][nc] -= power  # 공격력만큼 피해
+            board[nr][nc] = max(0, board[nr][nc])  # 공격력 음수
+            is_active[nr][nc] = True  # 공격 참여 표시
         else:  # 주변 포탑
             board[nr][nc] -= power // 2  # 공격력의 절반만큼 피해
+            board[nr][nc] = max(0, board[nr][nc])  # 공격력 음수
+            is_active[nr][nc] = True  # 공격 참여 표시
 
-        board[nr][nc] = max(0, board[nr][nc])  # 공격력 음수
-        is_active[nr][nc] = True  # 공격 참여 표시
+
 
 
 # 포탑 정비 함수: 공격에 참여하지 않은 포탑의 공격력 증가
@@ -152,8 +164,11 @@ def bomb_attack():
 def reserve():
     for i in range(n):
         for j in range(m):
-            if not is_active[i][j] and board[i][j] > 0:  # 공격에 참여하지 않고 살아있는 포탑
-                board[i][j] += 1  # 공격력 1 증가
+            if is_active[i][j]: 
+                continue
+            if board[i][j] == 0: 
+                continue
+            board[i][j] += 1
 
 
 # 메인 게임 루프 (k 턴 동안 반복)
