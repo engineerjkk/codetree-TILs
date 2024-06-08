@@ -39,7 +39,7 @@ def try_movement(idx,d):
         for i in range(nr[r],nr[r]+H[r]):
             for j in range(nc[r],nc[r]+W[r]):
                 if space[i][j]==1:
-                    dmg[i]+=1
+                    dmg[r]+=1
                 if space[i][j]==2:
                     return False
         
