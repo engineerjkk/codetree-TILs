@@ -118,6 +118,6 @@ for _ in range(k):
     reserve()
 ans=0
 for i in range(n):
-    for j in range(n):
+    for j in range(m):
         ans=max(ans,board[i][j])
 print(ans)
