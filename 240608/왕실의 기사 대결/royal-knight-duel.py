@@ -1,7 +1,6 @@
 import sys 
 input = sys.stdin.readline
 from collections import deque
-L,N,Q=map(int,input().split())
 MAX_L=41
 MAX_N=31
 space=[[0]*(MAX_L) for _ in range(MAX_L)]
@@ -66,6 +65,7 @@ def move_piece(idx,d):
             C[i]=nc[i]
             K[i]-=dmg[i]
 
+L,N,Q=map(int,input().split())
 
 for i in range(1,L+1):
     space[i][1:]=map(int,input().split())
