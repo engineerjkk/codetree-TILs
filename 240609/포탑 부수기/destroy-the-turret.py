@@ -8,8 +8,8 @@ for _ in range(n):
 recent=[[0]*m for _ in range(n)]
 dr=[0,1,0,-1]
 dc=[1,0,-1,0]
-dr2=[0,-1,-1,0,1,1,1,0,-1]
-dc2=[0,0,1,1,1,0,-1,-1,-1]
+dr2=[-1,-1,0,1,1,1,0,-1]
+dc2=[0,1,1,1,0,-1,-1,-1]
 turn=0
 visit=[[0]*m for _ in range(n)]
 back=[[0]*m for _ in range(n)]
