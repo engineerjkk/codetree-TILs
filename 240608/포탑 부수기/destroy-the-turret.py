@@ -31,9 +31,9 @@ is_active = [[False] * m for _ in range(n)]  # 해당 턴에 공격에 참여했
 # 포탑 클래스 정의
 # 포탑의 위치, 마지막 공격턴, 공격력 정보를 담는 클래스
 class Turrent:
-    def __init__(self, c, r, rec, p):
-        self.c = c  # 포탑의 열 위치
-        self.r = r  # 포탑의 행 위치
+    def __init__(self, r, c, rec, p):
+        self.r = r  # 포탑의 열 위치
+        self.c = c  # 포탑의 행 위치
         self.rec = rec  # 포탑의 마지막 공격 턴
         self.p = p  # 포탑의 공격력
 
@@ -63,11 +63,11 @@ def awake():
     weak_turret = live_turret[0]  # 가장 약한 포탑
     c, r = weak_turret.c, weak_turret.r  # 가장 약한 포탑의 위치
 
-    board[c][r] += n + m  # 공격력 증가 (n + m)
-    rec[c][r] = turn  # 마지막 공격 턴 갱신
-    weak_turret.p = board[c][r]  # 포탑 객체의 공격력 갱신
-    weak_turret.rec = rec[c][r]  # 포탑 객체의 마지막 공격 턴 갱신
-    is_active[c][r] = True  # 공격 참여 표시
+    board[r][c] += n + m  # 공격력 증가 (n + m)
+    rec[r][c] = turn  # 마지막 공격 턴 갱신
+    weak_turret.p = board[r][c]  # 포탑 객체의 공격력 갱신
+    weak_turret.rec = rec[r][c]  # 포탑 객체의 마지막 공격 턴 갱신
+    is_active[r][c] = True  # 공격 참여 표시
 
     live_turret[0] = weak_turret  # 정렬된 리스트 갱신
 
@@ -78,47 +78,47 @@ def awake():
 # 3. 공격 성공 여부를 반환
 def laser_attack():
     weak_turret = live_turret[0]  # 각성한 포탑 (공격자)
-    sc, sr, power = weak_turret.c, weak_turret.r, weak_turret.p
+    sr, sc, power = weak_turret.r, weak_turret.c, weak_turret.p
 
     strong_turret = live_turret[-1]  # 가장 강한 포탑 (공격 대상)
-    ec, er = strong_turret.c, strong_turret.r
+    er, ec = strong_turret.r, strong_turret.c
 
-    q = deque([(sc, sr)])  # BFS 큐 초기화 (공격자 위치)
-    vis[sc][sr] = True  # 공격자 위치 방문 표시
+    q = deque([(sr, sc)])  # BFS 큐 초기화 (공격자 위치)
+    vis[sr][sc] = True  # 공격자 위치 방문 표시
 
     can_attack = False  # 레이저 공격 가능 여부
 
     while q:  # BFS 시작
-        c, r = q.popleft()  # 현재 위치
+        r, c = q.popleft()  # 현재 위치
 
         if c == ec and r == er:  # 공격 대상에 도달하면
             can_attack = True  # 공격 가능
             break
 
-        for dc, dr in zip(drcs[0], drcs[1]):  # 상하좌우 탐색
-            nc, nr = (c + dc + n) % n, (r + dr + m) % m  # 다음 위치 계산 (경계 처리)
+        for dr, dc in zip(drcs[0], drcs[1]):  # 상하좌우 탐색
+            nr, nc = (r + dr + n) % n, (c + dc + m) % m  # 다음 위치 계산 (경계 처리)
 
-            if vis[nc][nr] or board[nc][nr] == 0:  # 이미 방문했거나 벽이면 건너뜀
+            if vis[nr][nc] or board[nr][nc] == 0:  # 이미 방문했거나 벽이면 건너뜀
                 continue
 
-            vis[nc][nr] = True  # 방문 표시
-            back_c[nc][nr] = c  # 경로 역추적 정보 저장
-            back_r[nc][nr] = r
-            q.append((nc, nr))  # 다음 위치 큐에 추가
+            vis[nr][nc] = True  # 방문 표시
+            back_c[nr][nc] = c  # 경로 역추적 정보 저장
+            back_r[nr][nc] = r
+            q.append((nr, nc))  # 다음 위치 큐에 추가
 
     if can_attack:  # 공격 가능하면
-        board[ec][er] -= power  # 공격 대상에 피해
-        board[ec][er] = max(0, board[ec][er])  # 공격력 음수 방지
-        is_active[ec][er] = True  # 공격 참여 표시
+        board[er][ec] -= power  # 공격 대상에 피해
+        board[er][ec] = max(0, board[er][ec])  # 공격력 음수 방지
+        is_active[er][ec] = True  # 공격 참여 표시
 
-        cc, cr = back_c[ec][er], back_r[ec][er]  # 경로 역추적 시작
+        cr, cc = back_r[er][ec], back_c[er][ec]  # 경로 역추적 시작
 
-        while not (cc == sc and cr == sr):  # 공격자 위치까지 역추적
-            board[cc][cr] -= power // 2  # 경로 상의 포탑에 피해
-            board[cc][cr] = max(0, board[cc][cr])  # 공격력 음수 방지
-            is_active[cc][cr] = True  # 공격 참여 표시
+        while not (cr == sr and cc == sc):  # 공격자 위치까지 역추적
+            board[cr][cc] -= power // 2  # 경로 상의 포탑에 피해
+            board[cr][cr] = max(0, board[cr][cc])  # 공격력 음수 방지
+            is_active[cr][cc] = True  # 공격 참여 표시
 
-            cc, cr = back_c[cc][cr], back_r[cc][cr]  # 다음 역추적 위치
+            cr, cc = back_r[cr][cc], back_c[cr][cc]  # 다음 역추적 위치
 
     return can_attack  # 공격 성공 여부 반환
 
@@ -127,24 +127,24 @@ def laser_attack():
 # 가장 강한 포탑과 주변 8개 포탑에 피해를 입힘
 def bomb_attack():
     weak_turret = live_turret[0]  # 각성한 포탑 (공격자)
-    sc, sr, power = weak_turret.c, weak_turret.r, weak_turret.p
+    sr, sc, power = weak_turret.r, weak_turret.c, weak_turret.p
 
     strong_turret = live_turret[-1]  # 가장 강한 포탑 (공격 대상)
-    ec, er = strong_turret.c, strong_turret.r
+    er, ec = strong_turret.r, strong_turret.c
 
-    for dc2, dr2 in zip(drcs2[0], drcs2[1]):  # 폭탄 공격 범위 탐색
-        nc, nr = (ec + dc2 + n) % n, (er + dr2 + m) % m  # 폭탄 범위 계산 (경계 처리)
+    for dr2, dc2 in zip(drcs2[0], drcs2[1]):  # 폭탄 공격 범위 탐색
+        nr, nc = (er + dr2 + n) % n, (ec + dc2 + m) % m  # 폭탄 범위 계산 (경계 처리)
 
         if nc == sc and nr == sr:  # 각성한 포탑은 제외
             continue
 
         if nc == ec and nr == er:  # 공격 대상 포탑
-            board[nc][nr] -= power  # 공격력만큼 피해
+            board[nr][nc] -= power  # 공격력만큼 피해
         else:  # 주변 포탑
-            board[nc][nr] -= power // 2  # 공격력의 절반만큼 피해
+            board[nr][nc] -= power // 2  # 공격력의 절반만큼 피해
 
-        board[nc][nr] = max(0, board[nc][nr])  # 공격력 음수
-        is_active[nc][nr] = True  # 공격 참여 표시
+        board[nr][nc] = max(0, board[nr][nc])  # 공격력 음수
+        is_active[nr][nc] = True  # 공격 참여 표시
 
 
 # 포탑 정비 함수: 공격에 참여하지 않은 포탑의 공격력 증가
