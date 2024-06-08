@@ -69,8 +69,6 @@ def laser_attack():
             nc=(c+dc[i]+m)%m       
             if not visit[nr][nc] and board[nr][nc]>0:
                 visit[nr][nc]=True
-                #back_r[nr][nc]=r
-                #back_c[nr][nc]=c
                 back[nr][nc]=(r,c)
                 queue.append((nr,nc))
     if can_attack:
@@ -79,7 +77,6 @@ def laser_attack():
         is_active[er][ec]=True
         cr,cc=back[er][ec]
         while not (cr==sr and cc==sc):
-            print(cr,cc)
             board[cr][cc]-=power//2
             board[cr][cc]=max(0,board[cr][cc])
             is_active[cr][cc]=True
