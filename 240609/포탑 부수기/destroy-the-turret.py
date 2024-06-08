@@ -1,15 +1,15 @@
 import sys
 input = sys.stdin.readline
 from collections import deque
-n,m,k = tuple(map(int,input().split()))
+n,m,k = map(int,input().split())
 board=[]
 for _ in range(n):
     board.append(list(map(int,input().split())))
 recent=[[0]*m for _ in range(n)]
 dr=[0,1,0,-1]
 dc=[1,0,-1,0]
-dr2=[-1,-1,0,1,1,1,0,-1]
-dc2=[0,1,1,1,0,-1,-1,-1]
+dr2=[0,-1,-1,0,1,1,1,0,-1]
+dc2=[0,0,1,1,1,0,-1,-1,-1]
 turn=0
 visit=[[0]*m for _ in range(n)]
 back=[[0]*m for _ in range(n)]
@@ -22,8 +22,6 @@ class Turrent:
         self.recent=recent
         self.power=power
 
-live_turret=[]
-
 def init():
     global turn
     turn+=1
@@ -33,16 +31,15 @@ def init():
             is_active[i][j]=False
 
 def awake():
-    live_turret.sort(key=lambda x:(x.power,-x.recent,-(x.r+x.c),-x.c))
+    live_turret.sort(key=lambda x:(x.power,-(x.recent),-(x.r+x.c),-x.c))
     weak_turret=live_turret[0]
     r=weak_turret.r
     c=weak_turret.c
-    board[r][c]+=n+m
+    board[r][c]+=m+n
     recent[r][c]=turn
-    weak_turret.power=board[r][c]
     weak_turret.recent=recent[r][c]
+    weak_turret.power=board[r][c]
     is_active[r][c]=True
-    live_turret[0]=weak_turret
 
 def laser_attack():
     weak_turret=live_turret[0]
@@ -50,7 +47,8 @@ def laser_attack():
     sc=weak_turret.c
     power=weak_turret.power
     strong_turret=live_turret[-1]
-    er,ec=strong_turret.r,strong_turret.c
+    er=strong_turret.r
+    ec=strong_turret.c
     queue=deque()
     queue.append((sr,sc))
     visit[sr][sc]=True
@@ -62,7 +60,7 @@ def laser_attack():
             break
         for i in range(4):
             nr=(r+dr[i]+n)%n
-            nc=(c+dc[i]+m)%m       
+            nc=(c+dc[i]+m)%m
             if not visit[nr][nc] and board[nr][nc]>0:
                 visit[nr][nc]=True
                 back[nr][nc]=(r,c)
@@ -79,7 +77,7 @@ def laser_attack():
             board[cr][cc]=max(0,board[cr][cc])
             is_active[cr][cc]=True
             cr,cc=back[cr][cc]
-    return can_attack   
+    return can_attack
 
 def bomb_attack():
     weak_turret=live_turret[0]
@@ -90,8 +88,8 @@ def bomb_attack():
     board[er][ec]=max(0,board[er][ec])
     is_active[er][ec]=True
     for i in range(8):
-        nr=(er+dr2[i]+n)%n#음수가 될수도있으니까 +n을 해준다. 
-        nc=(ec+dc2[i]+m)%m
+        nr=(er+dr2[i]+n)%n
+        nc=(ec+dr2[i]+m)%m
         if not(nr==sr and nc==sc):
             board[nr][nc]-=power//2
             board[nr][nc]=max(0,board[nr][nc])
@@ -102,7 +100,6 @@ def reserve():
         for j in range(m):
             if not is_active[i][j] and board[i][j]>0:
                 board[i][j]+=1
-
 
 
 for _ in range(k):
@@ -120,7 +117,6 @@ for _ in range(k):
     if not success:
         bomb_attack()
     reserve()
-
 ans=0
 for i in range(n):
     for j in range(m):
