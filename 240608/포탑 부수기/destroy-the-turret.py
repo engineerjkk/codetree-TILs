@@ -115,7 +115,7 @@ def laser_attack():
 
         while not (cr == sr and cc == sc):  # 공격자 위치까지 역추적
             board[cr][cc] -= power // 2  # 경로 상의 포탑에 피해
-            board[cr][cr] = max(0, board[cr][cc])  # 공격력 음수 방지
+            board[cr][cc] = max(0, board[cr][cc])  # 공격력 음수 방지
             is_active[cr][cc] = True  # 공격 참여 표시
 
             cr, cc = back_r[cr][cc], back_c[cr][cc]  # 다음 역추적 위치
@@ -133,7 +133,7 @@ def bomb_attack():
     er, ec = strong_turret.r, strong_turret.c
 
     for dr2, dc2 in zip(drcs2[0], drcs2[1]):  # 폭탄 공격 범위 탐색
-        nr, nc = (er + dr2 + n) % n, (ec + dc2 + m) % m  # 폭탄 범위 계산 (경계 처리)
+        nr, nc = (er + dr2 + m) % n, (ec + dc2 + n) % m  # 폭탄 범위 계산 (경계 처리)
 
         if nc == sc and nr == sr:  # 각성한 포탑은 제외
             continue
