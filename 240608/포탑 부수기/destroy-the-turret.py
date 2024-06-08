@@ -89,7 +89,8 @@ def bomb_attack():
     sr,sc,power=weak_turret.r,weak_turret.c,weak_turret.power
     strong_turret=live_turret[-1]
     er,ec=strong_turret.r,strong_turret.c
-    for i in range(len(dr2)):
+
+    for i in range(9):
         nr=(er+dr2[i]+n)%n
         nc=(ec+dc2[i]+m)%m
         if not(nr==sr and nc==sc):
