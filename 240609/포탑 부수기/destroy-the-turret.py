@@ -1,14 +1,14 @@
+from collections import deque
 import sys
 input = sys.stdin.readline
-from collections import deque
 n,m,k=map(int,input().split())
 space=[]
 for _ in range(n):
     space.append(list(map(int,input().split())))
 visit=[[False]*m for _ in range(n)]
 is_active=[[False]*m for _ in range(n)]
-back=[[0]*m for _ in range(n)]
 recent=[[0]*m for _ in range(n)]
+back=[[0]*m for _ in range(n)]
 dr=[0,1,0,-1]
 dc=[1,0,-1,0]
 dr2=[-1,-1,0,1,1,1,0,-1]
@@ -27,17 +27,17 @@ def init():
     turn+=1
     for i in range(n):
         for j in range(m):
-            is_active[i][j]=False
             visit[i][j]=False
+            is_active[i][j]=False
 
 def awake():
-    live_turret.sort(key=lambda x:(x.power,-(x.recent),-(x.r+x.c),-(x.c)))
+    live_turret.sort(key=lambda x:(x.power,-x.recent,-(x.r+x.c),-x.c))
     weak_turret=live_turret[0]
     r,c=weak_turret.r,weak_turret.c
     space[r][c]+=n+m
     recent[r][c]=turn
-    weak_turret.recent=recent[r][c]
     weak_turret.power=space[r][c]
+    weak_turret.recent=recent[r][c]
     is_active[r][c]=True
 
 def laser_attack():
@@ -58,8 +58,8 @@ def laser_attack():
             nr=(r+dr[i]+n)%n
             nc=(c+dc[i]+m)%m
             if not visit[nr][nc] and space[nr][nc]>0:
-                visit[nr][nc]=True
                 queue.append((nr,nc))
+                visit[nr][nc]=True
                 back[nr][nc]=(r,c)
     if can_attack:
         space[er][ec]-=power
@@ -96,6 +96,7 @@ def reserve():
         for j in range(m):
             if not is_active[i][j] and space[i][j]>0:
                 space[i][j]+=1
+
 
 for _ in range(k):
     live_turret=[]
