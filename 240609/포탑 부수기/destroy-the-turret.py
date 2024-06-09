@@ -29,7 +29,7 @@ def init():
             is_active[i][j]=False
             visit[i][j]=False
 def awake():
-    live_turret.sort(key=lambda x:(x.power,-(x.recent),-(x.r+x.c),-x.c))
+    live_turret.sort(key=lambda x:(x.power,-x.recent,-(x.r+x.c),-x.c))
     weak_turret=live_turret[0]
     r=weak_turret.r
     c=weak_turret.c
@@ -45,8 +45,8 @@ def laser_attack():
     sc=weak_turret.c
     power=weak_turret.power
     strong_turret=live_turret[-1]
-    er=strong_turret
-    ec=strong_turret
+    er=strong_turret.r
+    ec=strong_turret.c
     queue=deque()
     queue.append((sr,sc))
     visit[sr][sc]=True
