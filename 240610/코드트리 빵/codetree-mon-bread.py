@@ -5,13 +5,12 @@ INT_MAX = sys.maxsize
 EMPTY = (-1, -1)
 
 # 변수 선언 및 입력:
-n, m = tuple(map(int, input().split()))
+n, m = map(int, input().split())
 
 # 0이면 빈 칸, 1이면 베이스 캠프, 2라면 아무도 갈 수 없는 곳을 뜻합니다.
-grid = [
-    list(map(int, input().split()))
-    for _ in range(n)
-]
+space=[]
+for _ in range(n):
+    space.append(list(map(int,input().split())))
 
 # 편의점 목록을 관리합니다.
 cvs_list = []
@@ -27,34 +26,26 @@ people = [EMPTY] * m
 # 현재 시간을 기록합니다.
 curr_t = 0
 
-# drs, dcs값을 
 # 문제에서의 우선순위인 상좌우하 순으로 적어줍니다.
-drs = [-1, 0, 0, 1]
-dcs = [ 0, -1, 1, 0]
+dr = [-1, 0, 0, 1]
+dc = [ 0, -1, 1, 0]
 
 # bfs에 사용되는 변수들입니다.
 # 최단거리 결과 기록
-step = [
-    [0] * n
-    for _ in range(n)
-]
+step=[[0]*n for _ in range(n)]
 # 방문 여부 표시
-visited = [
-    [False] * n
-    for _ in range(n)
-]
+visited=[[False]*n for _ in range(n)]
 
 
 # (r, c)가 격자 내에 있는 좌표인지를 판단합니다.
-def in_range(r, c):  # x, y를 r, c로 변경
-    return 0 <= r and r < n and 0 <= c and c < n  # x, y를 r, c로 변경
+def in_range(r, c): 
+    return -1<r<n and -1<c<n
 
 
 # (r, c)로 이동이 가능한지 판단합니다.
-def can_go(r, c):  # x, y를 r, c로 변경
+def can_go(r, c): 
+    return in_range(r,c) and not visited[r][c] and space[r][c]!=2
     # 범위를 벗어나지 않으면서, 방문했던 적이 없으면서, 이동 가능한 곳이어야 합니다.
-    return in_range(r, c) and not visited[r][c] and grid[r][c] != 2  # x, y를 r, c로 변경
-
 
 # start_pos를 시작으로 하는 BFS를 진행합니다.
 # 시작점으로부터의 최단거리 결과는 step배열에 기록됩니다.
@@ -66,25 +57,25 @@ def bfs(start_pos):
             step[i][j] = 0
     
     # 초기 위치를 넣어줍니다.
-    q = deque()
-    q.append(start_pos)
-    sr, sc = start_pos  # sx, sy를 sr, sc로 변경
-    visited[sr][sc] = True  # sx, sy를 sr, sc로 변경
-    step[sr][sc] = 0      # sx, sy를 sr, sc로 변경
+    queue = deque()
+    queue.append(start_pos)
+    sr, sc = start_pos  
+    visited[sr][sc] = True  
+    step[sr][sc] = 0     
 
     # BFS를 진행합니다.
-    while q:
+    while queue:
         # 가장 앞에 원소를 골라줍니다.
-        r, c = q.popleft()  # x, y를 r, c로 변경
+        r, c = queue.popleft()  
 
         # 인접한 칸을 보며 아직 방문하지 않은 칸을 큐에 넣어줍니다.
-        for dr, dc in zip(drs, dcs):  # dxs, dys를 drs, dcs로 변경
-            nr, nc = r + dr, c + dc  # nx, ny를 nr, nc로 변경
-            # 갈 수 있는 경우에만 진행합니다.
-            if can_go(nr, nc):  # nx, ny를 nr, nc로 변경
-                visited[nr][nc] = True  # nx, ny를 nr, nc로 변경
-                step[nr][nc] = step[r][c] + 1  # nx, ny를 nr, nc로 변경
-                q.append((nr, nc))  # nx, ny를 nr, nc로 변경
+        for i in range(4):
+            nr=r+dr[i]
+            nc=c+dc[i]
+            if can_go(nr, nc): 
+                visited[nr][nc] = True 
+                step[nr][nc] = step[r][c] + 1  
+                queue.append((nr, nc))  
 
 
 # 시뮬레이션을 진행합니다.
@@ -107,9 +98,10 @@ def simulate():
         # 그러한 위치 중 상좌우하 우선순위대로 가장 적절한 곳을 골라줍니다.
         min_dist = INT_MAX
         min_r, min_c = -1, -1  # min_x, min_y를 min_r, min_c로 변경
-        for dr, dc in zip(drs, dcs):  # dxs, dys를 drs, dcs로 변경
-            nr, nc = pr + dr, pc + dc  # nx, ny를 nr, nc로 변경
-            if in_range(nr, nc) and visited[nr][nc] and min_dist > step[nr][nc]:  # nx, ny를 nr, nc로 변경
+        for j in range(4):
+            nr=pr+dr[j]
+            nc=pc+dc[j]
+            if in_range(nr, nc) and visited[nr][nc] and min_dist > step[nr][nc]:
                 min_dist = step[nr][nc]  # nx, ny를 nr, nc로 변경
                 min_r, min_c = nr, nc  # min_x, min_y를 min_r, min_c로 변경
 
@@ -121,8 +113,8 @@ def simulate():
     #        grid값을 2로 바꿔줍니다.
     for i in range(m):
         if people[i] == cvs_list[i]:
-            pr, pc = people[i]  # px, py를 pr, pc로 변경
-            grid[pr][pc] = 2    # px, py를 pr, pc로 변경
+            pr, pc = people[i] 
+            space[pr][pc] = 2   
 
     # Step 3. 현재 시간 curr_t에 대해 curr_t ≤ m를 만족한다면
     #        t번 사람이 베이스 캠프로 이동합니다.
@@ -145,14 +137,14 @@ def simulate():
         for j in range(n):
             # 방문 가능한 베이스 캠프 중
             # 거리가 가장 가까운 위치를 찾아줍니다.
-            if visited[i][j] and grid[i][j] == 1 and min_dist > step[i][j]:
+            if visited[i][j] and space[i][j] == 1 and min_dist > step[i][j]:
                 min_dist = step[i][j]
                 min_r, min_c = i, j  # min_x, min_y를 min_r, min_c로 변경
 
     # 우선순위가 가장 높은 베이스 캠프로 이동합니다.
     people[curr_t - 1] = (min_r, min_c)  # min_x, min_y를 min_r, min_c로 변경
     # 해당 베이스 캠프는 앞으로 이동이 불가능한 칸임을 표시합니다.
-    grid[min_r][min_c] = 2  # min_x, min_y를 min_r, min_c로 변경
+    space[min_r][min_c] = 2  # min_x, min_y를 min_r, min_c로 변경
 
 def end():
     # 단 한 사람이라도
