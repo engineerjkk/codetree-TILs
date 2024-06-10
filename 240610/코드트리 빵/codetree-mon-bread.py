@@ -61,7 +61,7 @@ def simulate():
     for i in range(m):
         if people[i]==gs25[i]:
             r,c=people[i]
-            space[r][c]==-1
+            space[r][c]=-1
 
     if time>m:
         return
