@@ -116,6 +116,5 @@ for _ in range(k):
 ans=0
 for i in range(n):
     for j in range(m):
-        if space[i][j]>0:
-            ans=max(ans,space[i][j])
+        ans=max(ans,space[i][j])
 print(ans)
