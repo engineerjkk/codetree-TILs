@@ -51,7 +51,8 @@ def get_next(r, c, d):
     # 반대 방향으로 한 칸 이동합니다.
     if not in_range(nr, nc):
         # 반대 방향 : 0 <. 2 / 1 <. 3
-        d = (d + 2) if d < 2 else (d - 2)
+        d=(d+2)%4
+        # d = (d + 2) if d < 2 else (d - 2)
         nr, nc = r + dxs[d], c + dys[d]
 
     return (nr, nc, d)
