@@ -7,7 +7,7 @@ for _ in range(n):
     space.append(list(map(int,input().split())))
 recent=[[0]*m for _ in range(n)]
 back=[[0]*m for _ in range(n)]
-is_active=[[False]*m for _ in range(m)]
+is_active=[[False]*m for _ in range(n)]
 visit=[[False]*m for _ in range(n)]
 dr=[0,1,0,-1]
 dc=[1,0,-1,0]
