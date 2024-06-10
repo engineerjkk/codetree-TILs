@@ -60,10 +60,8 @@ def simulate():
         people[i]=(min_r,min_c)
     for i in range(m):
         if people[i]==gs25[i]:
-            space[i]==-1
-
-
-
+            r,c=people[i]
+            space[r][c]==-1
 
     if time>m:
         return
