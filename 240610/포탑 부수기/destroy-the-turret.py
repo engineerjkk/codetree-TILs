@@ -29,6 +29,7 @@ def init():
         for j in range(m):
             back[i][j]=0
             is_active[i][j]=False
+            visit[i][j]=False
 
 def awake():
     live_turret.sort(key=lambda x:(x.power,-x.recent,-(x.r+x.c),-x.c))
