@@ -45,14 +45,15 @@ def simulate():
     for i in range(m):
         if people[i]==empty or people[i]==gs25[i]:
             continue
-        bfs(gs25[i])
+        #베이스캠프에서 출발
+        bfs(gs25[i]) #편의점까리의 최단거리를 구함
         r,c=people[i]
         min_distance=MAX
         min_r,min_c=-1,-1
         for j in range(4):
             nr=r+dr[j]
             nc=c+dc[j]
-            if in_range(nr,nc) and visit[nr][nc] and min_distance>step[nr][nc]:
+            if in_range(nr,nc) and visit[nr][nc] and step[nr][nc]<min_distance:
                 min_distance=step[nr][nc]
                 min_r,min_c=nr,nc
         people[i]=(min_r,min_c)
@@ -60,14 +61,16 @@ def simulate():
         if people[i]==gs25[i]:
             r,c=people[i]
             space[r][c]=-1
-    if time>m:
+    if time>m:#시간을 초과하면 여기까지만,
         return
+
+    #이제 위에서 스킵됐던 사람을 베이스캠프로 옮기는것.
     bfs(gs25[time-1])
     min_distance=MAX
     min_r,min_c=-1,-1
     for r in range(n):
         for c in range(n):
-            if visit[r][c] and space[r][c]==1 and min_distance>step[r][c]:
+            if visit[r][c] and space[r][c]==1 and step[r][c]<min_distance:
                 min_distance=step[r][c]
                 min_r,min_c=r,c
     people[time-1]=(min_r,min_c)
