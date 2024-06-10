@@ -1,22 +1,22 @@
 import sys
+input = sys.stdin.readline
 from collections import deque
 MAX=sys.maxsize
-empty=(-1,-1)
 n,m=map(int,input().split())
 space=[]
 for _ in range(n):
     space.append(list(map(int,input().split())))
+empty=(-1,-1)
+people=[empty]*m
 gs25=[]
 for _ in range(m):
     r,c=map(int,input().split())
     gs25.append((r-1,c-1))
-
-people=[empty]*m
+visit=[[False]*n for _ in range(n)]
+step=[[0]*n for _ in range(n)]
 time=0
 dr=[-1,0,0,1]
 dc=[0,-1,1,0]
-step=[[0]*n for _ in range(n)]
-visit=[[False]*n for _ in range(n)]
 
 def in_range(r,c):
     return -1<r<n and -1<c<n
@@ -26,9 +26,10 @@ def bfs(start_pos):
         for c in range(n):
             visit[r][c]=False
             step[r][c]=0
-    queue=deque()
-    queue.append(start_pos)
+    
     sr,sc=start_pos
+    queue=deque()
+    queue.append((sr,sc))
     visit[sr][sc]=True
     step[sr][sc]=0
     while queue:
@@ -45,8 +46,7 @@ def simulate():
     for i in range(m):
         if people[i]==empty or people[i]==gs25[i]:
             continue
-        #베이스캠프에서 출발
-        bfs(gs25[i]) #편의점까리의 최단거리를 구함
+        bfs(gs25[i])
         r,c=people[i]
         min_distance=MAX
         min_r,min_c=-1,-1
@@ -61,10 +61,9 @@ def simulate():
         if people[i]==gs25[i]:
             r,c=people[i]
             space[r][c]=-1
-    if time>m:#시간을 초과하면 여기까지만,
-        return
 
-    #이제 위에서 스킵됐던 사람을 베이스캠프로 옮기는것.
+    if time>m:
+        return
     bfs(gs25[time-1])
     min_distance=MAX
     min_r,min_c=-1,-1
