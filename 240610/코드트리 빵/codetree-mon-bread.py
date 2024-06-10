@@ -2,7 +2,7 @@ import sys
 input = sys.stdin.readline
 from collections import deque
 MAX=sys.maxsize
-n,m = map(int,input().split())
+n,m=map(int,input().split())
 space=[]
 for _ in range(n):
     space.append(list(map(int,input().split())))
@@ -14,19 +14,18 @@ empty=(-1,-1)
 people=[empty]*m
 visit=[[False]*n for _ in range(n)]
 step=[[0]*n for _ in range(n)]
-time=0
 dr=[-1,0,0,1]
 dc=[0,-1,1,0]
-
+time=0
 
 def in_range(r,c):
     return -1<r<n and -1<c<n
 
 def bfs(start_pos):
-    for r in range(n):
-        for c in range(n):
-            visit[r][c]=False
-            step[r][c]=0
+    for i in range(n):
+        for j in range(n):
+            visit[i][j]=False
+            step[i][j]=0
     sr,sc=start_pos
     queue=deque()
     queue.append((sr,sc))
@@ -42,6 +41,7 @@ def bfs(start_pos):
                 step[nr][nc]=step[r][c]+1
                 queue.append((nr,nc))
 
+
 def simulate():
     for i in range(m):
         if people[i]==empty or people[i]==gs25[i]:
@@ -55,16 +55,14 @@ def simulate():
             nc=c+dc[j]
             if in_range(nr,nc) and visit[nr][nc] and step[nr][nc]<min_distance:
                 min_distance=step[nr][nc]
-                min_r=nr
-                min_c=nc
+                min_r,min_c=nr,nc
         people[i]=(min_r,min_c)
     for i in range(m):
         if people[i]==gs25[i]:
             r,c=people[i]
             space[r][c]=-1
-
     if time>m:
-        return
+        return 
     bfs(gs25[time-1])
     min_distance=MAX
     min_r,min_c=-1,-1
@@ -75,10 +73,10 @@ def simulate():
                 min_r,min_c=r,c
     people[time-1]=(min_r,min_c)
     space[min_r][min_c]=-1
-                
+
 def end():
     for i in range(m):
-        if people[i]!=gs25[i]:
+        if people[i] != gs25[i]:
             return False
     return True
 
