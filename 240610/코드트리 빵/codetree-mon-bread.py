@@ -57,10 +57,8 @@ def simulate():
                 min_distance=step[nr][nc]
                 min_r,min_c=nr,nc
         people[i]=(min_r,min_c)
-    for i in range(m):
         if people[i]==gs25[i]:
-            r,c=people[i]
-            space[r][c]=-1
+            space[min_r][min_c]=-1
     if time>m:
         return 
     bfs(gs25[time-1])
