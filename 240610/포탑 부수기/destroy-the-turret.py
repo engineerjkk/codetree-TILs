@@ -105,6 +105,8 @@ for _ in range(k):
             if space[i][j]>0:
                 new_turret=Turrent(i,j,recent[i][j],space[i][j])
                 live_turret.append(new_turret)
+    if len(live_turret)<=1:
+        break
     init()
     awake()
     success=laser_attack()
