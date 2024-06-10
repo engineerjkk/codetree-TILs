@@ -6,12 +6,12 @@ n,m=map(int,input().split())
 space=[]
 for _ in range(n):
     space.append(list(map(int,input().split())))
-empty=(-1,-1)
-people=[empty]*m
 gs25=[]
 for _ in range(m):
     r,c=map(int,input().split())
     gs25.append((r-1,c-1))
+empty=(-1,-1)
+people=[empty]*m
 visit=[[False]*n for _ in range(n)]
 step=[[0]*n for _ in range(n)]
 time=0
@@ -26,7 +26,6 @@ def bfs(start_pos):
         for c in range(n):
             visit[r][c]=False
             step[r][c]=0
-    
     sr,sc=start_pos
     queue=deque()
     queue.append((sr,sc))
@@ -43,45 +42,45 @@ def bfs(start_pos):
                 queue.append((nr,nc))
 
 def simulate():
-    if time <= m:
-        if time - 1 >= 0:
-            bfs(gs25[time-1])
-            min_distance=MAX
-            min_r,min_c=-1,-1
-            for r in range(n):
-                for c in range(n):
-                    if visit[r][c] and space[r][c]==1 and step[r][c]<min_distance:
-                        min_distance=step[r][c]
-                        min_r,min_c=r,c
-            if min_r != -1 and min_c != -1:  # Ensure that a valid position was found
-                people[time-1]=(min_r,min_c)
-                space[min_r][min_c]=-1
-    else:
-        for i in range(m):
-            if people[i]==gs25[i] or people[i]==empty:
-                continue
-            bfs(gs25[i])
-            r,c=people[i]
-            min_distance=MAX
-            min_r,min_c=-1,-1
-            for j in range(4):
-                nr=r+dr[j]
-                nc=c+dc[j]
-                if in_range(nr,nc) and visit[nr][nc] and step[nr][nc]<min_distance:
-                    min_distance=step[nr][nc]
-                    min_r,min_c=nr,nc
-            if min_r != -1 and min_c != -1:  # Ensure that a valid position was found
-                people[i]=(min_r,min_c)
+    for i in range(m):
+        if people[i]==empty or people[i]==gs25[i]:
+            continue
+        bfs(gs25[i])
+        r,c=people[i]
+        min_distance=MAX
+        min_r,min_c=-1,-1
+        for j in range(4):
+            nr=r+dr[j]
+            nc=c+dc[j]
+            if in_range(nr,nc) and visit[nr][nc] and step[nr][nc]<min_distance:
+                min_distance=step[nr][nc]
+                min_r,min_c=nr,nc
+        people[i]=(min_r,min_c)
     for i in range(m):
         if people[i]==gs25[i]:
             r,c=people[i]
             space[r][c]=-1
 
+    if time>m:
+        return
+    bfs(gs25[time-1])
+    min_distance=MAX
+    min_r,min_c=-1,-1
+    for r in range(n):
+        for c in range(n):
+            if visit[r][c] and space[r][c]==1 and step[r][c]<min_distance:
+                min_distance=step[r][c]
+                min_r,min_c=r,c
+    people[time-1]=(min_r,min_c)
+    space[min_r][min_c]=-1
+
 def end():
     for i in range(m):
-        if people[i]!=gs25[i]:
+        if people[i] != gs25[i]:
             return False
     return True
+
+    
 
 while True:
     time+=1
