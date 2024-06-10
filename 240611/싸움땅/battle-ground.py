@@ -3,7 +3,7 @@ input = sys.stdin.readline
 EMPTY=(-1,-1,-1,-1,-1,-1)
 n,m,k=map(int,input().split())
 gun=[[[] for _ in range(n)] for _ in range(n)]
-print(gun)
+
 for i in range(n):
     nums=list(map(int,input().split()))
     for j in range(n):
