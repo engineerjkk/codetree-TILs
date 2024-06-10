@@ -27,7 +27,6 @@ def init():
     turn+=1
     for i in range(n):
         for j in range(m):
-            back[i][j]=0
             is_active[i][j]=False
             visit[i][j]=False
 
