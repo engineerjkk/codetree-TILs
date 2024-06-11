@@ -2,14 +2,17 @@ import sys
 input = sys.stdin.readline
 empty=(-1,-1,-1,-1,-1,-1)
 n,m,k=map(int,input().split())
-gun=list([[]for _ in range (n)] for _ in range (n))
 space=[]
-for i in range(n):
+for _ in range(n):
     space.append(list(map(int,input().split())))
+guns=[[[] for _ in range(n)] for _ in range(n)]
+for i in range(n):
+    print(guns[i])
 for i in range(n):
     for j in range(n):
         if space[i][j]!=0:
-            gun[i][j].append(space[i][j])
+            guns[i][j].append(space[i][j])
+points=[0]*m
 
 class Player:
     def __init__(self,id,r,c,d,power,gun=0):
@@ -26,7 +29,6 @@ for id in range(m):
     players.append(Player(id,r-1,c-1,d,power))
 dr=[-1,0,1,0]
 dc=[0,1,0,-1]
-points=[0]*m
 
 def in_range(r,c):
     return -1<r<n and -1<c<n
@@ -47,34 +49,36 @@ def find_player(nr,nc):
     return empty
 
 def move(player,nr,nc):
-    gun[nr][nc].append(player.gun)
-    gun[nr][nc].sort(reverse=True)
-    player.gun=gun[nr][nc][0]
-    gun[nr][nc].pop(0)
+    guns[nr][nc].append(player.gun)
+    guns[nr][nc].sort(reverse=True)
+    player.gun=guns[nr][nc][0]
+    guns[nr][nc].pop(0)
     player.r=nr
     player.c=nc
 
 def loser_move(player):
-    gun[player.r][player.c].append(player.gun)
+    guns[player.r][player.c].append(player.gun)
     player.gun=0
     for i in range(4):
-        nd=(player.d+i)%4
+        nd=(player.d+i)%4##%4를 빼먹다니/
         nr=player.r+dr[nd]
         nc=player.c+dc[nd]
         if in_range(nr,nc) and find_player(nr,nc)==empty:
-            player.r,player.c,player.d=nr,nc,nd
+            player.r=nr
+            player.c=nc
+            player.d=nd
             move(player,nr,nc)
             return
 
 def fight(p1,p2,nr,nc):
     if (p1.power+p1.gun,p1.power)>(p2.power+p2.gun,p2.power):
         points[p1.id]+=(p1.power+p1.gun)-(p2.power+p2.gun)
-        loser_move(p2)
         move(p1,nr,nc)
+        loser_move(p2)
     else:
         points[p2.id]+=(p2.power+p2.gun)-(p1.power+p1.gun)
-        loser_move(p1)
         move(p2,nr,nc)
+        loser_move(p1)
 
 def simulate():
     for player in players:
@@ -85,8 +89,6 @@ def simulate():
             move(player,nr,nc)
         else:
             fight(player,next_player,nr,nc)
-
-        
 
 for _ in range(k):
     simulate()
