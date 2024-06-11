@@ -5,12 +5,14 @@ n,m,k=map(int,input().split())
 space=[]
 for _ in range(n):
     space.append(list(map(int,input().split())))
-recent=[[0]*n for _ in range(n)]
-back=[[0]*n for _ in range(n)]
-is_active=[[False]*n for _ in range(n)]
+recent=[[0]*m for _ in range(n)]
+back=[[0]*m for _ in range(n)]
+is_active=[[False]*m for _ in range(n)]
+visit=[[False]*m for _ in range(n)]
 turn=0
 dr=[0,1,0,-1]
 dc=[1,0,-1,0]
+
 dr2=[-1,-1,0,1,1,1,0,-1]
 dc2=[0,1,1,1,0,-1,-1,-1]
 
@@ -25,21 +27,22 @@ def init():
     global turn
     turn+=1
     for i in range(n):
-        for j in range(n):
+        for j in range(m):
             back[i][j]=0
-            is_active[i][j]=False   
+            is_active[i][j]=False 
+            visit[i][j]=False  
 
 def awake():
     live_turret.sort(key=lambda x:(x.power,-(x.recent),-(x.r+x.c),-x.c))
     weak_turret=live_turret[0]
     r,c=weak_turret.r,weak_turret.c
     space[r][c]+=n+m
+    recent[r][c]=turn
     weak_turret.power=space[r][c]
-    weak_turret.recent=turn
+    weak_turret.recent=recent[r][c]
     is_active[r][c]=True
 
-def in_range(r,c):
-    return -1<r<n and -1<c<n
+
 
 def laser_attack():
     weak_turret=live_turret[0]
@@ -48,17 +51,17 @@ def laser_attack():
     er,ec=strong_turret.r,strong_turret.c
     queue=deque()
     queue.append((sr,sc))
-    visit=[[False]*n for _ in range(n)]
     visit[sr][sc]=True
     can_attack=False
     while queue:
         r,c=queue.popleft()
         if r==er and c==ec:
             can_attack=True
+            break
         for i in range(4):
             nr=(r+dr[i]+n)%n
             nc=(c+dc[i]+m)%m
-            if not visit[nr][nc] and space[nr][nc]!=0:
+            if not visit[nr][nc] and space[nr][nc]>0:
                 visit[nr][nc]=True
                 back[nr][nc]=(r,c)
                 queue.append((nr,nc))
@@ -85,24 +88,26 @@ def bomb_attack():
     space[er][ec]=max(0,space[er][ec])
     is_active[er][ec]=True
     for i in range(8):
-        nr=(r+dr2[i]+n)%n
-        nc=(c+dc2[i]+m)%m
-        space[nr][nc]-=power//2
-        space[nr][nc]=max(0,space[nr][nc])
-        is_active[nr][nc]=True
+        nr=(er+dr2[i]+n)%n
+        nc=(ec+dc2[i]+m)%m
+        if not(sr==nr and sc==nc):
+            space[nr][nc]-=power//2
+            space[nr][nc]=max(0,space[nr][nc])
+            is_active[nr][nc]=True
 
 def reserve():
     for i in range(n):
-        for j in range(n):
-            if space[i][j]>0 and is_active==False:
+        for j in range(m):
+            if space[i][j]>0 and not is_active[i][j]:
                 space[i][j]+=1
 
 for _ in range(k):
     live_turret=[]
     for i in range(n):
-        for j in range(n):
+        for j in range(m):
             if space[i][j]>0:
-                live_turret.append(Turrent(i,j,recent[i][j],space[i][j]))
+                new_turret=Turrent(i,j,recent[i][j],space[i][j])
+                live_turret.append(new_turret)
     if len(live_turret)<=1:
         break
     init()
@@ -113,6 +118,6 @@ for _ in range(k):
     reserve()
 ans=0
 for i in range(n):
-    for j in range(n):
+    for j in range(m):
         ans=max(ans,space[i][j])
 print(ans)
