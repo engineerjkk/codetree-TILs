@@ -22,7 +22,6 @@ class Player:
         self.d=d
         self.power=power
         self.gun=gun
-
 players=[]
 for id in range(m):
     r,c,d,power=map(int,input().split())
@@ -65,7 +64,6 @@ def loser_move(player):
             player.r=nr
             player.c=nc
             player.d=nd
-            move(player,nr,nc)
             return
 
 def fight(p1,p2,nr,nc):
@@ -83,11 +81,11 @@ def simulate():
         nr,nc,nd=get_next(player.r,player.c,player.d)
         next_player=find_player(nr,nc)
         player.r,player.c,player.d=nr,nc,nd
+        
         if next_player==empty:
             move(player,nr,nc)
         else:
             fight(player,next_player,nr,nc)
-
 
 for _ in range(k):
     simulate()
