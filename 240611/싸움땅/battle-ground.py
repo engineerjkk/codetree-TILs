@@ -64,6 +64,7 @@ def loser_move(player):
             player.r=nr
             player.c=nc
             player.d=nd
+            move(player,nr,nc)
             return
 
 def fight(p1,p2,nr,nc):
