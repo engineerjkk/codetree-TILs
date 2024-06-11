@@ -1,193 +1,77 @@
-# 변수 선언 및 입력:
+from collections import deque
+dir = [(1,0),(-1,0),(0,1),(0,-1)]
 
-n, m, k = tuple(map(int, input().split()))
-board = [[0] * (n + 1)]
-for _ in range(n):
-    board.append([0] + list(map(int, input().split())))
+N, M, K = map(int, input().split())
+graph = [list(map(int, input().split())) for _  in range(N)]
+q = []
+for i in range(N):
+    for j in range(N):
+        if graph[i][j] == 1:
+            w = deque([(i,j)])
+            e = deque([(i,j)])  # 점수는 인덱스로 계산하기!
+            while w:
+                x,y = w.popleft()
+                for k in range(4):
+                    nx, ny = x+dir[k][0], y+dir[k][1]
 
-# 각 팀별 레일 위치를 관리합니다.
-v = [[] for _ in range(m + 1)]
-# 각 팀별 tail 위치를 관리합니다.
-tail = [0] * (m + 1)
-visited = [
-    [False] * (n + 1)
-    for _ in range(n + 1)
-]
+                    if 0<=nx<N and 0<=ny<N and graph[nx][ny] == 2 and (nx,ny) not in e:
+                        e.append((nx,ny))
+                        w.append((nx,ny))
+            x,y = e[-1][0], e[-1][1]
+            for k in range(4):
+                nx, ny = x+dir[k][0], y+dir[k][1]
+                if 0<=nx<N and 0<=ny<N and graph[nx][ny] == 3:
+                    e.append((nx,ny))
+                    break
+            q.append(e)
+# q에는 순서대로 헤드부터 테일까지의 기차들이 들어있다.
 
-# 격자 내 레일에 각 팀 번호를 적어줍니다.
-board_idx = [
-    [0] * (n + 1)
-    for _ in range(n + 1)
-]
+def move():
+    for train in q:
+        x,y = train.pop()  # tail
+        graph[x][y] = 4    # 원래 선로로 돌려놓기
+        graph[train[-1][0]][train[-1][1]] = 3 # 새로운 꼬리
 
-ans = 0
+        x,y = train[0]
+        graph[x][y] = 2    # 원래 머리 위치는 몸통으로 만들기
+        for i in range(4):
+            nx, ny = x+dir[i][0], y+dir[i][1]
+            if 0<=nx<N and 0<=ny<N and graph[nx][ny] == 4:
+                graph[nx][ny] = 1
+                train.appendleft((nx,ny))
+                break
 
-drs = [-1,  0, 1, 0]
-dcs = [ 0, -1, 0, 1]
-
-
-def is_out_range(r, c):
-    return not (1 <= r and r <= n and 1 <= c and c <= n)
-
-
-# 초기 레일을 만들기 위해 dfs를 이용합니다.
-def dfs(r, c, idx):
-    visited[r][c] = True
-    board_idx[r][c] = idx
-    for dr, dc in zip(drs, dcs):
-        nr, nc = r + dr, c + dc
-        if is_out_range(nr, nc): 
-            continue
-
-        # 이미 지나간 경로거나 경로가 아니면 넘어갑니다.
-        if board[nr][nc] == 0: 
-            continue
-        if visited[nr][nc]: 
-            continue
-
-        # 가장 처음 탐색할 때 2가 있는 방향으로 dfs를 진행합니다.
-        if len(v[idx]) == 1 and board[nr][nc] != 2: 
-            continue
-
-        v[idx].append((nr, nc))
-        if board[nr][nc] == 3:
-            tail[idx] = len(v[idx])
-        dfs(nr, nc, idx)
-
-
-# 초기 작업을 합니다.
-def init():
-    cnt = 1
-
-    # 레일을 벡터에 저장합니다. 머리사람을 우선 앞에 넣어줍니다.
-    for i in range(1, n + 1):
-        for j in range(1, n + 1):
-            if board[i][j] == 1: 
-                v[cnt].append((i, j))
-                cnt += 1
-
-    # dfs를 통해 레일을 벡터에 순서대로 넣어줍니다.
-    for i in range(1, m + 1):
-        r, c = v[i][0]
-        dfs(r, c, i)
-
-
-# 각 팀을 이동시키는 함수입니다.
-def move_all():
-    for i in range(1, m + 1):
-        # 각 팀에 대해 레일을 한 칸씩 뒤로 이동시킵니다.
-        tmp = v[i][-1]
-        for j in range(len(v[i]) - 1, 0, -1):
-            v[i][j] = v[i][j - 1]
-        v[i][0] = tmp
-
-    for i in range(1, m + 1):
-        # 벡터에 저장한 정보를 바탕으로 보드의 표기 역시 바꿔줍니다.
-        for j, (r, c) in enumerate(v[i]):
-            if j == 0:
-                board[r][c] = 1
-            elif j < tail[i] - 1:
-                board[r][c] = 2
-            elif j == tail[i] - 1:
-                board[r][c] = 3
-            else:
-                board[r][c] = 4
-
-
-# (r, c) 지점에 공이 닿았을 때의 점수를 계산합니다.
-def get_point(r, c):
-    global ans
-    idx = board_idx[r][c]
-    cnt = v[idx].index((r, c))
-    ans += (cnt + 1) * (cnt + 1)
-
-
-# turn 번째 라운드의 공을 던집니다.
-# 공을 던졌을 때 이를 받은 팀의 번호를 반환합니다.
-def throw_ball(turn):
-    t = (turn - 1) % (4 * n) + 1
-
-    if t <= n:
-        # 1 ~ n 라운드의 경우 왼쪽에서 오른쪽 방향으로 공을 던집니다.
-        for i in range(1, n + 1):
-            if 1 <= board[t][i] and board[t][i] <= 3:
-                # 사람이 있는 첫 번째 지점을 찾습니다.
-                # 찾게 되면 점수를 체크한 뒤 찾은 사람의 팀 번호를 저장합니다.
-                get_point(t, i)
-                return board_idx[t][i]
-    elif t <= 2 * n:
-        # n+1 ~ 2n 라운드의 경우 아래에서 윗쪽 방향으로 공을 던집니다.
-        t -= n
-        for i in range(1, n + 1):
-            if 1 <= board[n + 1 - i][t] and board[n + 1 - i][t] <= 3:
-                # 사람이 있는 첫 번째 지점을 찾습니다.
-                # 찾게 되면 점수를 체크한 뒤 찾은 사람의 팀 번호를 저장합니다.
-                get_point(n + 1 - i, t)
-                return board_idx[n + 1 - i][t]
-    elif t <= 3 * n:
-        # 2n+1 ~ 3n 라운드의 경우 오른쪽에서 왼쪽 방향으로 공을 던집니다.
-        t -= (2 * n)
-        for i in range(1, n + 1):
-            if 1 <= board[n + 1 - t][n + 1 - i] and board[n + 1 - t][n + 1 - i] <= 3:
-                # 사람이 있는 첫 번째 지점을 찾습니다.
-                # 찾게 되면 점수를 체크한 뒤 찾은 사람의 팀 번호를 저장합니다.
-                get_point(n + 1 - t, n + 1 - i)
-                return board_idx[n + 1 - t][n + 1 - i]
+def ball(round):  # return은 (-1,-1) 즉 좌표로 해서, 큐에 접근하여 뒤바꿀 기차와 점수 알아내기
+    round %= 4*N  # 이것때문에, 문제에서는 라운드1부터이지만 나는 0부터 4N-1까지 할거다.
+    if round<N:  # 첫번째
+        for j in range(N):
+            if graph[round][j] in (1,2,3): return (round,j)
+    elif round<2*N:
+        for i in range(N):
+            if graph[N-1-i][round-N] in (1,2,3): return (N-1-i,round-N)
+    elif round<3*N:
+        for j in range(N):
+            if graph[3*N-1-round][N-1-j] in (1,2,3): return (3*N-1-round,N-1-j)
     else:
-        # 3n+1 ~ 4n 라운드의 경우 위에서 아랫쪽 방향으로 공을 던집니다.
-        t -= (3 * n)
-        for i in range(1, n + 1):
-            if 1 <= board[i][n + 1 - t] and board[i][n + 1 - t] <= 3:
-                # 사람이 있는 첫 번째 지점을 찾습니다.
-                # 찾게 되면 점수를 체크한 뒤 찾은 사람의 팀 번호를 저장합니다.
-                get_point(i, n + 1 - t)
-                return board_idx[i][n + 1 - t]
+        for i in range(N):
+            if graph[i][4*N-1-round] in (1,2,3): return(i,4*N-1-round)
+    return (-1,-1)
 
-    # 공이 그대로 지나간다면 0을 반환합니다.
-    return 0
+def change(x,y):  # 점수를 리턴함
+    if (x,y) == (-1,-1): return 0
+    # (-1,-1) 아닐때만 작동시킴에 유의!
+    for i in range(M):
+        if (x,y) in q[i]:
+            for j in range(len(q[i])):
+                if q[i][j] == (x,y):
+                    graph[q[i][0][0]][q[i][0][1]] = 3
+                    graph[q[i][-1][0]][q[i][-1][1]] = 1
+                    q[i].reverse()
+                    return (j+1)**2
 
-
-# 공을 획득한 팀을 순서를 바꿉니다.
-def reverse(got_ball_idx):
-    # 아무도 공을 받지 못했으면 넘어갑니다.
-    if got_ball_idx == 0: 
-        return
-
-    idx = got_ball_idx
-
-    new_v = []
-
-    # 순서를 맞춰 new_v에 레일을 넣어줍니다.
-    for j in range(tail[idx] - 1, -1, -1):
-        new_v.append(v[idx][j])
-
-    for j in range(len(v[idx]) - 1, tail[idx] - 1, -1):
-        new_v.append(v[idx][j])
-
-    v[idx] = new_v[:]
-
-    # 벡터에 저장한 정보를 바탕으로 보드의 표기 역시 바꿔줍니다.
-    for j, (r, c) in enumerate(v[idx]):
-        if j == 0:
-            board[r][c] = 1
-        elif j < tail[idx] - 1:
-            board[r][c] = 2
-        elif j == tail[idx] - 1:
-            board[r][c] = 3
-        else:
-            board[r][c] = 4
-
-
-# 입력을 받고 구현을 위한 기본적인 처리를 합니다.
-init()
-for i in range(1, k + 1):
-    # 각 팀을 머리사람을 따라 한칸씩 이동시킵니다.
-    move_all()
-
-    # i번째 라운드의 공을 던집니다. 공을 받은 사람을 찾아 점수를 추가합니다.
-    got_ball_idx = throw_ball(i)
-
-    # 공을 획득한 팀의 방향을 바꿉니다.
-    reverse(got_ball_idx)
-
-print(ans)
+cnt = 0
+for i in range(K):
+    move()
+    a,b = ball(i)
+    cnt += change(a,b)
+print(cnt)
