@@ -7,8 +7,6 @@ for _ in range(n):
     space.append(list(map(int,input().split())))
 guns=[[[] for _ in range(n)] for _ in range(n)]
 for i in range(n):
-    print(guns[i])
-for i in range(n):
     for j in range(n):
         if space[i][j]!=0:
             guns[i][j].append(space[i][j])
@@ -60,7 +58,7 @@ def loser_move(player):
     guns[player.r][player.c].append(player.gun)
     player.gun=0
     for i in range(4):
-        nd=(player.d+i)%4##%4를 빼먹다니/
+        nd=(player.d+i)%4
         nr=player.r+dr[nd]
         nc=player.c+dc[nd]
         if in_range(nr,nc) and find_player(nr,nc)==empty:
