@@ -71,12 +71,13 @@ def loser_move(player):
 def fight(p1,p2,nr,nc):
     if (p1.power+p1.gun,p1.power)>(p2.power+p2.gun,p2.power):
         points[p1.id]+=(p1.power+p1.gun)-(p2.power+p2.gun)
-        move(p1,nr,nc)
         loser_move(p2)
+        move(p1,nr,nc)
+
     else:
         points[p2.id]+=(p2.power+p2.gun)-(p1.power+p1.gun)
-        move(p2,nr,nc)
         loser_move(p1)
+        move(p2,nr,nc)
 
 def simulate():
     for player in players:
