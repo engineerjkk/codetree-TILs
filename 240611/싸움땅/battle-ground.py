@@ -11,6 +11,8 @@ for i in range(n):
         if space[i][j]!=0:
             guns[i][j].append(space[i][j])
 points=[0]*m
+dr=[-1,0,1,0]
+dc=[0,1,0,-1]
 
 class Player:
     def __init__(self,id,r,c,d,power,gun=0):
@@ -25,8 +27,6 @@ players=[]
 for id in range(m):
     r,c,d,power=map(int,input().split())
     players.append(Player(id,r-1,c-1,d,power))
-dr=[-1,0,1,0]
-dc=[0,1,0,-1]
 
 def in_range(r,c):
     return -1<r<n and -1<c<n
@@ -69,11 +69,10 @@ def loser_move(player):
             return
 
 def fight(p1,p2,nr,nc):
-    if (p1.power+p1.gun,p1.power)>(p2.power+p2.gun,p2.power):
+    if (p1.power+p1.gun,p1.power)>(p2.power+p2.gun,p2.gun):
         points[p1.id]+=(p1.power+p1.gun)-(p2.power+p2.gun)
         loser_move(p2)
         move(p1,nr,nc)
-
     else:
         points[p2.id]+=(p2.power+p2.gun)-(p1.power+p1.gun)
         loser_move(p1)
@@ -88,6 +87,7 @@ def simulate():
             move(player,nr,nc)
         else:
             fight(player,next_player,nr,nc)
+
 
 for _ in range(k):
     simulate()
