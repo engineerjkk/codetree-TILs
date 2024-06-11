@@ -69,7 +69,7 @@ def loser_move(player):
             return
 
 def fight(p1,p2,nr,nc):
-    if (p1.power+p1.gun,p1.power)>(p2.power+p2.gun,p2.gun):
+    if (p1.power+p1.gun,p1.power)>(p2.power+p2.gun,p2.power):
         points[p1.id]+=(p1.power+p1.gun)-(p2.power+p2.gun)
         loser_move(p2)
         move(p1,nr,nc)
