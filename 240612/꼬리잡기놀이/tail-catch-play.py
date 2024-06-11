@@ -54,16 +54,16 @@ def move():
                 team.appendleft((nr,nc))
                 break
 def ball(idx):
-    idx=idx%(4*N)
+    idx=idx%4
     if idx<N:
         for i in range(N):
             if space[idx][i] in (1,2,3):
                 return (idx,i)
-    elif idx<2*N:
+    elif idx<2:
         for i in range(N):
             if space[N-1-i][idx-N] in (1,2,3):
                 return (N-1-i,idx-N)
-    elif idx<3*N:
+    elif idx<3:
         for i in range(N):
             if space[3*N-1-idx][N-1-i] in (1,2,3):
                 return (3*N-1-idx,N-1-i)
