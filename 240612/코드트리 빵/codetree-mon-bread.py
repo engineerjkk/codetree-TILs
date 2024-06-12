@@ -51,7 +51,7 @@ def move():
         for j in range(4):
             nr=r+dr[j]
             nc=c+dc[j]
-            if in_range(nr,nc) and space[nr][nc]!=-1 and step[nr][nc]<distance:
+            if in_range(nr,nc) and visit[nr][nc] and step[nr][nc]<distance:
                 distance=step[nr][nc]
                 min_r=nr
                 min_c=nc
