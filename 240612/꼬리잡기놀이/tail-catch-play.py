@@ -60,23 +60,19 @@ def ball(idx):
             if space[idx][c] in (1,2,3):
                 return (idx,c)
     elif idx<2*N:
-        c=N-1
+
         for r in reversed(range(N)):
-            if space[r][c] in (1,2,3):
-                return (r,c)
-            c-=1
+            if space[r][N-1-idx%N] in (1,2,3):
+                return (r,N-1-idx%N)
     elif idx<3*N:
-        r=0
         for c in reversed(range(N)):
-            if space[r][c] in (1,2,3):
-                return (r,c)
-            r+=1
+            if space[N-1-idx%N][c] in (1,2,3):
+                return (N-1-idx%N,c)
     else:
-        c=0
+
         for r in range(N):
-            if space[r][c] in (1,2,3):
-                return (r,c)
-            c+=1
+            if space[r][idx%N] in (1,2,3):
+                return (r,idx%N)
     return (-1,-1)
 
 def change(r,c):
