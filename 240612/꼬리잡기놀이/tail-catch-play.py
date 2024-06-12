@@ -33,14 +33,15 @@ for i in range(N):
             for k in range(4):
                 nr=r+dr[k]
                 nc=c+dc[k]
-                if in_range(nr,nc) and space[nr][nc]==3:
+                if in_range(nr,nc) and not visit[nr][nc] and space[nr][nc]==3:
                     trace.append((nr,nc))
                     break
             teams.append(trace)
 
 def move():
     for team in teams:
-        r,c=team.pop()
+        print(team)
+        r,c=team.popleft()
         space[r][c]=4
         space[team[-1][0]][team[-1][1]]=3
         
