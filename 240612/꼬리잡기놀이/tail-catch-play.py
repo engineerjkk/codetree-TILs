@@ -7,6 +7,7 @@ for _ in range(N):
     space.append(list(map(int,input().split())))
 dr=[-1,0,1,0]
 dc=[0,1,0,-1]
+
 def in_range(r,c):
     return -1<r<N and -1<c<N
 
@@ -59,11 +60,11 @@ def ball(idx):
             if space[idx][c] in (1,2,3):
                 return (idx,c)
     elif idx<2*N:
-        for r in reversed(N):
+        for r in reversed(range(N)):
             if space[r][idx-N] in (1,2,3):
                 return (r,idx-N)
     elif idx<3*N:
-        for c in reversed(N):
+        for c in reversed(range(N)):
             if space[3*N-1-idx][c] in (1,2,3):
                 return (3*N-1-idx,c)
     else:
