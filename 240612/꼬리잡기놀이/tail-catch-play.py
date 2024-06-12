@@ -1,28 +1,28 @@
 import sys
 input = sys.stdin.readline
 from collections import deque
+N,M,K=map(int,input().split())
 dr=[-1,0,1,0]
 dc=[0,1,0,-1]
-n,m,K=map(int,input().split())
 space=[]
-for _ in range(n):
+for _ in range(N):
     space.append(list(map(int,input().split())))
 
-teams=[]
 def in_range(r,c):
-    return -1<r<n and -1<c<n
+    return -1<r<N and -1<c<N
 
-for i in range(n):
-    for j in range(n):
+teams=[]
+for i in range(N):
+    for j in range(N):
         if space[i][j]==1:
             queue=deque()
             queue.append((i,j))
             trace=deque()
             trace.append((i,j))
-            visit=[[False]*n for _ in range(n)]
+            visit=[[False]*N for _ in range(N)]
             visit[i][j]=True
             while queue:
-                r,c = queue.popleft()
+                r,c=queue.popleft()
                 for k in range(4):
                     nr=r+dr[k]
                     nc=c+dc[k]
@@ -44,32 +44,33 @@ def move():
         r,c=team.pop()
         space[r][c]=4
         space[team[-1][0]][team[-1][1]]=3
-
         r,c=team[0]
         space[r][c]=2
         for i in range(4):
             nr=r+dr[i]
             nc=c+dc[i]
             if in_range(nr,nc) and space[nr][nc]==4:
-                space[nr][nc]=1
-                team.appendleft((nr,nc))
+                team.appendleft((nr,nc))##leftappend 아님
+                #team[0]=1 여기엔 좌표를 저장하는거고 
+                space[nr][nc]=1 #여기에 1을 저장해야지!
                 break
+
 def ball(idx):
-    idx=idx%(4*n)
-    if idx<n:
-        for c in range(n):
+    idx=idx%(4*N)
+    if idx<N:
+        for c in range(N):
             if space[idx][c] in (1,2,3):
                 return (idx,c)
-    elif idx<2*n:
-        for r in reversed(range(n)):
-            if space[r][idx-n] in (1,2,3):
-                return (r,idx-n)
-    elif idx<3*n:
-        for c in reversed(range(n)):
-            if space[3*n-1-idx][c] in (1,2,3):
-                return (3*n-1-idx,c)
-    else :
-        for r in range(n):
+    elif idx<2*N:
+        for r in reversed(range(N)):
+            if space[r][idx-N] in (1,2,3):
+                return (r,idx-N)
+    elif idx<3*N:
+        for c in reversed(range(N)):
+            if space[3*N-1-idx][c] in (1,2,3):
+                return (3*N-1-idx,c)
+    else: 
+        for r in range(N):
             if space[r][4*n-1-idx] in (1,2,3):
                 return (r,4*n-1-idx)
     return (-1,-1)
@@ -77,7 +78,8 @@ def ball(idx):
 def change(r,c):
     if r==-1 and c==-1:
         return 0
-    for i in range(m):
+    
+    for i in range(M):
         if (r,c) in teams[i]:
             for j in range(len(teams[i])):
                 if teams[i][j]==(r,c):
