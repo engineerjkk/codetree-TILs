@@ -1,14 +1,12 @@
 import sys
 input = sys.stdin.readline
 from collections import deque
-
 N,M,K=map(int,input().split())
 space=[]
 for _ in range(N):
     space.append(list(map(int,input().split())))
 dr=[-1,0,1,0]
 dc=[0,1,0,-1]
-
 def in_range(r,c):
     return -1<r<N and -1<c<N
 
@@ -61,11 +59,11 @@ def ball(idx):
             if space[idx][c] in (1,2,3):
                 return (idx,c)
     elif idx<2*N:
-        for r in reversed(range(N)):
+        for r in reversed(N):
             if space[r][idx-N] in (1,2,3):
                 return (r,idx-N)
     elif idx<3*N:
-        for c in reversed(range(N)):
+        for c in reversed(N):
             if space[3*N-1-idx][c] in (1,2,3):
                 return (3*N-1-idx,c)
     else:
@@ -75,7 +73,7 @@ def ball(idx):
     return (-1,-1)
 
 def change(r,c):
-    if r==-1 and c==-1:
+    if (r,c)==(-1,-1):
         return 0
     
     for i in range(M):
