@@ -3,25 +3,26 @@ input = sys.stdin.readline
 from collections import deque
 dr=[-1,0,1,0]
 dc=[0,1,0,-1]
-N,M,K=map(int,input().split())
+n,m,K=map(int,input().split())
 space=[]
-for _ in range(N):
+for _ in range(n):
     space.append(list(map(int,input().split())))
 
 teams=[]
 def in_range(r,c):
-    return -1<r<N and -1<c<N
-for i in range(N):
-    for j in range(N):
+    return -1<r<n and -1<c<n
+
+for i in range(n):
+    for j in range(n):
         if space[i][j]==1:
             queue=deque()
             queue.append((i,j))
             trace=deque()
             trace.append((i,j))
-            visit=[[False]*N for _ in range(N)]
+            visit=[[False]*n for _ in range(n)]
             visit[i][j]=True
             while queue:
-                r,c=queue.popleft()
+                r,c = queue.popleft()
                 for k in range(4):
                     nr=r+dr[k]
                     nc=c+dc[k]
@@ -43,7 +44,7 @@ def move():
         r,c=team.pop()
         space[r][c]=4
         space[team[-1][0]][team[-1][1]]=3
-        
+
         r,c=team[0]
         space[r][c]=2
         for i in range(4):
@@ -54,31 +55,29 @@ def move():
                 team.appendleft((nr,nc))
                 break
 def ball(idx):
-    idx=idx%(4*N)
-    if idx<N:
-        for c in range(N):
+    idx=idx%(4*n)
+    if idx<n:
+        for c in range(n):
             if space[idx][c] in (1,2,3):
                 return (idx,c)
-    elif idx<2*N:
-
-        for r in reversed(range(N)):
-            if space[r][idx-N] in (1,2,3):
-                return (r,idx-N)
-    elif idx<3*N:
-        for c in reversed(range(N)):
-            if space[3*N-1-idx][c] in (1,2,3):
-                return (3*N-1-idx,c)
-    else:
-
-        for r in range(N):
-            if space[r][4*N-1-idx] in (1,2,3):
-                return (r,4*N-1-idx)
+    elif idx<2*n:
+        for r in reversed(range(n)):
+            if space[r][idx-n] in (1,2,3):
+                return (r,idx-n)
+    elif idx<3*n:
+        for c in reversed(range(n)):
+            if space[3*n-1-idx][c] in (1,2,3):
+                return (3*n-1-idx,c)
+    else :
+        for r in range(n):
+            if space[r][4*n-1-idx] in (1,2,3):
+                return (r,4*n-1-idx)
     return (-1,-1)
 
 def change(r,c):
     if r==-1 and c==-1:
         return 0
-    for i in range(M):
+    for i in range(m):
         if (r,c) in teams[i]:
             for j in range(len(teams[i])):
                 if teams[i][j]==(r,c):
@@ -86,6 +85,7 @@ def change(r,c):
                     space[teams[i][-1][0]][teams[i][-1][1]]=1
                     teams[i].reverse()
                     return (j+1)**2
+
 
 cnt=0
 for i in range(K):
