@@ -50,9 +50,9 @@ def move():
             nr=r+dr[i]
             nc=c+dc[i]
             if in_range(nr,nc) and space[nr][nc]==4:
-                team.appendleft((nr,nc))
                 space[nr][nc]=1
-
+                team.appendleft((nr,nc))
+    
 def ball(idx):
     idx=idx%(4*N)
     if idx<N:
@@ -76,7 +76,6 @@ def ball(idx):
 def change(r,c):
     if (r,c)==(-1,-1):
         return 0
-    
     for i in range(M):
         if (r,c) in teams[i]:
             for j in range(len(teams[i])):
