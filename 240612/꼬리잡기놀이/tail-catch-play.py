@@ -1,12 +1,13 @@
 import sys
 input = sys.stdin.readline
 from collections import deque
+
 N,M,K=map(int,input().split())
-dr=[-1,0,1,0]
-dc=[0,1,0,-1]
 space=[]
 for _ in range(N):
     space.append(list(map(int,input().split())))
+dr=[-1,0,1,0]
+dc=[0,1,0,-1]
 
 def in_range(r,c):
     return -1<r<N and -1<c<N
@@ -50,10 +51,8 @@ def move():
             nr=r+dr[i]
             nc=c+dc[i]
             if in_range(nr,nc) and space[nr][nc]==4:
-                team.appendleft((nr,nc))##leftappend 아님
-                #team[0]=1 여기엔 좌표를 저장하는거고 
-                space[nr][nc]=1 #여기에 1을 저장해야지!
-                break
+                team.appendleft((nr,nc))
+                space[nr][nc]=1
 
 def ball(idx):
     idx=idx%(4*N)
@@ -69,7 +68,7 @@ def ball(idx):
         for c in reversed(range(N)):
             if space[3*N-1-idx][c] in (1,2,3):
                 return (3*N-1-idx,c)
-    else: 
+    else:
         for r in range(N):
             if space[r][4*N-1-idx] in (1,2,3):
                 return (r,4*N-1-idx)
@@ -87,7 +86,6 @@ def change(r,c):
                     space[teams[i][-1][0]][teams[i][-1][1]]=1
                     teams[i].reverse()
                     return (j+1)**2
-
 
 cnt=0
 for i in range(K):
