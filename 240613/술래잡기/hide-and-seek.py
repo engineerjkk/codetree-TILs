@@ -3,7 +3,6 @@ input = sys.stdin.readline  # 빠른 입력을 위해 sys.stdin.readline 사용
 
 # 게임 설정 변수 초기화
 n, m, h, k = map(int, input().split())  # 격자 크기, 도망자 수, 나무 수, 턴 수 입력
-change_direction = [(0, 0), (n // 2, n // 2)]  # 술래 방향 전환 지점 리스트
 runner_dict = {}  # 도망자 정보를 담을 딕셔너리
 runner_map = [[[] for _ in range(n)] for _ in range(n)]  # 각 위치에 있는 도망자 ID 리스트
 tree_map = [[0] * n for _ in range(n)]  # 나무 위치 정보
@@ -39,13 +38,14 @@ class Catcher:
         self.c += dc[self.d]
         return self.r, self.c
 
-# 술래 방향 전환 지점 설정
-for i in range(n // 2):  # 0부터 (n // 2 - 1)까지 반복 (격자 중심에서 바깥쪽으로 이동)
-    change_direction.append((max(n // 2 - i - 1, 0), n // 2 - i))
-    change_direction.append((n // 2 - i - 1, n // 2 + i + 1))
-    change_direction.append((n // 2 + i + 1, n // 2 + i + 1))
-    change_direction.append((n // 2 + i + 1, n // 2 - i - 1))
-
+change_direction=[(n//2,n//2)]
+#왼쪽위,오른쪽위,오른쪽아래,왼쪽아래
+for i in range(n//2):
+    change_direction.append((max(n//2-i-1,0),n//2-i))
+    change_direction.append((n//2-i-1,n//2+i+1))
+    change_direction.append((n//2+i+1,n//2+i+1))
+    change_direction.append((n//2+i+1,n//2-i-1))
+change_direction.append((0,0))
 # 도망자 정보 입력 및 초기화
 for i in range(m):
     r, c, d = map(int, input().split())  # 위치, 이동 방법 입력
@@ -106,7 +106,7 @@ def move_catcher():
 
 # 범위 확인 함수
 def in_range(r, c):
-    return 0 <= r < n and 0 <= c < n
+    return -1 <r < n and -1< c < n
 
 # 술래가 도망자를 잡는 함수
 def catch(t, score):
