@@ -41,7 +41,7 @@ class Catcher:
 change_direction=[(n//2,n//2)]
 #왼쪽위,오른쪽위,오른쪽아래,왼쪽아래
 for i in range(n//2):
-    change_direction.append((max(n//2-i-1,0),n//2-i))
+    change_direction.append((n//2-i-1,n//2-i))
     change_direction.append((n//2-i-1,n//2+i+1))
     change_direction.append((n//2+i+1,n//2+i+1))
     change_direction.append((n//2+i+1,n//2-i-1))
