@@ -1,27 +1,24 @@
 import sys
 input = sys.stdin.readline
-n,m,h,k=map(int,input().split())
+n,m,h,k = map(int,input().split())
 runner_dict={}
-runner_map=[[[] for _ in range((n))] for _ in range(n)]
+runner_map=[[[] for _ in range(n)] for _ in range(n)]
 tree_map=[[0]*n for _ in range(n)]
 score=0
 dr=[-1,0,1,0]
 dc=[0,1,0,-1]
-change_direction = [(n//2, n//2)]
-
+change_direction=[(n//2,n//2)]
 for i in range(n//2):
-    # 인덱스가 유효 범위 내에 있도록 조정
-    left_top = (max(n//2-i-1, 0), max(n//2-i, 0))
-    right_top = (max(n//2-i-1, 0), min(n-1, n//2+i+1))
-    right_bottom = (min(n-1, n//2+i+1), min(n-1, n//2+i+1))
-    left_bottom = (min(n-1, n//2+i+1), max(n//2-i-1, 0))
+    left_top=(n//2-i-1,n//2-i)
+    right_top=(n//2-i-1,n//2+i+1)
+    right_bottom=(n//2+i+1,n//2+i+1)
+    left_bottom=(n//2+i+1,n//2-i-1)
     
     change_direction.append(left_top)
     change_direction.append(right_top)
     change_direction.append(right_bottom)
     change_direction.append(left_bottom)
-
-change_direction.append((0, 0))
+change_direction.append((0,0))
 
 class Runner:
     def __init__(self,id,r,c,d):
@@ -29,10 +26,8 @@ class Runner:
         self.r=r
         self.c=c
         self.d=d
-    
     def get_next(self):
         return self.r+dr[self.d],self.c+dc[self.d]
-
     def change_dir(self):
         self.d=(self.d+2)%4
 
@@ -66,16 +61,17 @@ def in_range(r,c):
     return -1<r<n and -1<c<n
 
 def move_runner():
-    for runner_id,runner in runner_dict.items():
+    for key,runner in runner_dict.items():
         if abs(catcher.r-runner.r)+abs(catcher.c-runner.c)<=3:
             next_r,next_c=runner.get_next()
             if not in_range(next_r,next_c):
                 runner.change_dir()
                 next_r,next_c=runner.get_next()
-            if (next_r,next_c) != (catcher.r,catcher.c):
+            if (next_r,next_c)!=(catcher.r,catcher.c):
                 runner_map[runner.r][runner.c].remove(runner.id)
                 runner.r,runner.c=next_r,next_c
                 runner_map[runner.r][runner.c].append(runner.id)
+
 def move_catcher():
     r,c=catcher.move()
     if (r,c) in change_direction:
@@ -101,21 +97,20 @@ def move_catcher():
                     catcher.d=1
                 else:
                     catcher.d=0
-
-def catch(t,score):
+def catch(t):
     r,c=catcher.r,catcher.c
-    catched_runner=[]
+    caught_runner=[]
     for i in range(3):
         watched_r,watched_c=r+dr[catcher.d]*i,c+dc[catcher.d]*i
         if in_range(watched_r,watched_c):
             if tree_map[watched_r][watched_c]==0 and runner_map[watched_r][watched_c]:
                 runner_id_list=runner_map[watched_r][watched_c]
                 for runner_id in runner_id_list:
-                    catched_runner.append(runner_dict[runner_id])
-    for runner in catched_runner:
+                    caught_runner.append(runner_dict[runner_id])
+    for runner in caught_runner:
         runner_map[runner.r][runner.c].remove(runner.id)
         del runner_dict[runner.id]
-    return score+len(catched_runner)*t
+    return len(caught_runner)*t
 
 def rotate():
     if catcher.r==0 and catcher.c==0:
@@ -124,14 +119,16 @@ def rotate():
     if catcher.r==n//2 and catcher.c==n//2:
         catcher.d=0
         catcher.flag=True
-               
+
 
 t=1
 score=0
-while runner_dict and t<=k:
+while True:
+    if len(runner_dict)<=0 or t>k:
+        break
     move_runner()
     move_catcher()
-    score=catch(t,score)
+    score+=catch(t)
     rotate()
     t+=1
 print(score)
