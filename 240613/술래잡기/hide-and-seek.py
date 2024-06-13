@@ -34,8 +34,8 @@ class Catcher:
 for i in range(n//2):
     change_direction.append((max(n//2-i-1,0),n//2-i))
     change_direction.append((n//2-i-1,n//2+i+1))
-    change_direction.append((n//2-i-1,n//2+i+1))
-    change_direction.append((n//2-i-1,n//2+i+1))
+    change_direction.append((n//2+i+1,n//2+i+1))
+    change_direction.append((n//2+i+1,n//2-i-1))
 
 for i in range(m):
     r,c,d=map(int,input().split())
