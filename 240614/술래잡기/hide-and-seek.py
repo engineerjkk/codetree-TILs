@@ -35,8 +35,8 @@ class Catcher:
         self.d=d
         self.flag=True
     def move(self):
-        self.r=self.r+dr[d]
-        self.c=self.c+dc[d]
+        self.r=self.r+dr[self.d]
+        self.c=self.c+dc[self.d]#ㅋㅋ 오타 self.d인데 그냥 d로하다니~!
         return self.r,self.c
 
 runner_dic={}
