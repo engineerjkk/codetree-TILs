@@ -37,6 +37,9 @@ for i in range(n//2):
     change_direction.append((n//2+i+1,n//2+i+1))
     change_direction.append((n//2+i+1,n//2-i-1))
 
+for i in range(len(change_direction)):
+    print(change_direction[i])
+
 for i in range(m):
     r,c,d=map(int,input().split())
     if d==1:
@@ -63,7 +66,6 @@ def move_runner():
                 runner.r,runner.c=next_r,next_c
                 runner_map[runner.r][runner.c].append(runner.id)
 def move_catcher():
-    a,b=catcher.r,catcher.c
     r,c=catcher.move()
     if (r,c) in change_direction:
         if r<n//2:
