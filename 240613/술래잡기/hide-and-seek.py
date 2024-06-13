@@ -31,12 +31,11 @@ class Catcher:
         return self.r,self.c
 
 
-for i in range(n // 2):
-    # 달팽이 모양 이동 경로 계산
-    change_direction.append((max(n // 2 - i - 1, 0), n // 2 - i))
-    change_direction.append((n // 2 - i - 1, n // 2 + i + 1))
-    change_direction.append((n // 2 + i + 1, n // 2 + i + 1))
-    change_direction.append((n // 2 + i + 1, n // 2 - i - 1))
+for i in range(n//2):
+    change_direction.append((max(n//2-i-1,0),n//2-i))
+    change_direction.append((n//2-i-1,n//2+i+1))
+    change_direction.append((n//2+i+1,n//2+i+1))
+    change_direction.append((n//2+i+1,n//2-i-1))
 
 for i in range(m):
     r,c,d=map(int,input().split())
@@ -64,32 +63,33 @@ def move_runner():
                 runner.r,runner.c=next_r,next_c
                 runner_map[runner.r][runner.c].append(runner.id)
 def move_catcher():
-    a,b=catcher.r,catcher.c
-    r,c=catcher.move()
-    if (r,c) in change_direction:
-        if r<n//2:
-            if c>n//2:
-                if catcher.flag:
-                    catcher.d=(1,0)
-                else:
-                    catcher.d=(0,-1)
-            else:
-                if catcher.flag:
-                    catcher.d=(0,1)
-                else:
-                    catcher.d=(1,0)
-        else:
-            if c>=n//2:
-                if catcher.flag:
-                    catcher.d=(0,-1)
-                else:
-                    catcher.d=(-1,0)
-            else:
-                if catcher.flag:
-                    catcher.d=(-1,0)
-                else:
-                    catcher.d=(0,1)
+    """
+    달팽이 모양으로 이동
 
+    1. 1칸 이동
+    2. 방향 바꾸는 지점 -> 방향 바꾸기
+    """
+    a, b = catcher.r, catcher.c
+    r, c = catcher.move()
+    if (r, c) in change_direction:
+        if r < n // 2:
+            # 안 -> 밖: 우 -> 하
+            # 밖 -> 안: 상 -> 좌
+            if c > n // 2:
+                catcher.d = (1, 0) if catcher.flag else (0, -1)
+            # 안 -> 밖: 상 -> 우
+            # 밖 -> 안: 좌 -> 하
+            else:
+                catcher.d = (0, 1) if catcher.flag else (1, 0)
+        else:
+            # 안 -> 밖: 하 -> 좌
+            # 밖 -> 안: 우 -> 상
+            if c >= n // 2:
+                catcher.d = (0, -1) if catcher.flag else (-1, 0)
+            # 안 -> 밖: 좌 -> 상
+            # 밖 -> 안: 하 -> 우
+            else:
+                catcher.d = (-1, 0) if catcher.flag else (0, 1)
 def catch(t,score):
     r,c=catcher.r,catcher.c
     catch_runner=[]
