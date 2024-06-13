@@ -63,46 +63,47 @@ def move_runner():
                 runner.r,runner.c=next_r,next_c
                 runner_map[runner.r][runner.c].append(runner.id)
 def move_catcher():
-    """
-    달팽이 모양으로 이동
-
-    1. 1칸 이동
-    2. 방향 바꾸는 지점 -> 방향 바꾸기
-    """
-    a, b = catcher.r, catcher.c
-    r, c = catcher.move()
-    if (r, c) in change_direction:
-        if r < n // 2:
-            # 안 -> 밖: 우 -> 하
-            # 밖 -> 안: 상 -> 좌
-            if c > n // 2:
-                catcher.d = (1, 0) if catcher.flag else (0, -1)
-            # 안 -> 밖: 상 -> 우
-            # 밖 -> 안: 좌 -> 하
+    a,b=catcher.r,catcher.c
+    r,c=catcher.move()
+    if (r,c) in change_direction:
+        if r<n//2:
+            if c>n//2:
+                if catcher.flag:
+                    catcher.d=(1,0)
+                else:
+                    catcher.d=(0,-1)
             else:
-                catcher.d = (0, 1) if catcher.flag else (1, 0)
+                if catcher.flag:
+                    catcher.d=(0,1)
+                else:
+                    catcher.d=(1,0)
         else:
-            # 안 -> 밖: 하 -> 좌
-            # 밖 -> 안: 우 -> 상
-            if c >= n // 2:
-                catcher.d = (0, -1) if catcher.flag else (-1, 0)
-            # 안 -> 밖: 좌 -> 상
-            # 밖 -> 안: 하 -> 우
+            if c>=n//2:
+                if catcher.flag:
+                    catcher.d=(0,-1)
+                else:
+                    catcher.d=(-1,0)
             else:
-                catcher.d = (-1, 0) if catcher.flag else (0, 1)
+                if catcher.flag:
+                    catcher.d=(-1,0)
+                else:
+                    catcher.d=(0,1)
+
 def catch(t,score):
     r,c=catcher.r,catcher.c
     catch_runner=[]
     for i in range(3):
         watch_r,watch_c=r+catcher.d[0]*i,c+catcher.d[1]*i
-        if tree_map[watch_r][watch_c]==0 and runner_map[watch_r][watch_c]:
-            runner_id_list=runner_map[watch_r][watch_c]
-            for runner_id in runner_id_list:
-                catch_runner.append(runner_dict[runner_id])
+        if in_range(watch_r,watch_c)
+            if tree_map[watch_r][watch_c]==0 and runner_map[watch_r][watch_c]:
+                runner_id_list=runner_map[watch_r][watch_c]
+                for runner_id in runner_id_list:
+                    catch_runner.append(runner_dict[runner_id])
     for runner in catch_runner:
         runner_map[runner.r][runner.c].remove(runner.id)
         del runner_dict[runner.id]
     return score+len(catch_runner)*t
+
 def rotate():
     if catcher.r==0 and catcher.c==0:
         catcher.d=(1,0)
