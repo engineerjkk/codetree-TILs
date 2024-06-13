@@ -79,29 +79,64 @@ def move_runner():
 
 # 술래 이동 함수
 def move_catcher():
-    a, b = catcher.r, catcher.c
     r, c = catcher.move()
 
     if (r, c) in change_direction:
-        if r < n // 2:
-            if c > n // 2:
-                if catcher.flag:
-                    catcher.d = 2  # 남쪽
-                else:
-                    catcher.d = 3  # 서쪽
-            else:
-                if catcher.flag:
+        if catcher.flag:  # 바깥쪽으로 이동 중
+            if r <= n // 2 and c <= n // 2:  # 좌상단
+                if r == c:  # 대각선일 때
                     catcher.d = 1  # 동쪽
-                else:
-                    catcher.d = 2  # 남쪽
-        else:
-            if c >= n // 2:
-                if catcher.flag:
-                    catcher.d = 3  # 서쪽
-                else:
+                elif r < c:
                     catcher.d = 0  # 북쪽
-            else:
-                if catcher.flag:
+                else:
+                    catcher.d = 3  # 서쪽
+            elif r <= n // 2 and c > n // 2:  # 우상단
+                if n // 2 - r == c - n // 2:
+                    catcher.d = 2  # 남쪽
+                elif n // 2 - r > c - n // 2:
+                    catcher.d = 0  # 북쪽
+                else:
+                    catcher.d = 1  # 동쪽
+            elif r > n // 2 and c > n // 2:  # 우하단
+                if r == c:
+                    catcher.d = 3  # 서쪽
+                elif r - n // 2 < c - n // 2:
+                    catcher.d = 2  # 남쪽
+                else:
+                    catcher.d = 1  # 동쪽
+            else:  # 좌하단
+                if r - n // 2 == n // 2 - c:
+                    catcher.d = 0  # 북쪽
+                elif r - n // 2 > n // 2 - c:
+                    catcher.d = 2  # 남쪽
+                else:
+                    catcher.d = 3  # 서쪽
+        else:  # 안쪽으로 이동 중
+            if r >= n // 2 and c >= n // 2:  # 우하단
+                if r == c:
+                    catcher.d = 1  # 동쪽
+                elif r > c:
+                    catcher.d = 2  # 남쪽
+                else:
+                    catcher.d = 3  # 서쪽
+            elif r >= n // 2 and c < n // 2:  # 좌하단
+                if r - n // 2 == n // 2 - c:
+                    catcher.d = 0  # 북쪽
+                elif r - n // 2 > n // 2 - c:
+                    catcher.d = 2  # 남쪽
+                else:
+                    catcher.d = 3  # 서쪽
+            elif r < n // 2 and c < n // 2:  # 좌상단
+                if n // 2 - r == n // 2 - c:
+                    catcher.d = 2  # 남쪽
+                elif n // 2 - r > n // 2 - c:
+                    catcher.d = 0  # 북쪽
+                else:
+                    catcher.d = 1  # 동쪽
+            else:  # 우상단
+                if n // 2 - r == c - n // 2:
+                    catcher.d = 3  # 서쪽
+                elif n // 2 - r > c - n // 2:
                     catcher.d = 0  # 북쪽
                 else:
                     catcher.d = 1  # 동쪽
