@@ -88,7 +88,7 @@ def move_catcher():
                 else:
                     catcher.d=2
             else:
-                if c<n//2:
+                if c<=n//2:
                     catcher.d=0
                 else:
                     catcher.d=3
@@ -99,7 +99,7 @@ def move_catcher():
                 else:
                     catcher.d=3
             else:
-                if c<n//2:
+                if c<=n//2:
                     catcher.d=1
                 else:
                     catcher.d=0
