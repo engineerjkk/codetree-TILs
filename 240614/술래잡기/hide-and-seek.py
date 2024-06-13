@@ -70,7 +70,7 @@ def move_runner():
             if (catcher.r,catcher.c)!=(nr,nc):
                 runner_map[runner.r][runner.c].remove(runner.id)
                 runner.r,runner.c=nr,nc
-                runner_map[runner.r][runner.c].append(runner.id)
+                runner_map[runner.r][runner.c].append(runner.id)#오타..
 
 def move_catcher():
     r,c=catcher.move()
