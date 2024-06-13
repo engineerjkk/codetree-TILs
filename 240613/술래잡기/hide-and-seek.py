@@ -52,7 +52,7 @@ for i in range(m):
     if d == 1:  # 좌우 이동
         d = 1  # 동쪽
     else:  # 상하 이동
-        d = 2  # 북 쪽
+        d = 2  # 남 쪽
     runner_dict[i + 1] = Runner(i + 1, r - 1, c - 1, d)  # 도망자 객체 생성
     runner_map[r - 1][c - 1].append(i + 1)  # 위치 정보에 도망자 ID 추가
 
@@ -79,32 +79,30 @@ def move_runner():
 
 # 술래 이동 함수
 def move_catcher():
-    a, b = catcher.r, catcher.c
-    r, c = catcher.move()
-
-    if (r, c) in change_direction:
-        if r < n // 2:
-            if c > n // 2:
-                if catcher.flag:
-                    catcher.d = 2  # 남쪽
+    r,c=catcher.move()
+    if (r,c) in change_direction:
+        if catcher.flag:
+            if r<n//2:
+                if c<=n//2:
+                    catcher.d=1
                 else:
-                    catcher.d = 3  # 서쪽
+                    catcher.d=2
             else:
-                if catcher.flag:
-                    catcher.d = 1  # 동쪽
+                if c<n//2:
+                    catcher.d=0
                 else:
-                    catcher.d = 2  # 남쪽
+                    catcher.d=3
         else:
-            if c >= n // 2:
-                if catcher.flag:
-                    catcher.d = 3  # 서쪽
+            if r<n//2:
+                if c<=n//2:
+                    catcher.d=2
                 else:
-                    catcher.d = 0  # 북쪽
+                    catcher.d=3
             else:
-                if catcher.flag:
-                    catcher.d = 0  # 북쪽
+                if c<n//2:
+                    catcher.d=1
                 else:
-                    catcher.d = 1  # 동쪽
+                    catcher.d=0
 
 # 범위 확인 함수
 def in_range(r, c):
