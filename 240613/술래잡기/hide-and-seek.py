@@ -88,6 +88,8 @@ def move_catcher():
                     catcher.d=(-1,0)
                 else:
                     catcher.d=(0,1)
+def in_range(r,c):
+    return -1<r<n and -1<c<n
 
 def catch(t,score):
     r,c=catcher.r,catcher.c
