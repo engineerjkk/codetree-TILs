@@ -109,23 +109,20 @@ def in_range(r, c):
     return -1 <r < n and -1< c < n
 
 # 술래가 도망자를 잡는 함수
-def catch(t, score):
-    r, c = catcher.r, catcher.c
-    catch_runner = []
-
+def catch(t,score):
+    r,c=catcher.r,catcher.c
+    catched_runner=[]
     for i in range(3):
-        watch_r, watch_c = r + dr[catcher.d] * i, c + dc[catcher.d] * i
-        if in_range(watch_r, watch_c):
-            if tree_map[watch_r][watch_c] == 0 and runner_map[watch_r][watch_c]:
-                runner_id_list = runner_map[watch_r][watch_c]
+        watched_r,watched_c=r+dr[catcher.d]*i,c+dc[catcher.d]*i
+        if in_range(watched_r,watched_c):
+            if tree_map[watched_r][watched_c]==0 and runner_map[watched_r][watched_c]:
+                runner_id_list=runner_map[watched_r][watched_c]
                 for runner_id in runner_id_list:
-                    catch_runner.append(runner_dict[runner_id])
-
-    for runner in catch_runner:
+                    catched_runner.append(runner_dict[runner_id])
+    for runner in catched_runner:
         runner_map[runner.r][runner.c].remove(runner.id)
         del runner_dict[runner.id]
-
-    return score + len(catch_runner) * t
+    return score+len(catched_runner)*t
 
 # 술래의 방향 전환 함수
 def rotate():
