@@ -123,12 +123,11 @@ def rotate():
 
 t=1
 score=0
-while True:
-    if len(runner_dict)<=0 or t>k:
+for t in range(1,k+1):
+    if len(runner_dict)==0:
         break
     move_runner()
     move_catcher()
     score+=catch(t)
     rotate()
-    t+=1
 print(score)
