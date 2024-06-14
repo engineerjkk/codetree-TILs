@@ -1,67 +1,102 @@
-sharkdir = [(-1,0),(0,-1),(1,0),(0,1)]  # 상좌하우
-dir = [(-1,0),(-1,-1),(0,-1),(1,-1),(1,0),(1,1),(0,1),(-1,1)]
+# 방향 벡터 정의 (상좌하우)
+shark_directions = [(-1, 0), (0, -1), (1, 0), (0, 1)]
+monster_directions = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1)]
+dr=[-1,0,1,0]
+dc=[0,-1,0,1]
+dr2=[-1,-1,0,1,1,1,0,-1]
+dc2=[0,-1,-1,-1,0,1,1,1]
+
+# 입력 받기
 M, T = map(int, input().split())
 R, C = map(int, input().split())
-R, C = R-1, C-1  # 팩맨 좌표
-monster = {}
-smell = {}
+R, C = R - 1, C - 1  # 팩맨 좌표 조정
+
+# 몬스터와 냄새 정보를 담을 딕셔너리 초기화
+monsters = {}
+smells = {}
+
+# 몬스터 정보 입력 받기
 for _ in range(M):
-    a, b, c = map(int, input().split())
-    if (a-1,b-1) in monster: monster[(a-1,b-1)].append(c-1)
-    else: monster[(a-1,b-1)] = [c-1]
+    r, c, d = map(int, input().split())
+    pos = (r - 1, c - 1)
+    if pos in monsters:
+        monsters[pos].append(d - 1)
+    else:
+        monsters[pos] = [d - 1]
 
-def packmove(level,cnt,llist,x,y):
-    global maxprey
-    if level==3:
-        if cnt>maxprey[0]:
-            maxprey = [cnt,x,y,llist[:]]
+# 팩맨의 이동을 처리하는 함수
+def packman_move(level, prey_count, path, r, c):
+    global max_prey
+    if level == 3:
+        if prey_count > max_prey[0]:
+            max_prey = [prey_count, r, c, path[:]]
         return
+    
     for i in range(4):
-        nx, ny = x+sharkdir[i][0], y+sharkdir[i][1]
-        if nx<0 or nx>3 or ny<0 or ny>3: continue
-        elif (nx,ny) in llist:
-            packmove(level+1,cnt,llist,nx,ny)
-        elif (nx,ny) not in llist:
-            if (nx,ny) in new_monster: packmove(level+1,cnt+len(new_monster[(nx,ny)]),llist+[(nx,ny)],nx,ny)
-            else: packmove(level+1,cnt,llist+[(nx,ny)],nx,ny)
+        nr, nc = r + dr[i], c + dc[i]
+        if nr < 0 or nr > 3 or nc < 0 or nc > 3:
+            continue
+        elif (nr, nc) in path:
+            packman_move(level + 1, prey_count, path, nr, nc)
+        elif (nr, nc) not in path:
+            if (nr, nc) in new_monsters:
+                packman_move(level + 1, prey_count + len(new_monsters[(nr, nc)]), path + [(nr, nc)], nr, nc)
+            else:
+                packman_move(level + 1, prey_count, path + [(nr, nc)], nr, nc)
 
+def in_range(r,c):
+    return -1<r<4 and -1<c<4
+
+# 시뮬레이션 진행
 for time in range(T):
-    new_monster = {}
-    for x,y in monster:
-        for d in monster[(x,y)]:
+    new_monsters = {}
+    
+    # 몬스터 이동
+    for r, c in monsters:
+        for d in monsters[(r, c)]:
             for _ in range(8):
-                nx, ny = x+dir[d][0], y+dir[d][1]
-                if 0>nx or 3<nx or 0>ny or 3<ny or (nx,ny) in smell or (nx,ny)==(R,C):
-                    d = (d+1)%8
-                else: break
-            else: nx, ny = x, y
-            if (nx,ny) in new_monster: new_monster[(nx,ny)].append(d)
-            else: new_monster[(nx,ny)] = [d]  # 0:북 2:서 4:남 6:동
+                nr, nc = r + dr2[d], c + dc2[d]
+                if not in_range(nr,nc) or (nr, nc) in smells or (nr, nc) == (R, C):
+                    d = (d + 1) % 8
+                else:
+                    break
+            else:
+                nr, nc = r, c
+            
+            if (nr, nc) in new_monsters:
+                new_monsters[(nr, nc)].append(d)
+            else:
+                new_monsters[(nr, nc)] = [d]
+    
+    # 팩맨의 이동 및 최대 사냥 계산
+    max_prey = [-1, -1, -1, []]
+    packman_move(0, 0, [], R, C)
+    
+    # 팩맨의 사냥 결과 반영
+    for r, c in max_prey[3]:
+        if (r, c) in new_monsters:
+            del new_monsters[(r, c)]
+            smells[(r, c)] = 3
+    
+    R, C = max_prey[1], max_prey[2]
 
-    maxprey = [-1,-1,-1,[]]  # 수, 좌표
-    packmove(0,0,[],R,C)
-    for x,y in maxprey[3]:
+    # 냄새 감소 및 소멸 처리
+    expired_smells = []
+    for r, c in smells:
+        smells[(r, c)] -= 1
+        if smells[(r, c)] == 0:
+            expired_smells.append((r, c))
+    
+    for r, c in expired_smells:
+        del smells[(r, c)]
 
-        if (x,y) in new_monster:
-            del new_monster[(x,y)]
-            smell[(x,y)] = 3
-    R, C = maxprey[1], maxprey[2]
-
-    llist = []
-    for x,y in smell:
-        smell[(x,y)] -= 1
-        if smell[(x,y)] == 0:
-            llist.append((x,y))
-    for x,y in llist:  # 0이 된 냄새 소멸
-        del smell[(x,y)]
-
-    for x,y in new_monster:
-        if (x,y) in monster:
-            monster[(x,y)].extend(new_monster[(x,y)])
+    # 새로운 몬스터 정보 갱신
+    for r, c in new_monsters:
+        if (r, c) in monsters:
+            monsters[(r, c)].extend(new_monsters[(r, c)])
         else:
-            monster[(x,y)] = new_monster[(x,y)][:]
+            monsters[(r, c)] = new_monsters[(r, c)][:]
 
-answer = 0
-for x,y in monster:
-    answer += len(monster[(x,y)])
+# 결과 출력
+answer = sum(len(monsters[(r, c)]) for r, c in monsters)
 print(answer)
