@@ -1,18 +1,19 @@
 import sys
 input = sys.stdin.readline
-n,m,h,k=map(int,input().split())
-change_dir=[(n//2,n//2)]
+n,m,h,k = map(int,input().split())
+
+catcher_dir=[(n//2,n//2)]
 for i in range(n//2):
     left_top=(n//2-i-1,n//2-i)
     right_top=(n//2-i-1,n//2+i+1)
     right_bottom=(n//2+i+1,n//2+i+1)
     left_bottom=(n//2+i+1,n//2-i-1)
 
-    change_dir.append(left_top)
-    change_dir.append(right_top)
-    change_dir.append(right_bottom)
-    change_dir.append(left_bottom)
-change_dir.append((0,0))
+    catcher_dir.append(left_top)
+    catcher_dir.append(right_top)
+    catcher_dir.append(right_bottom)
+    catcher_dir.append(left_bottom)
+catcher_dir.append((0,0))
 
 dr=[-1,0,1,0]
 dc=[0,1,0,-1]
@@ -34,13 +35,14 @@ class Catcher:
         self.c=c
         self.d=d
         self.flag=True
-    def move(self):
-        self.r=self.r+dr[self.d]
-        self.c=self.c+dc[self.d]#ㅋㅋ 오타 self.d인데 그냥 d로하다니~!
-        return self.r,self.c
 
-runner_dic={}
+    def move(self):
+        self.r+=dr[self.d]
+        self.c+=dc[self.d]
+        return self.r, self.c
+
 runner_map=[[[] for _ in range(n)] for _ in range(n)]
+runner_dic={}
 for i in range(m):
     r,c,d=map(int,input().split())
     if d==1:
@@ -62,19 +64,19 @@ def in_range(r,c):
 
 def move_runner():
     for key,runner in runner_dic.items():
-        if abs(catcher.r-runner.r)+abs(catcher.c-runner.c)<=3:
+        if abs(catcher.r-runner.r)+abs(catcher.c-runner.c)<=3:#abs를 빼먹다니
             nr,nc=runner.get_next()
             if not in_range(nr,nc):
                 runner.change_dir()
                 nr,nc=runner.get_next()
-            if (catcher.r,catcher.c)!=(nr,nc):
+            if (nr,nc)!=(catcher.r,catcher.c):
                 runner_map[runner.r][runner.c].remove(runner.id)
                 runner.r,runner.c=nr,nc
-                runner_map[runner.r][runner.c].append(runner.id)#오타..
+                runner_map[runner.r][runner.c].append(runner.id)
 
 def move_catcher():
     r,c=catcher.move()
-    if (r,c) in change_dir:
+    if (r,c) in catcher_dir:
         if catcher.flag:
             if r<n//2:
                 if c<=n//2:
@@ -115,12 +117,11 @@ def catch(t):
 def rotate():
     r,c=catcher.r,catcher.c
     if (r,c)==(0,0):
-        catcher.d=2
         catcher.flag=False
+        catcher.d=2
     if (r,c)==(n//2,n//2):
-        catcher.d=0
         catcher.flag=True
-
+        catcher.d=0
 
 score=0
 for t in range(1,k+1):
