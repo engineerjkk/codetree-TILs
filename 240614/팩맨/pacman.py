@@ -1,6 +1,3 @@
-# 방향 벡터 정의 (상좌하우)
-shark_directions = [(-1, 0), (0, -1), (1, 0), (0, 1)]
-monster_directions = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1)]
 dr=[-1,0,1,0]
 dc=[0,-1,0,1]
 dr2=[-1,-1,0,1,1,1,0,-1]
@@ -57,7 +54,7 @@ for time in range(T):
             for _ in range(8):
                 nr, nc = r + dr2[d], c + dc2[d]
                 if not in_range(nr,nc) or (nr, nc) in smells or (nr, nc) == (R, C):
-                    d = (d + 1) % 8
+                    d = (d + 1) % 8 
                 else:
                     break
             else:
