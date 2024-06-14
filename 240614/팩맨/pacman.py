@@ -1,99 +1,210 @@
-dr=[-1,0,1,0]
-dc=[0,-1,0,1]
-dr2=[-1,-1,0,1,1,1,0,-1]
-dc2=[0,-1,-1,-1,0,1,1,1]
+MAX_T = 25
+MAX_N = 4
+MAX_DECAY = 2
 
-# 입력 받기
-M, T = map(int, input().split())
-R, C = map(int, input().split())
-R, C = R - 1, C - 1  # 팩맨 좌표 조정
+# 변수 선언 및 입력
+n = 4
+m, t = tuple(map(int, input().split()))
 
-# 몬스터와 시체정보 담을 딕셔너리 초기화
-monsters = {}
-dead_monsters = {}
+# 팩맨의 위치를 저장합니다.
+px, py = tuple(map(int, input().split()))
+px -= 1; py -= 1
 
-# 몬스터 정보 입력 받기
-for _ in range(M):
-    r, c, d = map(int, input().split())
-    pos = (r - 1, c - 1)
-    if pos in monsters:
-        monsters[pos].append(d - 1)
-    else:
-        monsters[pos] = [d - 1]
+# map의 상태를 뜻합니다.
+# t번째 턴에 (x, y) 위치에 방향 move_dir를 바라보고 있는
+# 몬스터의 수를 뜻합니다.
+monster = [
+	[
+		[	
+			[0] * 8
+			for _ in range(n)
+		]
+		for _ in range(n)
+	]
+	for _ in range(MAX_T + 1)
+]
 
-# 팩맨의 이동을 처리하는 함수
-def packman_move(level, prey_count, path, r, c):
-    global max_prey
-    if level == 3:
-        if prey_count > max_prey[0]:
-            max_prey = [prey_count, r, c, path[:]]
-        return
+# 시체를 관리하기 위한 배열입니다.
+# 좀 더 자세하게는,
+# (x, y)위치에서
+# 썩기 t초 전인 시체가
+# 몇 개 있는지를 의미합니다.
+dead = [
+	[
+		[0] * (MAX_DECAY + 1)
+		for _ in range(n)
+	]
+	for _ in range(n)
+]
+
+# 문제에서 주어지는 방향 순서대로
+# dx, dy 값들을 정의합니다. 
+# 몬스터를 위한 방향입니다.
+dr2 = [-1, -1,  0,  1, 1, 1, 0, -1]
+dc2 = [ 0, -1, -1, -1, 0, 1, 1,  1]
+
+# 팩맨을 위한
+# dx, dy를 따로 정의합니다.
+# 우선순위에 맞춰
+# 상좌하우 순으로 적어줍니다.
+dr = [-1,  0, 1, 0]
+dc = [ 0, -1, 0, 1]
+
+# 현재 몇 번째 턴인지를 저장합니다.
+t_num = 1
+
+
+# 영역 내에 있는지를 확인합니다.
+def in_range(x, y):
+    return 0 <= x and x < n and 0 <= y and y < n
+
+
+# 나아가려고 하는 위치가 영역 내에 있으며 
+# 몬스터 시체가 없고, 팩맨도 없다면
+# 이동이 가능합니다.
+def can_go(x, y):
+	return in_range(x, y) and dead[x][y][0] == 0 and dead[x][y][1] == 0 \
+	   and (x, y) != (px, py)
+
+
+def get_next_pos(x, y, move_dir):
+    # 현재 위치에서부터
+    # 반시계방향으로 45'씩 회전해보며
+    # 가능한 곳이 보이면 바로 이동합니다.
+    for c_dir in range(8):
+        n_dir = (move_dir + c_dir + 8) % 8
+        nx, ny = x + dr2[n_dir], y + dc2[n_dir]
+        if can_go(nx, ny):
+            return (nx, ny, n_dir)
+
+    # 이동이 불가능하다면, 움직이지 않고 기존 상태 그대로 반환합니다.
+    return (x, y, move_dir)
+
+
+def move_m():
+    # 각 (i, j)칸에 k 방향을 바라보고 있는 몬스터들이
+    # 그 다음으로 이동해야할 위치 및 방향을 구해
+    # 전부 (칸, 방향) 단위로 이동시켜 줍니다.
+    # 일일이 몬스터 마다 위치를 구해 이동시키면 시간초과가 발생합니다.
+    for i in range(n):
+        for j in range(n):
+            for k in range(8):
+                x, y, next_dir = get_next_pos(i, j, k)
+                monster[t_num][x][y][next_dir] += monster[t_num - 1][i][j][k]
+
+				
+def get_killed_num(dir1, dir2, dir3):
+    x, y = px, py
+    killed_num = 0
+
+    # 방문한적이 있는지를 기록합니다.
+    v_pos = []
+
+    for move_dir in [dir1, dir2, dir3]:
+        nx, ny = x + dr[move_dir], y + dc[move_dir]
+        # 움직이는 도중에 격자를 벗어나는 경우라면, 선택되면 안됩니다.
+        if not in_range(nx, ny):
+            return -1
+		# 이미 계산한 곳에 대해서는, 중복 계산하지 않습니다.
+        if (nx, ny) not in v_pos:
+            killed_num += sum(monster[t_num][nx][ny])
+            v_pos.append((nx, ny))
+        
+        x, y = nx, ny
+		
+    return killed_num
+
+
+def do_kill(best_route):
+    global px, py
     
-    for i in range(4):
-        nr, nc = r + dr[i], c + dc[i]
-        if nr < 0 or nr > 3 or nc < 0 or nc > 3:
-            continue
-        elif (nr, nc) in path:
-            packman_move(level + 1, prey_count, path, nr, nc)
-        elif (nr, nc) not in path:
-            if (nr, nc) in new_monsters:
-                packman_move(level + 1, prey_count + len(new_monsters[(nr, nc)]), path + [(nr, nc)], nr, nc)
-            else:
-                packman_move(level + 1, prey_count, path + [(nr, nc)], nr, nc)
-
-def in_range(r,c):
-    return -1<r<4 and -1<c<4
-
-# 시뮬레이션 진행
-for time in range(T):
-    new_monsters = {}
-    
-    # 몬스터 이동
-    for r, c in monsters:
-        for d in monsters[(r, c)]:
-            for _ in range(8):
-                nr, nc = r + dr2[d], c + dc2[d]
-                if not in_range(nr,nc) or (nr, nc) in dead_monsters or (nr, nc) == (R, C):
-                    d = (d + 1) % 8 
-                else:
-                    break
-            else:
-                nr, nc = r, c
+    dir1, dir2, dir3 = best_route
+	
+	# 정해진 dir1, dir2, dir3 순서에 맞춰 이동하며
+	# 몬스터를 잡습니다.
+    for move_dir in [dir1, dir2, dir3]:
+        nx, ny = px + dr[move_dir], py + dc[move_dir]
+        
+        for i in range(8):
+            dead[nx][ny][MAX_DECAY] += monster[t_num][nx][ny][i]
+            monster[t_num][nx][ny][i] = 0
             
-            if (nr, nc) in new_monsters:
-                new_monsters[(nr, nc)].append(d)
-            else:
-                new_monsters[(nr, nc)] = [d]
+        px, py = nx, ny
     
-    # 팩맨의 이동 및 최대 사냥 계산
-    max_prey = [-1, -1, -1, []]
-    packman_move(0, 0, [], R, C)
-    
-    # 팩맨의 사냥 결과 반영
-    for r, c in max_prey[3]:
-        if (r, c) in new_monsters:
-            del new_monsters[(r, c)]
-            dead_monsters[(r, c)] = 3
-    
-    R, C = max_prey[1], max_prey[2]
+	
+def move_p():
+    max_cnt = -1
+    best_route = (-1, -1, -1)
 
-    # 시체 감소 및 소멸 처리
-    expired_dead_monsters = []
-    for r, c in dead_monsters:
-        dead_monsters[(r, c)] -= 1
-        if dead_monsters[(r, c)] == 0:
-            expired_dead_monsters.append((r, c))
+    # 우선순위 순서대로 수행합니다.
+    for i in range(4):
+        for j in range(4):
+            for k in range(4):
+                m_cnt = get_killed_num(i, j, k)
+                # 가장 많은 수의 몬스터를 잡을 수 있는 경우 중
+				# 우선순위가 가장 높은 것을 고릅니다.
+                if m_cnt > max_cnt:
+                    max_cnt = m_cnt
+                    best_route = (i, j, k)
     
-    for r, c in expired_dead_monsters:
-        del dead_monsters[(r, c)]
+    # 최선의 루트에 따라 
+    # 실제 죽이는 것을 진행합니다.
+    do_kill(best_route)
 
-    # 새로운 몬스터 정보 갱신
-    for r, c in new_monsters:
-        if (r, c) in monsters:
-            monsters[(r, c)].extend(new_monsters[(r, c)])
-        else:
-            monsters[(r, c)] = new_monsters[(r, c)][:]
 
-# 결과 출력
-answer = sum(len(monsters[(r, c)]) for r, c in monsters)
-print(answer)
+def decay_m():
+	# decay를 진행합니다. 턴을 하나씩 깎아주면 됩니다.
+    for i in range(n):
+        for j in range(n):
+            for k in range(MAX_DECAY):
+                dead[i][j][k] = dead[i][j][k + 1]
+            dead[i][j][MAX_DECAY] = 0
+        
+
+def add_m():
+	# 몬스터가 복제됩니다.
+    for i in range(n):
+        for j in range(n):
+            for k in range(8):
+                monster[t_num][i][j][k] += monster[t_num - 1][i][j][k]
+
+				
+def simulate():
+    # 매 초마다 기록하기 때문에 굳이 copy를 진행할 필요는 없습니다.
+    
+    # 각 칸에 있는 몬스터를 이동시킵니다.
+    move_m()
+
+    # 팩맨을 이동시킵니다.
+    move_p()
+
+    # 시체들이 썩어갑니다.
+    decay_m()
+
+    # 몬스터가 복제됩니다.
+    add_m()
+
+	
+def count_monster():
+	cnt = 0
+
+    # 마지막 턴을 마친 이후의 몬스터 수를 셉니다.
+	for i in range(n):
+		for j in range(n):
+			for k in range(8):
+				cnt += monster[t][i][j][k]
+				
+	return cnt
+
+
+for _ in range(m):
+	mx, my, mdir = tuple(map(int, input().split()))
+	# 첫 번째 턴의 상태를 기록합니다.
+	monster[0][mx - 1][my - 1][mdir - 1] += 1
+    
+# t번 시뮬레이션을 진행합니다.
+while t_num <= t:
+	simulate()
+	t_num += 1
+
+print(count_monster())
