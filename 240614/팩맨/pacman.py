@@ -8,9 +8,9 @@ M, T = map(int, input().split())
 R, C = map(int, input().split())
 R, C = R - 1, C - 1  # 팩맨 좌표 조정
 
-# 몬스터와 냄새 정보를 담을 딕셔너리 초기화
+# 몬스터와 시체정보 담을 딕셔너리 초기화
 monsters = {}
-smells = {}
+dead_monsters = {}
 
 # 몬스터 정보 입력 받기
 for _ in range(M):
@@ -53,7 +53,7 @@ for time in range(T):
         for d in monsters[(r, c)]:
             for _ in range(8):
                 nr, nc = r + dr2[d], c + dc2[d]
-                if not in_range(nr,nc) or (nr, nc) in smells or (nr, nc) == (R, C):
+                if not in_range(nr,nc) or (nr, nc) in dead_monsters or (nr, nc) == (R, C):
                     d = (d + 1) % 8 
                 else:
                     break
@@ -73,19 +73,19 @@ for time in range(T):
     for r, c in max_prey[3]:
         if (r, c) in new_monsters:
             del new_monsters[(r, c)]
-            smells[(r, c)] = 3
+            dead_monsters[(r, c)] = 3
     
     R, C = max_prey[1], max_prey[2]
 
-    # 냄새 감소 및 소멸 처리
-    expired_smells = []
-    for r, c in smells:
-        smells[(r, c)] -= 1
-        if smells[(r, c)] == 0:
-            expired_smells.append((r, c))
+    # 시체 감소 및 소멸 처리
+    expired_dead_monsters = []
+    for r, c in dead_monsters:
+        dead_monsters[(r, c)] -= 1
+        if dead_monsters[(r, c)] == 0:
+            expired_dead_monsters.append((r, c))
     
-    for r, c in expired_smells:
-        del smells[(r, c)]
+    for r, c in expired_dead_monsters:
+        del dead_monsters[(r, c)]
 
     # 새로운 몬스터 정보 갱신
     for r, c in new_monsters:
