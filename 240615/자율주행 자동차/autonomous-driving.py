@@ -8,9 +8,8 @@ for _ in range(n):
 visit=[[False]*m for _ in range(n)]
 visit[r][c]=True
 dr=[-1,0,1,0]
-dc=[0,1,0,-1]
-
-
+dc=[0,1,0,-1
+]
 def simulate():
     global r,c,d
     visit[r][c]=True
@@ -18,10 +17,10 @@ def simulate():
         d=(d-1+4)%4
         nr=r+dr[d]
         nc=c+dc[d]
-
         if space[nr][nc]==0 and not visit[nr][nc]:
             r,c=nr,nc
             return True
+    
     br=r-dr[d]
     bc=c-dc[d]
     if space[br][bc]==0:
@@ -29,10 +28,13 @@ def simulate():
         return True
     else:
         return False
+
+
 while True:
     moved=simulate()
     if moved==False:
         break
+
 ans=0
 for i in range(n):
     for j in range(m):
