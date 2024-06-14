@@ -70,8 +70,8 @@ def move_ball(idx):
                 return (3*N-1-idx,c)
     elif idx<4*N:
         for r in range(N):
-            if space[r][4*n-1-idx] in (1,2,3):
-                return (r,4*n-1-idx)
+            if space[r][4*N-1-idx] in (1,2,3):
+                return (r,4*N-1-idx)
     return (-1,-1)
 
 def catch(r,c):
