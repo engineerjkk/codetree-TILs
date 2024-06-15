@@ -25,7 +25,7 @@ for i in range(1,N+1):
 
 
 def try_movement(id,d):
-    for i in range(1,L+1):
+    for i in range(1,N+1):
         dmg[i]=0
         is_moved[i]=False
         nr[i]=R[i]
@@ -38,7 +38,7 @@ def try_movement(id,d):
         r=queue.popleft()
         nr[r]+=dr[d]
         nc[r]+=dc[d]
-        if nr[r]<1 or nc[r]<1 or nr[r]+H[r]-1>L  or nc[r]+W[r]-1>L:
+        if nr[r]<1 or nc[r]<1 or nr[r]+H[r]-1>L or nc[r]+W[r]-1>L:
             return False
 
         for i in range(nr[r],nr[r]+H[r]):
@@ -48,7 +48,7 @@ def try_movement(id,d):
                 if space[i][j]==1:
                     dmg[r]+=1
 
-        for i in range(1,L+1):
+        for i in range(1,N+1):
             if is_moved[i] or K[i]<=0:
                 continue
             if R[i]>nr[r]+H[r]-1 or nr[r]>R[i]+H[i]-1:
@@ -77,7 +77,7 @@ for _ in range(Q):
     id,d=map(int,input().split())
     move_piece(id,d)
 answer=0
-for i in range(1,L+1):
+for i in range(1,N+1):
     if K[i]>0:
         answer+=initial_K[i]-K[i]
 print(answer)
