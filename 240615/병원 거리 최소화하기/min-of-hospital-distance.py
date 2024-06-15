@@ -5,8 +5,9 @@ n,m=map(int,input().split())
 space=[]
 for _ in range(n):
     space.append(list(map(int,input().split())))
-hospital=[]
+
 people=[]
+hospital=[]
 for i in range(n):
     for j in range(n):
         if space[i][j]==1:
@@ -19,12 +20,12 @@ def cal(x):
     for pr,pc in people:
         distance=sys.maxsize
         for hr, hc in x:
-            distance=min(distance,abs(hr-pr)+abs(pc-hc))
+            distance=min(distance,abs(pr-hr)+abs(pc-hc))
         total_dis+=distance
     return total_dis
 
-nCr=combinations(hospital,m)
-MIN=sys.maxsize
+ans=sys.maxsize
+nCr = combinations(hospital,m)
 for x in nCr:
-    MIN=min(cal(x),MIN)
-print(MIN)
+    ans=min(ans,cal(x))
+print(ans)
