@@ -19,13 +19,13 @@ def cal(x):
     total_dis=0
     for pr,pc in people:
         distance=sys.maxsize
-        for hr, hc in x:
+        for hr,hc in hospital:
             distance=min(distance,abs(pr-hr)+abs(pc-hc))
         total_dis+=distance
     return total_dis
 
-ans=sys.maxsize
-nCr = combinations(hospital,m)
+nCr=combinations(hospital,m)
+answer=sys.maxsize
 for x in nCr:
-    ans=min(ans,cal(x))
-print(ans)
+    answer=min(answer,cal(x))
+print(answer)
