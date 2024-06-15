@@ -68,7 +68,7 @@ def move_piece(id,d):
     if K[id]<=0:
         return
     if try_movement(id,d):
-        for i in range(1,L+1):
+        for i in range(1,N+1):
             R[i]=nr[i]
             C[i]=nc[i]
             K[i]-=dmg[i]
