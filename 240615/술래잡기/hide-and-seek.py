@@ -103,7 +103,7 @@ def catch(t):
     caught_runner=[]
     for i in range(3):
         wr,wc=r+dr[catcher.d]*i,c+dc[catcher.d]*i
-        if tree_map[wr][wc]==0 and runner_map[wr][wc]:
+        if in_range(wr,wc) and tree_map[wr][wc]==0 and runner_map[wr][wc]:
             for runner_id in runner_map[wr][wc]:
                 caught_runner.append(runner_dic[runner_id])
     for runner in caught_runner:
