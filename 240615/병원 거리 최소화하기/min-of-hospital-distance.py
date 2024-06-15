@@ -19,7 +19,7 @@ def cal(x):
     total_dis=0
     for pr,pc in people:
         distance=sys.maxsize
-        for hr,hc in hospital:
+        for hr,hc in x:
             distance=min(distance,abs(pr-hr)+abs(pc-hc))
         total_dis+=distance
     return total_dis
