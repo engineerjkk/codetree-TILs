@@ -10,7 +10,6 @@ visit[r][c]=True
 dr=[-1,0,1,0]
 dc=[0,1,0,-1]
 
-
 def simulate():
     global r,c,d
     visit[r][c]=True
@@ -32,9 +31,10 @@ def simulate():
 while True:
     if not simulate():
         break
+
 ans=0
 for i in range(n):
     for j in range(m):
-        if visit[i][j]==1:
+        if visit[i][j]==True:
             ans+=1
 print(ans)
