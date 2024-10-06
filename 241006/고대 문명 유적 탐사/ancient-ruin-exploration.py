@@ -8,7 +8,6 @@ K,M=map(int,input().split())
 class Board:
     def __init__(self):
         self.space=[[0]*5 for _ in range(5)]
-    
     def rotate(self,cnt,r,c):
         result=Board()
         result.space=copy.deepcopy(self.space)
@@ -24,7 +23,7 @@ class Board:
             result.space[r+1][c+0]=result.space[r+2][c+1]
             result.space[r+2][c+1]=tmp
         return result
-    
+
     def in_range(self,r,c):
         return -1<r<5 and -1<c<5
 
@@ -47,10 +46,9 @@ class Board:
                             nr=r+dr[k]
                             nc=c+dc[k]
                             if self.in_range(nr,nc) and not visit[nr][nc] and self.space[nr][nc]==self.space[r][c]:
-                                visit[nr][nc]=True
                                 queue.append((nr,nc))
                                 trace.append((nr,nc))
-
+                                visit[nr][nc]=True
                     if len(trace)>=3:
                         score+=len(trace)
                         while trace:
@@ -62,12 +60,11 @@ class Board:
         for c in range(5):
             for r in reversed(range(5)):
                 if self.space[r][c]==0:
-                    self.space[r][c]=queue.popleft()
+                    self.space[r][c]=queue.popleft()                                
 
 board=Board()
 for i in range(5):
     board.space[i]=list(map(int,input().split()))
-
 queue=deque()
 for i in list(map(int,input().split())):
     queue.append(i)
