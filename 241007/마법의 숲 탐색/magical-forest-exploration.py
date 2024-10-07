@@ -47,7 +47,7 @@ def move_down(r,c,d,id):
     if cango(r+1,c):
         move_down(r+1,c,d,id)
     elif cango(r+1,c-1):
-        move_down(r+1,c-1,(d+3)%d,id)
+        move_down(r+1,c-1,(d+3)%4,id)
     elif cango(r+1,c+1):
         move_down(r+1,c+1,(d+1)%4,id)
     else:
