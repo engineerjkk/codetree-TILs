@@ -6,22 +6,22 @@ for _ in range(N):
     space.append(list(map(int,input().split())))
 next_space=[[0]*N for _ in range(N)]
 traveler=[]
-for _ in range(M):
+for i in range(M):
     r,c=map(int,input().split())
     traveler.append((r-1,c-1))
-er,ec=map(int,input().split())
-Exit=(er-1,ec-1)
+r,c=map(int,input().split())
+Exit=(r-1,c-1)
 sr,sc,square_size=0,0,0
 ans=0
 
 def move_traveler():
-    global ans,Exit
+    global Exit,ans
     for i in range(M):
         if traveler[i]==Exit:
             continue
         tr,tc=traveler[i]
         er,ec=Exit
-        if tr!=er:
+        if er!=tr:
             nr,nc=tr,tc
             if er>tr:
                 nr+=1
@@ -31,7 +31,7 @@ def move_traveler():
                 traveler[i]=(nr,nc)
                 ans+=1
                 continue
-        if tc!=ec:
+        if ec!=tc:
             nr,nc=tr,tc
             if ec>tc:
                 nc+=1
@@ -43,19 +43,19 @@ def move_traveler():
                 continue
 
 def find_minimum_square():
-    global sr,sc,square_size,Exit
-    er,ec=Exit
+    global sr,sc,square_size
     for size in range(2,N+1):
         for start_r in range(N-size+1):
             for start_c in range(N-size+1):
                 end_r,end_c=start_r+size-1,start_c+size-1
+                er,ec=Exit
                 if not (start_r<=er<=end_r and start_c<=ec<=end_c):
                     continue
                 is_in_traveler=False
                 for i in range(M):
                     tr,tc=traveler[i]
                     if start_r<=tr<=end_r and start_c<=tc<=end_c:
-                        if not (tr==er and tc==ec):
+                        if not(tr==er and tc==ec):
                             is_in_traveler=True
                 if is_in_traveler:
                     sr=start_r
@@ -64,10 +64,11 @@ def find_minimum_square():
                     return 
 
 def rotate_square():
-    for i in range(sr,sr+square_size):
-        for j in range(sc,sc+square_size):
-            if space[i][j]>0:
-                space[i][j]-=1
+    global sr,sc,square_size,Exit
+    for r in range(sr,sr+square_size):
+        for c in range(sc,sc+square_size):
+            if space[r][c]>0:
+                space[r][c]-=1
     for r in range(sr,sr+square_size):
         for c in range(sc,sc+square_size):
             Or,Oc=r-sr,c-sc
@@ -78,7 +79,7 @@ def rotate_square():
             space[r][c]=next_space[r][c]
 
 def rotate_traveler_and_Exit():
-    global Exit
+    global sr,sc,square_size,Exit
     for i in range(M):
         tr,tc=traveler[i]
         if sr<=tr<sr+square_size and sc<=tc<sc+square_size:
@@ -90,19 +91,14 @@ def rotate_traveler_and_Exit():
         Or,Oc=er-sr,ec-sc
         rr,rc=Oc,square_size-Or-1
         Exit=(sr+rr,sc+rc)
-    return
-                
-
-
-
 
 for _ in range(K):
     move_traveler()
-    all_traveler_is_escaped=True
+    is_all_escaped=True
     for i in range(M):
         if traveler[i]!=Exit:
-            all_traveler_is_escaped=False
-    if all_traveler_is_escaped:
+            is_all_escaped=False
+    if is_all_escaped:
         break
     find_minimum_square()
     rotate_square()
