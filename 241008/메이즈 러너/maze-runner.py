@@ -1,6 +1,7 @@
 import sys
 input = sys.stdin.readline
 N,M,K=map(int,input().split())
+
 space=[]
 for _ in range(N):
     space.append(list(map(int,input().split())))
@@ -9,16 +10,15 @@ traveler=[]
 for _ in range(M):
     r,c=map(int,input().split())
     traveler.append((r-1,c-1))
-
 r,c=map(int,input().split())
 Exit=(r-1,c-1)
-ans=0
 sr,sc,square_size=0,0,0
+ans=0
 
 def move_traveler():
     global Exit,ans
     for i in range(M):
-        if traveler[i]==Exit:
+        if traveler[i]==Exit:#이거 빼먹음 ㅠㅋ
             continue
         tr,tc=traveler[i]
         er,ec=Exit
@@ -45,7 +45,7 @@ def move_traveler():
                 continue
 
 def find_minimum_square():
-    global sr,sc,square_size,Exit
+    global Exit, sr,sc,square_size
     for size in range(2,N+1):
         for start_r in range(N-size+1):
             for start_c in range(N-size+1):
@@ -53,7 +53,7 @@ def find_minimum_square():
                 er,ec=Exit
                 if not(start_r<=er<=end_r and start_c<=ec<=end_c):
                     continue
-                is_in_traveler=False
+                is_in_traveler=False#이거 위치 실수
                 for i in range(M):
                     tr,tc=traveler[i]
                     if start_r<=tr<=end_r and start_c<=tc<=end_c:
@@ -63,10 +63,10 @@ def find_minimum_square():
                     sr=start_r
                     sc=start_c
                     square_size=size
-                    return 
+                    return
 
 def rotate_square():
-    global sr,sc,square_size
+    global sr,sc,square_size,Exit
     for r in range(sr,sr+square_size):
         for c in range(sc,sc+square_size):
             if space[r][c]>0:
@@ -78,13 +78,13 @@ def rotate_square():
             next_space[sr+rr][sc+rc]=space[r][c]
     for r in range(sr,sr+square_size):
         for c in range(sc,sc+square_size):
-            space[r][c]=next_space[r][c]
+            space[r][c]=next_space[r][c]        
 
 def rotate_traveler_and_Exit():
-    global sr,sc,square_size,Exit
+    global Exit,sr,sc,square_size
     for i in range(M):
         tr,tc=traveler[i]
-        if sr<=tr<sr+square_size and sc<=tc<sc+square_size:
+        if sr<=tr<sr+square_size and sc<=tc<sc+square_size:# 여기괄호실수
             Or,Oc=tr-sr,tc-sc
             rr,rc=Oc,square_size-Or-1
             traveler[i]=(sr+rr,sc+rc)
@@ -105,6 +105,5 @@ for _ in range(K):
     find_minimum_square()
     rotate_square()
     rotate_traveler_and_Exit()
-
 print(ans)
 print(Exit[0]+1,Exit[1]+1)
