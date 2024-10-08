@@ -55,7 +55,7 @@ def try_movement(id,d):
                 continue
             if nr[r]>R[i]+H[i]-1 or R[i]>nr[r]+H[r]-1:
                 continue
-            if nc[r]>C[i]+W[i]-1 or C[i]>nr[r]+W[r]-1:
+            if nc[r]>C[i]+W[i]-1 or C[i]>nc[r]+W[r]-1:
                 continue
             is_moved[i]=True
             queue.append(i)
@@ -70,7 +70,6 @@ def move_piece(id,d):
             R[i]=nr[i]
             C[i]=nc[i]
             K[i]-=dmg[i]
-    return
 
 for _ in range(Q):
     id,d=map(int,input().split())
