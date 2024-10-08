@@ -53,9 +53,9 @@ def try_movement(id,d):
         for i in range(1,N+1):
             if is_moved[i] or K[i]<=0:
                 continue
-            if nr[r]>R[i]+H[i]-1 or R[i]>nr[r]+H[r]:
+            if nr[r]>R[i]+H[i]-1 or R[i]>nr[r]+H[r]-1:
                 continue
-            if nc[r]>C[i]+W[i]-1 or C[i]>nr[r]+W[r]:
+            if nc[r]>C[i]+W[i]-1 or C[i]>nr[r]+W[r]-1:
                 continue
             is_moved[i]=True
             queue.append(i)
