@@ -1,8 +1,6 @@
 import sys
 input = sys.stdin.readline
 from collections import deque
-
-L,N,Q=map(int,input().split())
 MAX_L=41
 MAX_N=31
 space=[[0]*MAX_L for _ in range(MAX_L)]
@@ -12,13 +10,15 @@ H=[0]*MAX_N
 W=[0]*MAX_N
 K=[0]*MAX_N
 initial_K=[0]*MAX_N
+dmg=[0]*MAX_N
 nr=[0]*MAX_N
 nc=[0]*MAX_N
-is_moved=[0]*MAX_N
+is_moved=[False]*MAX_N
+ans=0
 dr=[-1,0,1,0]
 dc=[0,1,0,-1]
-dmg=[0]*MAX_N
 
+L,N,Q=map(int,input().split())
 for i in range(1,L+1):
     space[i][1:]=map(int,input().split())
 
@@ -30,8 +30,8 @@ def try_movement(id,d):
     for i in range(1,N+1):
         nr[i]=R[i]
         nc[i]=C[i]
-        is_moved[i]=False
         dmg[i]=0
+        is_moved[i]=False
     
     queue=deque()
     queue.append(id)
@@ -49,6 +49,7 @@ def try_movement(id,d):
                     return False
                 if space[i][j]==1:
                     dmg[r]+=1
+        
         for i in range(1,N+1):
             if is_moved[i] or K[i]<=0:
                 continue
@@ -61,10 +62,10 @@ def try_movement(id,d):
     dmg[id]=0
     return True
 
-
 def move_piece(id,d):
     if K[id]<=0:
-        return
+        return 
+    
     if try_movement(id,d):
         for i in range(1,N+1):
             R[i]=nr[i]
@@ -75,7 +76,6 @@ for _ in range(Q):
     id,d=map(int,input().split())
     move_piece(id,d)
 
-ans=0
 for i in range(1,N+1):
     if K[i]>0:
         ans+=initial_K[i]-K[i]
