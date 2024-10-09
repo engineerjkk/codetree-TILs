@@ -11,8 +11,8 @@ back=[[0]*M for _ in range(N)]
 recent=[[0]*M for _ in range(N)]
 visit=[[False]*M for _ in range(N)]
 is_active=[[False]*M for _ in range(N)]
-dr=[-1,0,1,0]
-dc=[0,1,0,-1]
+dr=[-1,1,0,0]
+dc=[0,0,-1,1]
 dr2=[-1,-1,0,1,1,1,0,-1]
 dc2=[0,1,1,1,0,-1,-1,-1]
 turn=0
@@ -32,6 +32,7 @@ def init():
             visit[i][j]=False
             back[i][j]=0
             is_active[i][j]=False
+    return
 
 def awake():
     live_turret.sort(key=lambda x: (x.power,-x.recent,-(x.r+x.c),-x.c))
@@ -61,7 +62,7 @@ def laser_attack():
         for i in range(4):
             nr=(r+dr[i]+N)%N
             nc=(c+dc[i]+M)%M
-            if space[nr][nc]!=0 and not visit[nr][nc]:
+            if space[nr][nc]>0 and not visit[nr][nc]:
                 queue.append((nr,nc))
                 visit[nr][nc]=True
                 back[nr][nc]=(r,c)
