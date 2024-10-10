@@ -1,7 +1,6 @@
 import sys
 input = sys.stdin.readline
 from collections import deque
-
 N,M,K=map(int,input().split())
 space=[]
 for _ in range(N):
@@ -16,12 +15,12 @@ teams=[]
 for i in range(N):
     for j in range(N):
         if space[i][j]==1:
-            visit=[[False]*N for _ in range(N)]
-            visit[i][j]=True
             queue=deque()
             queue.append((i,j))
             trace=deque()
             trace.append((i,j))
+            visit=[[False]*N for _ in range(N)]
+            visit[i][j]=True
             while queue:
                 r,c=queue.popleft()
                 for k in range(4):
@@ -35,7 +34,7 @@ for i in range(N):
             for k in range(4):
                 nr=r+dr[k]
                 nc=c+dc[k]
-                if in_range(nr,nc) and not visit[nr][nc] and space[nr][nc]==3:# 이걸 왜 4라고 했었지 ㅋㅋ
+                if in_range(nr,nc) and not visit[nr][nc] and space[nr][nc]==3:
                     trace.append((nr,nc))
                     break
             teams.append(trace)
@@ -56,7 +55,7 @@ def move():
                 break
 
 def ball(idx):
-    idx=(idx)%(4*N)
+    idx=(idx)%(4*N)#
     if idx<N:
         for c in range(N):
             if space[idx][c] in (1,2,3):
@@ -78,7 +77,6 @@ def ball(idx):
 def catch(a,b):
     if (a,b)==(-1,-1):
         return 0
-
     for i in range(M):
         if (a,b) in teams[i]:
             for j in range(len(teams[i])):
@@ -87,7 +85,6 @@ def catch(a,b):
                     space[teams[i][-1][0]][teams[i][-1][1]]=1
                     teams[i].reverse()
                     return (j+1)**2
-
 
 score=0
 for i in range(K):
