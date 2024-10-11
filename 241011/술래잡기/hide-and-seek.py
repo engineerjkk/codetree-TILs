@@ -35,7 +35,7 @@ class Catcher:
         self.r=r
         self.c=c
         self.d=d
-        self.flag=False
+        self.flag=True
     def move(self):
         self.r+=dr[self.d]
         self.c+=dc[self.d]
