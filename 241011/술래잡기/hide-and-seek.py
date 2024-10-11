@@ -67,7 +67,7 @@ def move_runner():
         if abs(runner.r-catcher.r)+abs(runner.c-catcher.c)<=3:
             nr,nc=runner.get_next()
             if not in_range(nr,nc):
-                runner.change_dic()
+                runner.change_dir()
                 nr,nc=runner.get_next()
             if (nr,nc)!=(catcher.r,catcher.c):
                 runner_map[runner.r][runner.c].remove(runner.id)
