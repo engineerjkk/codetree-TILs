@@ -1,6 +1,5 @@
 import sys
 input = sys.stdin.readline
-
 n,m=map(int,input().split())
 r,c,d=map(int,input().split())
 space=[]
@@ -32,7 +31,6 @@ def simulate():
 while True:
     if not simulate():
         break
-
 ans=0
 for i in range(n):
     for j in range(m):
