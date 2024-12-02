@@ -1,6 +1,6 @@
+from collections import deque
 import sys
 input = sys.stdin.readline
-from collections import deque
 
 MAX=70
 space=[[0]*MAX for _ in range(MAX+3)]
@@ -50,7 +50,7 @@ def move_down(r,c,d,id):
     elif cango(r+1,c+1):
         move_down(r+1,c+1,(d+1)%4,id)
     else:
-        if (not in_range(r-1,c-1) and not in_range(r-1,c) and not in_range(r-1,c+1)) or not in_range(r-1,c-1):
+        if (not in_range(r-1,c-1) and not in_range(r-1,c) and not in_range(r-1,c+1)) or not in_range(r-1,c):
             reset_map()
         else:
             space[r][c]=id
