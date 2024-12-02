@@ -1,9 +1,8 @@
-from collections import deque
 import sys
 input = sys.stdin.readline
+from collections import deque
 import copy
-
-K,M= map(int,input().split())
+K,M=map(int,input().split())
 
 class Board:
     def __init__(self):
@@ -23,22 +22,22 @@ class Board:
             result.space[r+1][c+0]=result.space[r+2][c+1]
             result.space[r+2][c+1]=tmp
         return result
-
+    
     def in_range(self,r,c):
         return -1<r<5 and -1<c<5
     
     def calScore(self):
         score=0
-        visit=[[False]*5 for _ in range(5)]
         dr=[-1,0,1,0]
         dc=[0,1,0,-1]
+        visit=[[False]*5 for _ in range(5)]
         for i in range(5):
             for j in range(5):
                 if not visit[i][j]:
                     visit[i][j]=True
                     queue=deque()
-                    queue.append((i,j))
                     trace=deque()
+                    queue.append((i,j))
                     trace.append((i,j))
                     while queue:
                         r,c=queue.popleft()
@@ -55,12 +54,13 @@ class Board:
                             r,c=trace.popleft()
                             self.space[r][c]=0
         return score
-    
+
     def fill(self,queue):
         for c in range(5):
             for r in reversed(range(5)):
                 if self.space[r][c]==0:
                     self.space[r][c]=queue.popleft()
+
 
 board=Board()
 for i in range(5):
@@ -81,6 +81,7 @@ for _ in range(K):
                 if maxScore<newScore:
                     maxScore=newScore
                     maxBoard=rotated
+    
     if maxScore==0 or maxBoard==None:
         break
     board=maxBoard
