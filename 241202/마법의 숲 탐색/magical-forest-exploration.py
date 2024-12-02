@@ -1,14 +1,14 @@
-from collections import deque
 import sys
 input = sys.stdin.readline
+from collections import deque
 
-MAX = 70
-R,C,K = map(int,input().split())
+MAX=70
 space=[[0]*MAX for _ in range(MAX+3)]
 Exit=[[False]*MAX for _ in range(MAX+3)]
+R,C,K=map(int,input().split())
 dr=[-1,0,1,0]
 dc=[0,1,0,-1]
-ans=0
+answer=0
 
 def cango(r,c):
     flag = -1<r-1 and -1<c-1 and r+1<R+3 and c+1<C
@@ -42,8 +42,6 @@ def bfs(r,c):
                 result=max(result,nr)
     return result
 
-
-
 def move_down(r,c,d,id):
     if cango(r+1,c):
         move_down(r+1,c,d,id)
@@ -52,7 +50,7 @@ def move_down(r,c,d,id):
     elif cango(r+1,c+1):
         move_down(r+1,c+1,(d+1)%4,id)
     else:
-        if (not in_range(r-1,c-1) and not in_range(r-1,c) and not in_range(r-1,c+1)) or not in_range(r-1,c):
+        if (not in_range(r-1,c-1) and not in_range(r-1,c) and not in_range(r-1,c+1)) or not in_range(r-1,c-1):
             reset_map()
         else:
             space[r][c]=id
@@ -61,10 +59,11 @@ def move_down(r,c,d,id):
                 nc=c+dc[i]
                 space[nr][nc]=id
             Exit[r+dr[d]][c+dc[d]]=True
-            global ans
-            ans+=bfs(r,c)-3+1
+            global answer
+            answer+=bfs(r,c)-3+1
+
 
 for id in range(1,K+1):
-    c,d = map(int,input().split())
+    c,d=map(int,input().split())
     move_down(0,c-1,d,id)
-print(ans)
+print(answer)
