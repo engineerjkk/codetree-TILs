@@ -5,8 +5,9 @@ N,M,P,C,D = map(int,input().split())
 rudolf=list(map(int,input().split()))
 rudolf[0]-=1
 rudolf[1]-=1
+
 santas=[[0]*2 for _ in range(P)]
-for i in range(P):
+for _ in range(P):
     id,r,c=map(int,input().split())
     santas[id-1][0]=r-1
     santas[id-1][1]=c-1
@@ -34,7 +35,7 @@ def push_santa(i,rr,rc,C):
     if not in_range(santas[i][0]+rr*C,santas[i][1]+rc*C):
         santas[i][0]+=rr*C
         santas[i][1]+=rc*C
-        status[i] = -1
+        status[i]=-1
     s=check_santa(santas[i][0]+rr*C,santas[i][1]+rc*C)
     if s!=-1:
         push_santa(s,rr,rc,1)
@@ -44,7 +45,7 @@ def push_santa(i,rr,rc,C):
 
 def check_collision(rr,rc,C):
     for i in range(P):
-        if rudolf[0]==santas[i][0] and rudolf[1]==santas[i][1]:
+        if santas[i][0]==rudolf[0] and santas[i][1]==rudolf[1]:
             push_santa(i,rr,rc,C)
             score[i]+=C
             if status[i]!=-1:
@@ -52,11 +53,10 @@ def check_collision(rr,rc,C):
             return 
 
 
-
 def move_rudolf():
     santa_info=[0,0,0,sys.maxsize]
     for i in range(P):
-        if status[i] !=-1:
+        if status[i]!=-1:
             distance=(santas[i][0]-rudolf[0])**2+(santas[i][1]-rudolf[1])**2
             if distance<santa_info[3]:
                 santa_info=[i,santas[i][0],santas[i][1],distance]
@@ -69,8 +69,8 @@ def move_rudolf():
     rudolf[0]+=rr
     rudolf[1]+=rc
     check_collision(rr,rc,C)
-    return
-    
+    return 
+
 def santa_to_rudolf(sr,sc,rr,rc):
     ret_r,ret_c=0,0
     distance=(sr-rr)**2+(sc-rc)**2
@@ -96,7 +96,6 @@ def move_santa(i):
         if status[i]!=-1:
             status[i]=2
     return 
-
 
 for _ in range(M):
     move_rudolf()
