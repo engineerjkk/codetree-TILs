@@ -1,7 +1,7 @@
 import sys
 input = sys.stdin.readline
 
-N,M,P,C,D=map(int,input().split())
+N,M,P,C,D = map(int,input().split())
 
 rudolf=list(map(int,input().split()))
 rudolf[0]-=1
@@ -12,6 +12,7 @@ for _ in range(P):
     id,r,c=map(int,input().split())
     santas[id-1][0]=r-1
     santas[id-1][1]=c-1
+
 status=[0]*P
 score=[0]*P
 
@@ -38,7 +39,7 @@ def push_santa(i,rr,rc,C):
         santas[i][1]+=rc*C
         status[i]=-1
     s=check_santa(santas[i][0]+rr*C,santas[i][1]+rc*C)
-    if s!=-1:
+    if s !=-1:
         push_santa(s,rr,rc,1)
     santas[i][0]+=rr*C
     santas[i][1]+=rc*C
@@ -51,7 +52,7 @@ def check_collision(rr,rc,C):
             score[i]+=C
             if status[i]!=-1:
                 status[i]=2
-            return 
+            return
 
 def move_rudolf():
     santa_info=[0,0,0,sys.maxsize]
@@ -86,6 +87,7 @@ def santa_to_rudolf(sr,sc,rr,rc):
                 ret_r,ret_c=dr[i],dc[i]
     return ret_r,ret_c
 
+
 def move_santa(i):
     sr,sc=santa_to_rudolf(santas[i][0],santas[i][1],rudolf[0],rudolf[1])
     santas[i][0]+=sr
@@ -95,9 +97,8 @@ def move_santa(i):
         score[i]+=D
         if status[i]!=-1:
             status[i]=2
-    return 
-
-
+    
+                    
 
 for _ in range(M):
     move_rudolf()
