@@ -5,20 +5,22 @@ from collections import deque
 MAX_L=41
 MAX_N=31
 space=[[0]*MAX_L for _ in range(MAX_L)]
+
 R=[0]*MAX_N
 C=[0]*MAX_N
 H=[0]*MAX_N
 W=[0]*MAX_N
 K=[0]*MAX_N
 initial_K=[0]*MAX_N
-is_moved=[0]*MAX_N
 nr=[0]*MAX_N
 nc=[0]*MAX_N
 dmg=[0]*MAX_N
+is_moved=[False]*MAX_N
 dr=[-1,0,1,0]
 dc=[0,1,0,-1]
 
 L,N,Q=map(int,input().split())
+
 for i in range(1,L+1):
     space[i][1:]=map(int,input().split())
 
@@ -28,10 +30,11 @@ for i in range(1,N+1):
 
 def try_movement(id,d):
     for i in range(1,N+1):
-        dmg[i]=0
-        is_moved[i]=False
         nr[i]=R[i]
         nc[i]=C[i]
+        is_moved[i]=False
+        dmg[i]=0
+    
     queue=deque()
     queue.append(id)
     is_moved[id]=True
@@ -39,6 +42,7 @@ def try_movement(id,d):
         r=queue.popleft()
         nr[r]+=dr[d]
         nc[r]+=dc[d]
+
         if nr[r]<1 or nc[r]<1 or nr[r]+H[r]-1>L or nc[r]+W[r]-1>L:
             return False
         
@@ -63,7 +67,7 @@ def try_movement(id,d):
 
 def move_piece(id,d):
     if K[id]<=0:
-        return 
+        return
     if try_movement(id,d):
         for i in range(1,N+1):
             R[i]=nr[i]
