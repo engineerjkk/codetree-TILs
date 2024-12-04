@@ -3,10 +3,10 @@ input = sys.stdin.readline
 from collections import deque
 
 N,M,K=map(int,input().split())
+
 space=[]
 for _ in range(N):
     space.append(list(map(int,input().split())))
-
 recent=[[0]*M for _ in range(N)]
 back=[[0]*M for _ in range(N)]
 visit=[[False]*M for _ in range(N)]
@@ -26,12 +26,12 @@ class Turrent:
 
 def init():
     global turn
-    turn+=1
+    turn +=1
     for i in range(N):
         for j in range(M):
+            is_active[i][j]=False
             back[i][j]=0
             visit[i][j]=False
-            is_active[i][j]=False
 
 def awake():
     live_turret.sort(key=lambda x:(x.power,-x.recent,-(x.r+x.c),-x.c))
@@ -42,6 +42,7 @@ def awake():
     weak_turret.power=space[r][c]
     weak_turret.recent=recent[r][c]
     is_active[r][c]=True
+    return 
 
 def laser_attack():
     weak_turret=live_turret[0]
@@ -98,11 +99,8 @@ def bomb_attack():
 def reserve():
     for i in range(N):
         for j in range(M):
-            if space[i][j]>0 and not is_active[i][j]:
+            if space[i][j]>0 and is_active[i][j]==False:
                 space[i][j]+=1
-
-
-
 
 for _ in range(K):
     live_turret=[]
