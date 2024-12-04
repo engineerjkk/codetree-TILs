@@ -12,8 +12,8 @@ back=[[0]*M for _ in range(N)]
 visit=[[False]*M for _ in range(N)]
 is_active=[[False]*M for _ in range(N)]
 turn=0
-dr=[-1,0,1,0]
-dc=[0,1,0,-1]
+dr=[0,1,0,-1]
+dc=[1,0,-1,0]
 dr2=[-1,-1,0,1,1,1,0,-1]
 dc2=[0,1,1,1,0,-1,-1,-1]
 
@@ -34,7 +34,7 @@ def init():
             is_active[i][j]=False
 
 def awake():
-    live_turret.sort(key=lambda x: (x.power,-x.recent,-(x.r+x.c),-x.c))
+    live_turret.sort(key=lambda x:(x.power,-x.recent,-(x.r+x.c),-x.c))
     weak_turret=live_turret[0]
     r,c,power=weak_turret.r,weak_turret.c,weak_turret.power
     space[r][c]+=N+M
