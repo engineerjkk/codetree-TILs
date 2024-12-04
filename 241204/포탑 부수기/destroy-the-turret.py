@@ -3,14 +3,6 @@ input = sys.stdin.readline
 from collections import deque
 
 N,M,K=map(int,input().split())
-
-class Turrent:
-    def __init__(self,r,c,recent,power):
-        self.r=r
-        self.c=c
-        self.recent=recent
-        self.power=power
-
 space=[]
 for _ in range(N):
     space.append(list(map(int,input().split())))
@@ -19,11 +11,18 @@ recent=[[0]*M for _ in range(N)]
 back=[[0]*M for _ in range(N)]
 visit=[[False]*M for _ in range(N)]
 is_active=[[False]*M for _ in range(N)]
-dr=[0,1,0,-1]
-dc=[1,0,-1,0]
+turn=0
+dr=[-1,0,1,0]
+dc=[0,1,0,-1]
 dr2=[-1,-1,0,1,1,1,0,-1]
 dc2=[0,1,1,1,0,-1,-1,-1]
-turn=0
+
+class Turrent:
+    def __init__(self,r,c,recent,power):
+        self.r=r
+        self.c=c
+        self.recent=recent
+        self.power=power
 
 def init():
     global turn
@@ -35,7 +34,7 @@ def init():
             is_active[i][j]=False
 
 def awake():
-    live_turret.sort(key=lambda x:(x.power,-x.recent,-(x.r+x.c),-x.c))
+    live_turret.sort(key=lambda x: (x.power,-x.recent,-(x.r+x.c),-x.c))
     weak_turret=live_turret[0]
     r,c,power=weak_turret.r,weak_turret.c,weak_turret.power
     space[r][c]+=N+M
@@ -57,11 +56,10 @@ def laser_attack():
         r,c=queue.popleft()
         if (r,c)==(er,ec):
             can_attack=True
-            break
         for i in range(4):
             nr=(r+dr[i]+N)%N
             nc=(c+dc[i]+M)%M
-            if space[nr][nc]>0 and not visit[nr][nc]:
+            if not visit[nr][nc] and space[nr][nc]>0:
                 queue.append((nr,nc))
                 visit[nr][nc]=True
                 back[nr][nc]=(r,c)
@@ -75,7 +73,7 @@ def laser_attack():
                 break
             space[cr][cc]-=power//2
             space[cr][cc]=max(0,space[cr][cc])
-            is_active[cr][cc]=True
+            is_active[cr][cc]
             cr,cc=back[cr][cc]
     return can_attack
 
@@ -90,17 +88,19 @@ def bomb_attack():
     for i in range(8):
         nr=(er+dr2[i]+N)%N
         nc=(ec+dc2[i]+M)%M
-        if not (sr,sc)==(nr,nc) and space[nr][nc]>0:
-            space[nr][nc]-=power//2
+        if (sr,sc)!=(nr,nc) and space[nr][nc]>0:
+            space[nr][nc]-=power
             space[nr][nc]=max(0,space[nr][nc])
             is_active[nr][nc]=True
-    return
+    return 
 
 def reserve():
     for i in range(N):
         for j in range(M):
-            if space[i][j]>0 and is_active[i][j]==False:
+            if space[i][j]>0 and not is_active[i][j]:
                 space[i][j]+=1
+
+
 
 
 for _ in range(K):
@@ -118,8 +118,8 @@ for _ in range(K):
         bomb_attack()
     reserve()
 
-ans=0
+answer=0
 for i in range(N):
     for j in range(M):
-        ans=max(ans,space[i][j])
-print(ans)
+        answer=max(answer,space[i][j])
+print(answer)
