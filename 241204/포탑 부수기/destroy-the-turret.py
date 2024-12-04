@@ -56,6 +56,7 @@ def laser_attack():
         r,c=queue.popleft()
         if (r,c)==(er,ec):
             can_attack=True
+            break
         for i in range(4):
             nr=(r+dr[i]+N)%N
             nc=(c+dc[i]+M)%M
