@@ -73,7 +73,7 @@ def laser_attack():
                 break
             space[cr][cc]-=power//2
             space[cr][cc]=max(0,space[cr][cc])
-            is_active[cr][cc]
+            is_active[cr][cc]=True
             cr,cc=back[cr][cc]
     return can_attack
 
