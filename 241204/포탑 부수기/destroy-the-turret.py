@@ -89,7 +89,7 @@ def bomb_attack():
         nr=(er+dr2[i]+N)%N
         nc=(ec+dc2[i]+M)%M
         if (sr,sc)!=(nr,nc) and space[nr][nc]>0:
-            space[nr][nc]-=power
+            space[nr][nc]-=power//2
             space[nr][nc]=max(0,space[nr][nc])
             is_active[nr][nc]=True
     return 
