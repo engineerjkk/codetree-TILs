@@ -39,7 +39,7 @@ def awake():
     weak_turret=live_turret[0]
     r,c,power=weak_turret.r,weak_turret.c,weak_turret.power
     space[r][c]+=N+M
-    recent[r][c]=Turrent
+    recent[r][c]=turn
     weak_turret.power=space[r][c]
     weak_turret.recent=recent[r][c]
     is_active[r][c]=True
