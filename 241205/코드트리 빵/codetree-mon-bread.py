@@ -12,9 +12,9 @@ gs25=[]
 for _ in range(M):
     r,c=map(int,input().split())
     gs25.append((r-1,c-1))
-
 empty=(-1,-1)
 people=[empty]*M
+
 
 dr=[-1,0,0,1]
 dc=[0,-1,1,0]
@@ -23,10 +23,10 @@ def in_range(r,c):
     return -1<r<N and -1<c<N
 
 def bfs(pos):
-    for r in range(N):
-        for c in range(N):
-            step[r][c]=0
-            visit[r][c]=False
+    for i in range(N):
+        for j in range(N):
+            step[i][j]=0
+            visit[i][j]=False
     r,c=pos
     queue=deque()
     queue.append((r,c))
@@ -45,14 +45,12 @@ def bfs(pos):
 
 def move_people(t):
     for i in range(M):
-        if people[i]==gs25[i] or people[i]==empty:
+        if people[i]==gs25[i] or people[i]==empty: # 이걸 실수하다니 or이다
             continue
-
-        bfs(gs25[i]) #
+        bfs(gs25[i])
         distance=sys.maxsize
         min_r,min_c=-1,-1
         r,c=people[i]
-        step[r][c]=0
         for j in range(4):
             nr=r+dr[j]
             nc=c+dc[j]
@@ -67,7 +65,8 @@ def move_people(t):
             space[r][c]=-1
     
     if t>M:
-        return
+        return 
+    
     bfs(gs25[t-1])
     distance=sys.maxsize
     min_r,min_c=-1,-1
@@ -76,7 +75,7 @@ def move_people(t):
             if space[r][c]==1 and visit[r][c] and step[r][c]<distance:
                 distance=step[r][c]
                 min_r,min_c=r,c
-    people[t-1]=(min_r,min_c) #
+    people[t-1]=(min_r,min_c) #t-1 인데 자꾸 i로 실수하네
     space[min_r][min_c]=-1
 
 def end():
@@ -84,7 +83,7 @@ def end():
         if people[i]!=gs25[i]:
             return False
     return True
-        
+
 
 
 time=0
