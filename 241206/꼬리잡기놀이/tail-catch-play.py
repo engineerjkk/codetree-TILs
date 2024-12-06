@@ -6,7 +6,6 @@ N,M,K=map(int,input().split())
 space=[]
 for _ in range(N):
     space.append(list(map(int,input().split())))
-
 dr=[-1,0,1,0]
 dc=[0,1,0,-1]
 
@@ -39,10 +38,24 @@ for i in range(N):
                 nc=c+dc[k]
                 if in_range(nr,nc) and not visit[nr][nc] and space[nr][nc]==3:
                     trace.append((nr,nc))
-            teams.append((trace))
+            teams.append(trace)
+
+def move_traveler():
+    for team in teams:
+        r,c=team.pop()
+        space[r][c]=4
+        space[team[-1][0]][team[-1][1]]=3
+        r,c=team[0]
+        space[r][c]=2
+        for i in range(4):
+            nr=r+dr[i]
+            nc=c+dc[i]
+            if in_range(nr,nc) and space[nr][nc]==4:
+                space[nr][nc]=1
+                team.appendleft((nr,nc))
 
 def ball(idx):
-    idx=(idx)%(4*N)#
+    idx=(idx)%(4*N) 
     if idx<N:
         for c in range(N):
             if space[idx][c] in (1,2,3):
@@ -73,22 +86,6 @@ def catch(a,b):
                     teams[i].reverse()
                     return (j+1)**2
 
-def move_traveler():
-    for team in teams:
-        r,c=team.pop()
-        space[r][c]=4
-        r,c=team[-1]
-        space[r][c]=3
-        r,c=team[0]
-        space[r][c]=2
-        for i in range(4):
-            nr=r+dr[i]
-            nc=c+dc[i]
-            if in_range(nr,nc) and space[nr][nc]==4:
-                space[nr][nc]=1
-                team.appendleft((nr,nc))
-                break
-        
 score=0
 for i in range(K):
     move_traveler()
