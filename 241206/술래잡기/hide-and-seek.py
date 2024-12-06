@@ -1,11 +1,13 @@
 import sys
 input = sys.stdin.readline
-
 N,M,H,K=map(int,input().split())
+
+dr=[-1,0,1,0]
+dc=[0,1,0,-1]
 
 catcher_dir=[(N//2,N//2)]
 for i in range(N//2):
-    left_top=(N//2-i-1,N//2+i)
+    left_top=(N//2-i-1,N//2-i)
     right_top=(N//2-i-1,N//2+i+1)
     right_bottom=(N//2+i+1,N//2+i+1)
     left_bottom=(N//2+i+1,N//2-i-1)
@@ -15,9 +17,6 @@ for i in range(N//2):
     catcher_dir.append(right_bottom)
     catcher_dir.append(left_bottom)
 catcher_dir.append((0,0))
-
-dr=[-1,0,1,0]
-dc=[0,1,0,-1]
 
 class Runner:
     def __init__(self,id,r,c,d):
@@ -31,11 +30,11 @@ class Runner:
         self.d=(self.d+2)%4
 
 class Catcher:
-    def __init__(self,r,c,d,flag=True):
+    def __init__(self,r,c,d):
         self.r=r
         self.c=c
         self.d=d
-        self.flag=flag
+        self.flag=True
     def move(self):
         self.r+=dr[self.d]
         self.c+=dc[self.d]
@@ -52,12 +51,12 @@ for i in range(M):
     runner_dic[i+1]=Runner(i+1,r-1,c-1,d)
     runner_map[r-1][c-1].append(i+1)
 
-catcher=Catcher(N//2,N//2,0)
-
 tree_map=[[0]*N for _ in range(N)]
 for _ in range(H):
     r,c=map(int,input().split())
     tree_map[r-1][c-1]=-1
+
+catcher=Catcher(N//2,N//2,0)
 
 def in_range(r,c):
     return -1<r<N and -1<c<N
@@ -73,7 +72,6 @@ def move_runner():
                 runner_map[runner.r][runner.c].remove(runner.id)
                 runner.r,runner.c=nr,nc
                 runner_map[runner.r][runner.c].append(runner.id)
-
 def move_catcher():
     r,c=catcher.move()
     if (r,c) in catcher_dir:
@@ -120,7 +118,6 @@ def rotate():
     if (r,c)==(0,0):
         catcher.d=2
         catcher.flag=False
-
 
 score=0
 for t in range(1,K+1):
