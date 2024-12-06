@@ -1,5 +1,6 @@
 import sys
 input = sys.stdin.readline
+
 N,M,K=map(int,input().split())
 space=[]
 for _ in range(N):
@@ -10,9 +11,9 @@ for i in range(N):
         if space[i][j]>0:
             gun_map[i][j].append(space[i][j])
 empty=(-1,-1,-1,-1,-1,-1)
+score=[0]*M
 dr=[-1,0,1,0]
 dc=[0,1,0,-1]
-score=[0]*M
 
 class Player:
     def __init__(self,id,r,c,d,power,gun=0):
@@ -35,42 +36,41 @@ for i in range(M):
 def in_range(r,c):
     return -1<r<N and -1<c<N
 
-def find_player(r,c):
+def find_player(nr,nc):
     for player in players:
-        if player.r==r and player.c==c:
+        if player.r==nr and player.c==nc:
             return player
     return empty
 
-def move_player(player,r,c):
-    gun_map[r][c].append(player.gun)
-    gun_map[r][c].sort(reverse=True)
-    player.gun=gun_map[r][c][0]
-    gun_map[r][c].pop(0)
-    player.r,player.c=r,c
+def move_player(player,nr,nc):
+    gun_map[nr][nc].append(player.gun)
+    gun_map[nr][nc].sort(reverse=True)
+    player.gun=gun_map[nr][nc][0]
+    gun_map[nr][nc].pop(0)
+    player.r,player.c=nr,nc    
 
 def loser_move(player):
     gun_map[player.r][player.c].append(player.gun)
     player.gun=0
-    r,c,d=player.r,player.c,player.d
     for i in range(4):
-        nd=(d+i)%4
-        nr=r+dr[nd]
-        nc=c+dc[nd]
+        nd=(player.d+i)%4
+        nr=player.r+dr[nd]
+        nc=player.c+dc[nd]
         if in_range(nr,nc) and find_player(nr,nc)==empty:
             player.r,player.c,player.d=nr,nc,nd
             move_player(player,nr,nc)
             break
 
-
-def fight(p1,p2,r,c):
+def fight(p1,p2,nr,nc):
     if (p1.power+p1.gun,p1.power)>(p2.power+p2.gun,p2.power):
         score[p1.id]+=(p1.power+p1.gun)-(p2.power+p2.gun)
         loser_move(p2)
-        move_player(p1,r,c)
+        move_player(p1,nr,nc)
     else:
         score[p2.id]+=(p2.power+p2.gun)-(p1.power+p1.gun)
         loser_move(p1)
-        move_player(p2,r,c)
+        move_player(p2,nr,nc)
+
 
 def simulate():
     for player in players:
