@@ -1,20 +1,19 @@
 import sys
 input = sys.stdin.readline
-
 N,M,H,K=map(int,input().split())
 
-catcher_dir=[(N//2,N//2)]
+change_dir=[(N//2,N//2)]
 for i in range(N//2):
     left_top=(N//2-i-1,N//2-i)
     right_top=(N//2-i-1,N//2+i+1)
     right_bottom=(N//2+i+1,N//2+i+1)
     left_bottom=(N//2+i+1,N//2-i-1)
 
-    catcher_dir.append(left_top)
-    catcher_dir.append(right_top)
-    catcher_dir.append(right_bottom)
-    catcher_dir.append(left_bottom)
-catcher_dir.append((0,0))
+    change_dir.append(left_top)
+    change_dir.append(right_top)
+    change_dir.append(right_bottom)
+    change_dir.append(left_bottom)
+change_dir.append((0,0))
 
 dr=[-1,0,1,0]
 dc=[0,1,0,-1]
@@ -69,14 +68,13 @@ def move_runner():
             if not in_range(nr,nc):
                 runner.change_dir()
                 nr,nc=runner.get_next()
-            if (nr,nc) != (catcher.r,catcher.c):
-                runner_map[runner.r][runner.c].remove(runner.id)
-                runner.r,runner.c=nr,nc
-                runner_map[runner.r][runner.c].append(runner.id)
+            runner_map[runner.r][runner.c].remove(runner.id)
+            runner.r,runner.c=nr,nc
+            runner_map[runner.r][runner.c].append(runner.id)
 
 def move_catcher():
     r,c=catcher.move()
-    if (r,c) in catcher_dir:
+    if (r,c) in change_dir:
         if catcher.flag:
             if r<N//2:
                 if c<=N//2:
@@ -120,7 +118,6 @@ def rotate():
     if (r,c)==(0,0):
         catcher.d=2
         catcher.flag=False
-
 
 score=0
 for t in range(1,K+1):
