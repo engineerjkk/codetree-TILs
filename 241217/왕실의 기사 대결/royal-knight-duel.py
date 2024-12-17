@@ -12,9 +12,9 @@ H=[0]*MAX_N
 W=[0]*MAX_N
 K=[0]*MAX_N
 initial_K=[0]*MAX_N
-dmg=[0]*MAX_N
 nr=[0]*MAX_N
 nc=[0]*MAX_N
+dmg=[0]*MAX_N
 is_moved=[False]*MAX_N
 dr=[-1,0,1,0]
 dc=[0,1,0,-1]
@@ -27,13 +27,12 @@ for i in range(1,N+1):
     initial_K[i]=K[i]
 
 def try_movement(id,d):
-    
     for i in range(1,N+1):
         nr[i]=R[i]
         nc[i]=C[i]
-        dmg[i]=0
         is_moved[i]=False
-    
+        dmg[i]=0
+
     queue=deque()
     queue.append(id)
     is_moved[id]=True
@@ -59,15 +58,15 @@ def try_movement(id,d):
                 continue
             if is_moved[i] or K[i]<=0:
                 continue
-            queue.append(i)
             is_moved[i]=True
+            queue.append(i)
     dmg[id]=0
     return True
-    
 
 def move_piece(id,d):
     if K[id]<=0:
-        return 
+        return
+    
     if try_movement(id,d):
         for i in range(1,N+1):
             R[i]=nr[i]
