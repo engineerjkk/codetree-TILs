@@ -36,6 +36,7 @@ def try_movement(id,d):
     
     queue=deque()
     queue.append(id)
+    is_moved[id]=True
     while queue:
         r=queue.popleft()
         nr[r]+=dr[d]
